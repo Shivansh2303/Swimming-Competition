@@ -1,0 +1,68 @@
+const statesOptions = [
+  { value: "", label: "Select State" },
+  { value: "AP", label: "Andhra Pradesh" },
+  { value: "AR", label: "Arunachal Pradesh" },
+  { value: "AS", label: "Assam" },
+  { value: "BR", label: "Bihar" },
+  { value: "CT", label: "Chhattisgarh" },
+  { value: "GA", label: "Goa" },
+  { value: "GJ", label: "Gujarat" },
+  { value: "HR", label: "Haryana" },
+  { value: "HP", label: "Himachal Pradesh" },
+  { value: "JH", label: "Jharkhand" },
+  { value: "KA", label: "Karnataka" },
+  { value: "KL", label: "Kerala" },
+  { value: "MP", label: "Madhya Pradesh" },
+  { value: "MH", label: "Maharashtra" },
+  { value: "MN", label: "Manipur" },
+  { value: "ML", label: "Meghalaya" },
+  { value: "MZ", label: "Mizoram" },
+  { value: "NL", label: "Nagaland" },
+  { value: "OR", label: "Odisha" },
+  { value: "PB", label: "Punjab" },
+  { value: "RJ", label: "Rajasthan" },
+  { value: "SK", label: "Sikkim" },
+  { value: "TN", label: "Tamil Nadu" },
+  { value: "TG", label: "Telangana" },
+  { value: "TR", label: "Tripura" },
+  { value: "UP", label: "Uttar Pradesh" },
+  { value: "UK", label: "Uttarakhand" },
+  { value: "WB", label: "West Bengal" },
+];
+
+const genderOptions = [
+  { value: "", label: "Select Gender" },
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+  { value: "Other", label: "Other" },
+];
+
+const proofOptions = [
+  { value: "", label: "Select Proof" },
+  { value: "DOB certificate", label: "DOB certificate" },
+  { value: "passport", label: "Passport" },
+  { value: "aadhar", label: "Aadhar" },
+  { value: "SFIUID", label: "SFIUID" },
+];
+
+const ageGroupOptions = [
+  { value: "", label: "Select Age Group" },
+  {
+    value: "Group 1",
+    label: "Group - 1 (Born between 1/1/2007 to 31/12/2009)",
+  },
+  { value: "Group 2", label: "Group - 2 (Born 2010)" },
+  { value: "Group 3", label: "Group - 3 (Born 2011)" },
+  { value: "Group 4", label: "Group - 4 (Born 2012)" },
+  { value: "Group 5", label: "Group - 5 (Born 2013)" },
+  { value: "Group 6", label: "Group - 6 (Born 2014)" },
+  { value: "Group 7", label: "Group - 7 (Born 2015)" },
+  { value: "Group 8", label: "Group - 8 (Born 2016)" },
+  { value: "Group 9", label: "Group - 9 (Born 2017)" },
+  { value: "Group 10", label: "Group - 10 (Born 2018)" },
+  { value: "Group 11", label: "Group - 10 (Born 2019)" },
+  { value: "Seniors", label: "Seniors Boys & Girls: 18 yrs. To 29 yrs." },
+  { value: "Masters A", label: "Masters Group - A: 30 to 40 yrs." },
+  { value: "Masters B", label: "Masters Group - B: 41 to 50 yrs." },
+  { value: "Masters C", label: "Masters Group - C: 51+ yrs." },
+];
