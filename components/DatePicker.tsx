@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 import {
   Input,
   Popover,
@@ -31,12 +31,18 @@ export default function DateSelector({id, label, onChange}:DateType) {
           id={id}
           name={id}
           placeholder={new Date().toDateString()}
-          className="bg-white"
+          className="bg-white w-full rounded h-10 pl-4"
             // onChange={onChange}
             value={date ? format(date, "PPP") : ""}
           />
         </PopoverHandler>
-        {/* <PopoverContent> */}
+        <PopoverContent
+         id="popover-content"
+         onChange={() => {}}
+         className="your-classname"
+         placeholder="Select a date"
+         onPointerEnterCapture={() => {}}
+         onPointerLeaveCapture={() => {}} >
           <DayPicker
             mode="single"
             selected={date}
@@ -75,7 +81,7 @@ export default function DateSelector({id, label, onChange}:DateType) {
               ),
             }}
           />
-        {/* </PopoverContent> */}
+        </PopoverContent>
       </Popover>
     </div>
   );
