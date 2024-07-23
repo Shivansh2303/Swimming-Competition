@@ -15,21 +15,11 @@ interface PaymentDetails {
 }
 
 const SuccessPage: NextPage = () => {
-    //   const router = useRouter();
     const [userData, setUserData] = useState<any>({})
     const [loading, setLoading] = useState<boolean>(true);
-    const [details, setDetails] = useState<PaymentDetails>({
-        name: '',
-        email: '',
-        contactNumber: '',
-        transactionId: '',
-        amount: 0,
-        time: '',
-    });
     useEffect(() => {
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");
-            
             if (data) {
                 try {
                     const swimmerData = JSON.parse(data);
@@ -51,19 +41,6 @@ const SuccessPage: NextPage = () => {
             }
         }
     }, []);
-
-    //   useEffect(() => {
-    //     if (router.query) {
-    //       setDetails({
-    //         name: router.query.name as string,
-    //         email: router.query.email as string,
-    //         contactNumber: router.query.contactNumber as string,
-    //         transactionId: router.query.transactionId as string,
-    //         amount: parseFloat(router.query.amount as string),
-    //         time: router.query.time as string,
-    //       });
-    //     }
-    //   }, [router.query]);
 
     return (
         <div className="w-screen">

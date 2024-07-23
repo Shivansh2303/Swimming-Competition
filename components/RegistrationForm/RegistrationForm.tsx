@@ -113,7 +113,6 @@ export default function SwimmingRegistrationForm() {
     },
     validationSchema,
     onSubmit: async (values) => {
-     console.log(values);
      if (typeof window !== "undefined") {
       window.localStorage.setItem('swimmerData',JSON.stringify(values))
     }
