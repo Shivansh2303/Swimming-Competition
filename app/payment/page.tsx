@@ -1,7 +1,7 @@
-import WrappedCheckoutForm from "@/components/Integration/Stripe/Checkout"
+import WrappedCheckoutForm from "@/components/Integration/CheckoutPage";
+
 export default function PaymentPage() {
-   return (<>
+   return (
    <WrappedCheckoutForm/>
-   </>
    )
 }
