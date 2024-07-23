@@ -3,14 +3,11 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import InputField from './InputField';
 import SelectField from './Dropdown';
 import CheckboxField from './CheckBoxField';
-import Label from './Label';
 import FileUploader from './FileUploader';
 import DateSelector from './DatePicker';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import validationSchema from '@/lib/Formvalidations';
-import SwimmingCompetitionForm from '@/app/models/form.models';
-import axios from 'axios';
 
 const statesOptions = [
   { value: "", label: "Select State" },
@@ -142,18 +139,6 @@ export default function SwimmingRegistrationForm() {
     const file = e.target.files?.[0] || null;
     formik.setFieldValue('proofOfAge', file);
   };
-  const handleMongo=()=>{
-    console.log("dreatinf mongo");
-    
-    const formData=new SwimmingCompetitionForm({
-      swimmerFirstName:"Anshul",
- swimmerSecondName:"Kate"
-    })
-   //  const formData=await SwimmingCompetitionForm.create({})
-    formData.save()
-    console.log({formData:formData});
-    
-  }
 
   useEffect(() => {
     if(events.length<2) {setError('')}
@@ -328,7 +313,6 @@ export default function SwimmingRegistrationForm() {
       <br />
       <button
         type="submit"
-        onClick={e=>handleMongo}
         className="m-8 ml-1 p-2 bg-blue-500 text-white rounded-md shadow-sm"
       >
         Submit

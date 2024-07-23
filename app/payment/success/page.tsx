@@ -2,7 +2,6 @@
 "use client"
 import axios from 'axios';
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface PaymentDetails {
@@ -16,17 +15,14 @@ interface PaymentDetails {
 
 const SuccessPage: NextPage = () => {
     const [userData, setUserData] = useState<any>({})
-    const [loading, setLoading] = useState<boolean>(true);
     useEffect(() => {
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");
             if (data) {
                 try {
                     const swimmerData = JSON.parse(data);
-                    console.log(swimmerData);
                     handleUser(swimmerData)
                     setUserData(swimmerData);
-                    setLoading(false)
                 } catch (error) {
                     console.error("Failed to parse swimmerData from localStorage", error);
                 }

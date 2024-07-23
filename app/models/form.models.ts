@@ -1,7 +1,4 @@
-import mongoose, { Schema, Document,model,models } from "mongoose";
-import { getMongoose } from "@/lib/db";
-// const mongoose=getMongoose();
-// Define an interface representing a document in MongoDB
+import { Schema, Document,model,models } from "mongoose";
 interface ISwimmingCompetitionForm extends Document {
   swimmerFirstName: string;
   swimmerSecondName: string;
@@ -24,7 +21,6 @@ interface ISwimmingCompetitionForm extends Document {
   referral: string;
 }
 
-// Create a schema corresponding to the document interface
 const SwimmingCompetitionFormSchema: Schema = new Schema({
   swimmerFirstName: { type: String, required: true },
   swimmerSecondName: { type: String, required: true },
@@ -46,11 +42,6 @@ const SwimmingCompetitionFormSchema: Schema = new Schema({
   referral: { type: String, required: false },
 });
 
-// Create and export the model
-// const SwimmingCompetitionForm = model(
-//   "SwimmingCompetitionForm",
-//   SwimmingCompetitionFormSchema
-// );
 const SwimmingCompetitionForm = models.SwimmingCompetitionForm || model('SwimmingCompetitionForm', SwimmingCompetitionFormSchema);
 
 export default SwimmingCompetitionForm;

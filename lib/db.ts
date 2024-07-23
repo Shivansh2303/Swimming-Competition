@@ -1,6 +1,4 @@
-import SwimmingCompetitionForm from "@/app/models/form.models";
 
-// import * as mongoose from "mongoose";
 const mongoose=require('mongoose')
 let cachedConnection:any= null;
 
