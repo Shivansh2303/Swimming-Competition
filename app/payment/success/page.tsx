@@ -83,7 +83,7 @@ const SuccessPage: NextPage = () => {
                         <tbody className="lg:border-gray-300">
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
-                                    Swimmer's Name
+                                    Swimmers Name
                                     <div className="mt-1 lg:hidden">
                                         <p className="font-normal text-gray-500">{userData.swimmerFirstName}</p>
                                     </div>
