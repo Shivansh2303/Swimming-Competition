@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document,model,models } from "mongoose";
 import { getMongoose } from "@/lib/db";
 // const mongoose=getMongoose();
 // Define an interface representing a document in MongoDB
@@ -47,10 +47,10 @@ const SwimmingCompetitionFormSchema: Schema = new Schema({
 });
 
 // Create and export the model
-const SwimmingCompetitionForm = mongoose.model(
-  "SwimmingCompetitionForm",
-  SwimmingCompetitionFormSchema
-);
-// const SwimmingCompetitionForm = mongoose.models.SwimmingCompetitionForm || mongoose.model('SwimmingCompetitionForm', SwimmingCompetitionFormSchema);
+// const SwimmingCompetitionForm = model(
+//   "SwimmingCompetitionForm",
+//   SwimmingCompetitionFormSchema
+// );
+const SwimmingCompetitionForm = models.SwimmingCompetitionForm || model('SwimmingCompetitionForm', SwimmingCompetitionFormSchema);
 
 export default SwimmingCompetitionForm;
