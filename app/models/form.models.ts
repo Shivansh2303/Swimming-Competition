@@ -47,9 +47,10 @@ const SwimmingCompetitionFormSchema: Schema = new Schema({
 });
 
 // Create and export the model
-const SwimmingCompetitionForm = mongoose.model(
-  "SwimmingCompetitionForm",
-  SwimmingCompetitionFormSchema
-);
+// const SwimmingCompetitionForm = mongoose.model(
+//   "SwimmingCompetitionForm",
+//   SwimmingCompetitionFormSchema
+// );
+const SwimmingCompetitionForm = mongoose.models.SwimmingCompetitionForm || mongoose.model('SwimmingCompetitionForm', SwimmingCompetitionFormSchema);
 
 export default SwimmingCompetitionForm;
