@@ -11,8 +11,6 @@ interface ParamsInterface {
 
 export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
    
-   console.log({params:params});
-   
     const [userData, setUserData] = useState<any>({})
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -21,7 +19,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 try {
                     const swimmerData = JSON.parse(data);
                     handleUser(swimmerData)
-                    // setUserData(swimmerData);
+                    setUserData(swimmerData);
                 } catch (error) {
                     console.error("Failed to parse swimmerData from localStorage", error);
                 }
@@ -40,7 +38,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 console.log({swimmerData:swimmerData});   
             }
         }
-    },[]);
+    },[params]);
 
     return (
         <div className="w-screen bg-white">

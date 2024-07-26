@@ -2,7 +2,7 @@
 "use client"
 import ErrorBoundary from '@/components/ErrorBoundary';
 import axios from 'axios';
-import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 
 interface ParamsInterface {

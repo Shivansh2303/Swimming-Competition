@@ -6,9 +6,9 @@ import CheckboxField from './CheckBoxField';
 import FileUploader from './FileUploader';
 import DateSelector from './DatePicker';
 import { useRouter } from 'next/navigation';
-import { Formik, useFormik } from 'formik';
+import {  useFormik } from 'formik';
 import validationSchema from '@/lib/Formvalidations';
-import { City, Country, State } from "country-state-city";
+import { Country, State } from "country-state-city";
 import Label from './Label';
 
 const statesOptions = [

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const INSTAMOJO_API_URL = "https://api.instamojo.com/v2/payment_requests/";
-const API_URL =process.env.BASE_URL;
+const BASE_URL =process.env.NEXT_PUBLIC_BASE_URL;
 export async function InstamojoPaymentIntent(token: string, userData: any) {
   try {
     const response = await axios.post(
@@ -10,10 +10,10 @@ export async function InstamojoPaymentIntent(token: string, userData: any) {
         allow_repeated_payments: false,
         send_email: true,
         email: userData.email,
-        amount:10 ,
+        amount:userData.amount ,
         purpose: "Swimming Competition",
         buyer_name: `${userData.swimmerFirstName} ${userData.swimmerSecondName}`,
-        redirect_url: `${API_URL}/payment/status`,
+        redirect_url: `${BASE_URL}/payment/status`,
         phone:userData.parent1Contact
       },
       {
