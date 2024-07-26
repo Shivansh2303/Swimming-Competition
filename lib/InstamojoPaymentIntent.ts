@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const INSTAMOJO_API_URL = "https://api.instamojo.com/v2/payment_requests/";
+// const API_URL = "http://localhost:3000";
+const API_URL = "https://swimming-competition.vercel.app/";
 export async function InstamojoPaymentIntent(token: string, userData: any) {
   try {
     const response = await axios.post(
@@ -12,7 +14,8 @@ export async function InstamojoPaymentIntent(token: string, userData: any) {
         amount: 20,
         purpose: "Swimming Competition",
         buyer_name: `${userData.swimmerFirstName} ${userData.swimmerSecondName}`,
-        redirect_url: "https://www.google.com",
+        redirect_url: `${API_URL}/payment/status`,
+        phone:userData.parent1Contact
       },
       {
         headers: {

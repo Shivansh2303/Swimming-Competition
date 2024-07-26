@@ -40,7 +40,10 @@ const SwimmingCompetitionFormSchema: Schema = new Schema({
   coachContact: { type: String, required: true },
   parentName: { type: String, required: true },
   referral: { type: String, required: false },
-});
+  paymentID: { type: String, required: false },
+  paymentStatus: { type: String, required: false },
+  paymentRequestID: { type: String, required: false },
+},{timestamps:true});
 
 const SwimmingCompetitionForm = models.SwimmingCompetitionForm || model('SwimmingCompetitionForm', SwimmingCompetitionFormSchema);
 

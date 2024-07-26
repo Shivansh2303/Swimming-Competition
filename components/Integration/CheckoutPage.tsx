@@ -29,7 +29,6 @@ const CheckoutForm = (props: any) => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
-
         try {
             const response = await axios.post('/api/create-customer', {});
             const { data: paymentResponse } = await axios.post('/api/create-payment-intent', { token: response.data, userData });
@@ -42,39 +41,42 @@ const CheckoutForm = (props: any) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={`w-full max-w-lg mx-auto p-4 bg-white rounded-lg mt-32  shadow-2xl ${loading ? "opacity-15" : ""}`}>
-            <div className="container mx-auto flex justify-center mt-5">
-                <div className="  rounded-lg ">
-                    <div>
-                        <div className="flex pt-3 pl-3 pb-10">
-                            <div><img src="https://img.icons8.com/ios-filled/50/000000/visa.png" width="60" height="80" /></div>
-                            <div className="mt-3 pl-2">
-                                <span className="text-lg font-bold text-gray-700">{userData.swimmerFirstName} {userData.swimmerSecondName}</span>
-                                <div>
-                                    <span className="text-sm text-gray-700">{userData.email}</span>
+        <form onSubmit={handleSubmit} className={`w-full mx-auto bg-white rounded-lg  `}>
+            <div className="text-center mt-5 p-5">
+                <p className="text-2xl font-bold text-gray-600 ">Swim For India Academy</p>
+                <p className="text-xl font-bold">Delhi Open Talent Search Swimming Competition 2024</p>
+            </div>
+            <div className={`container mx-auto  p-8  bg-gray-200 rounded-lg max-w-4xl ${loading?"opacity-20":""} `}>
+                <div className="flex flex-col md:flex-row">
+                    <div className="md:w-screen w-full md:pl-5">
+                        <div className="p-6 bg-white rounded-lg">
+                            <p className="pl-2 text-gray-800 font-bold text-xl">Swimmer Details</p>
+                            <p className=" pl-2 text-gray-600  text-m">{userData?.swimmerFirstName??"Shivansh Kate"}</p>
+                            <p className="pl-2 text-gray-600 text-m">{userData?.email??"sample@mail.com"}</p>
+                            <div className="text-[15px] mt-2">
+                                <div className="flex flex-wrap border rounded-lg mb-3">
+                                    <div className="w-1/2 px-2 py-2">Gender</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.gender??"Female"}</div>
+                                    <div className="w-1/2 px-2 py-2">Date of Birth</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-r">{new Date(userData?.dob).toDateString()??new Date().toDateString()}</div>
+                                    <div className="w-1/2 px-2 py-2 border-b">Country & State</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.state??"Delhi"}{", "}{userData?.Country??"India"}</div>
+                                    <div className="w-1/2 px-2 py-2 border-b">Age Group</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.ageGroup??"Masters Group"}</div>
+                                    <div className="w-1/2 px-2 py-2">Parent Contact</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.parent1Contact??"9999999999"}</div>
+                                </div>
+                                <div className="flex justify-between font-bold text-sm mb-2">
+                                    <p>Total Amount</p>
+                                    <p>$1400</p>
                                 </div>
                             </div>
-                        </div>
-                        <div className="py-2 px-3">
-                            <div className="bg-blue-50 border-2 border-blue-300 rounded-lg flex py-2 pl-2">
-                                <div className="form-check">
-                                    <input type="radio" name="optradio" className="form-check-input mt-3" checked />
-                                </div>
-                                <div className="border-l pl-2">
-                                    <span className="text-blue-500 text-xs">Total amount </span>
-                                    <div>
-                                        <span className="text-lg text-blue-700">Rs. </span>
-                                        <span className="text-lg font-bold text-blue-600">8245</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between px-3 pt-4 pb-3">
                             <div>
-                                <button className="text-gray-700 text-m p-2 rounded font-normal leading-9 hover:bg-red-300 hover:cursor-pointer " onClick={() => router.back()}>Go back</button>
+                               
+                                <button disabled={loading} className="btn btn-primary w-full py-2 bg-blue-600 text-white rounded-lg flex justify-center items-center">
+                                    PAY <span className="fas fa-dollar-sign ml-2"></span>1400<span className="fas fa-arrow-right ml-3"></span>
+                                </button>
                             </div>
-                            <button type="submit" disabled={loading} className="btn btn-primary w-44 h-18 rounded-lg text-lg border-2 bg-blue-300 ">Pay amount</button>
                         </div>
                     </div>
                 </div>
