@@ -43,6 +43,7 @@ const SwimmingCompetitionFormSchema: Schema = new Schema({
   paymentID: { type: String, required: false },
   paymentStatus: { type: String, required: false },
   paymentRequestID: { type: String, required: false },
+  amount: { type: Number, required: true },
 },{timestamps:true});
 
 const SwimmingCompetitionForm = models.SwimmingCompetitionForm || model('SwimmingCompetitionForm', SwimmingCompetitionFormSchema);

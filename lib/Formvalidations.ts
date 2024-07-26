@@ -16,10 +16,11 @@ const validationSchema = Yup.object({
     .email("Invalid email address")
     .required("Email is required"),
   parentName: Yup.string().required("Parent’s / Guardian’s name is required"),
-  parent1Contact: Yup.string().required("Parent contact is required").max(13),
-  parent2Contact: Yup.string().max(13),
-  coachContact: Yup.string().required("Coach contact is required").max(13),
+  parent1Contact: Yup.string().required("Parent contact is required").max(10).min(10),
+  parent2Contact: Yup.string().max(10).min(10),
+  coachContact: Yup.string().required("Coach contact is required").max(10).min(10),
   referral: Yup.string().required("Referral is required"),
+  amount: Yup.number()
 });
 
 export default validationSchema;

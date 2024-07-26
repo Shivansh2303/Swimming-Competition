@@ -13,6 +13,7 @@
     "@material-tailwind/react": "^2.1.9",
     "@types/mongoose": "^5.11.97",
     "axios": "^1.7.2",
+    "country-state-city": "^3.2.1",
     "date-fns": "^3.6.0",
     "formik": "^2.4.6",
     "mongodb": "^6.8.0",

@@ -9,7 +9,9 @@ const CheckoutForm = (props: any) => {
     const [userData, setUserData] = useState<any>({})
     const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
+
     useEffect(() => {
+
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");
             if (data) {
@@ -46,35 +48,35 @@ const CheckoutForm = (props: any) => {
                 <p className="text-2xl font-bold text-gray-600 ">Swim For India Academy</p>
                 <p className="text-xl font-bold">Delhi Open Talent Search Swimming Competition 2024</p>
             </div>
-            <div className={`container mx-auto  p-8  bg-gray-200 rounded-lg max-w-4xl ${loading?"opacity-20":""} `}>
+            <div className={`container mx-auto  p-8  bg-gray-200 rounded-lg max-w-4xl ${loading ? "opacity-20" : ""} `}>
                 <div className="flex flex-col md:flex-row">
                     <div className="md:w-screen w-full md:pl-5">
                         <div className="p-6 bg-white rounded-lg">
                             <p className="pl-2 text-gray-800 font-bold text-xl">Swimmer Details</p>
-                            <p className=" pl-2 text-gray-600  text-m">{userData?.swimmerFirstName??"Shivansh Kate"}</p>
-                            <p className="pl-2 text-gray-600 text-m">{userData?.email??"sample@mail.com"}</p>
+                            <p className=" pl-2 text-gray-600  text-m">{userData?.swimmerFirstName ?? "Shivansh Kate"}</p>
+                            <p className="pl-2 text-gray-600 text-m">{userData?.email ?? "sample@mail.com"}</p>
                             <div className="text-[15px] mt-2">
                                 <div className="flex flex-wrap border rounded-lg mb-3">
                                     <div className="w-1/2 px-2 py-2">Gender</div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.gender??"Female"}</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.gender ?? "Female"}</div>
                                     <div className="w-1/2 px-2 py-2">Date of Birth</div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-r">{new Date(userData?.dob).toDateString()??new Date().toDateString()}</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-r">{new Date(userData?.dob).toDateString() ?? new Date().toDateString()}</div>
                                     <div className="w-1/2 px-2 py-2 border-b">Country & State</div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.state??"Delhi"}{", "}{userData?.Country??"India"}</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.state ?? "Delhi"}{", "}{userData?.Country ?? "India"}</div>
                                     <div className="w-1/2 px-2 py-2 border-b">Age Group</div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.ageGroup??"Masters Group"}</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.ageGroup ?? "Masters Group"}</div>
                                     <div className="w-1/2 px-2 py-2">Parent Contact</div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.parent1Contact??"9999999999"}</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.parent1Contact ?? "9999999999"}</div>
                                 </div>
                                 <div className="flex justify-between font-bold text-sm mb-2">
                                     <p>Total Amount</p>
-                                    <p>$1400</p>
+                                    <p>Rs. {userData?.amount}</p>
                                 </div>
                             </div>
                             <div>
-                               
-                                <button disabled={loading} className="btn btn-primary w-full py-2 bg-blue-600 text-white rounded-lg flex justify-center items-center">
-                                    PAY <span className="fas fa-dollar-sign ml-2"></span>1400<span className="fas fa-arrow-right ml-3"></span>
+
+                                <button disabled={loading&&!userData?.amount} className="btn btn-primary w-full py-2 bg-blue-600 text-white rounded-lg flex justify-center items-center">
+                                    PAY <span className="fas fa-dollar-sign ml-2"></span>{userData?.amount}<span className="fas fa-arrow-right ml-3"></span>
                                 </button>
                             </div>
                         </div>
@@ -86,7 +88,7 @@ const CheckoutForm = (props: any) => {
 };
 
 const WrappedCheckoutForm = () => (
-    <CheckoutForm amount={20} />
+    <CheckoutForm />
 );
 
 export default WrappedCheckoutForm;

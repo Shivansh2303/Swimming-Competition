@@ -43,7 +43,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
     },[]);
 
     return (
-        <div className="w-screen">
+        <div className="w-screen bg-white">
             <div className="mx-auto mt-8 max-w-screen-lg px-2">
                 <div className="bg-white p-6  md:mx-auto">
                     <svg viewBox="0 0 24 24" className="text-green-600 w-16 h-16 mx-auto my-6">
@@ -59,21 +59,15 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 <div className="sm:flex sm:items-center sm:justify-between flex-col sm:flex-row">
                     <p className="flex-1 text-xl font-sans text-center font-semibold text-black-900">Here is your payment details</p>
                 </div>
-                <div className="mt-6 overflow-hidden rounded-xl border shadow-lg p-5">
-                    <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2" aria-hidden="true">
-                    <thead className="hidden border-b lg:table-header-group">
-                            <tr className="">
-                                <td width="50%" className="whitespace-normal py-4 text-xl font-bold text-black-500 sm:px-6">Fields</td>
-                                <td className="whitespace-normal py-4 text-xl font-bold text-black-500 sm:px-6 ">Values</td>
-                            </tr>
-                        </thead>
+                <div className="mt-6 overflow-hidden rounded-xl border shadow-lg p-5 ">
+                    <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2 bg-gray-400" aria-hidden="true">
+                  
                         <tbody className="lg:border-gray-300 ">
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold  text-gray-900 sm:px-6">
                                     Swimmers Name
                                 </td>
                                 <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerFirstName} {userData?.swimmerSecondName}</td>
-                                {/* <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">Shivansh Kate</td> */}
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
