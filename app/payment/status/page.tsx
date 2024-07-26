@@ -13,6 +13,7 @@ interface ParamsInterface {
 
 function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
     const [userData, setUserData] = useState<any>({});
+    const [loading, setloading] = useState<boolean>(true);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -36,6 +37,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                 userData.paymentRequestID = params.paymentRequestID;
                 const swimmerData = await axios.post('/api/create-swimmer', { userData });
                 setUserData(swimmerData.data);
+                setloading(false)
                 console.log({ swimmerData: swimmerData });
             }
         }
@@ -59,49 +61,44 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                     <p className="flex-1 text-xl font-sans text-center font-semibold text-black-900">Here is your payment details</p>
                 </div>
                 <div className="mt-6 overflow-hidden rounded-xl border shadow-lg p-5">
-                    <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2" aria-hidden="true">
-                        <thead className="hidden border-b lg:table-header-group">
-                            <tr className="">
-                                <td width="50%" className="whitespace-normal py-4 text-xl font-bold text-black-500 sm:px-6">Fields</td>
-                                <td className="whitespace-normal py-4 text-xl font-bold text-black-500 sm:px-6 ">Values</td>
-                            </tr>
-                        </thead>
+                    <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2 "  aria-hidden="true">
+
                         <tbody className="lg:border-gray-300 ">
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Swimmers Name
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerFirstName} {userData?.swimmerSecondName}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerFirstName ?? "First Name"} {userData?.swimmerSecondName ?? "Last Name"}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Email
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.email}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.email ?? "example@mail.com"}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Contact
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.parent1Contact}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.parent1Contact ?? "xxxxxxxxxx"}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Amount
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">Rs. 1500</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">Rs. {userData?.amount ?? "xxx"}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Transaction ID
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.paymentID ?? ";skelgkrglerk;nglrs;kgf"}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.paymentID ?? "xxxxxxxxxx"}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Date & Time
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">15 October, 2021</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{new Date(userData?.createdAt).toLocaleString()??new Date()}</td>
                             </tr>
                         </tbody>
                     </table>
