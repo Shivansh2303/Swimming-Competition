@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const INSTAMOJO_API_URL = "https://api.instamojo.com/v2/payment_requests/";
-// const API_URL = "http://localhost:3000";
 const API_URL = "https://swimming-competition.vercel.app/";
 export async function InstamojoPaymentIntent(token: string, userData: any) {
   try {

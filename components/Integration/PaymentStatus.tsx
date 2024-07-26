@@ -1,26 +1,27 @@
 // pages/status.tsx
 "use client"
-import ErrorBoundary from '@/components/ErrorBoundary';
 import axios from 'axios';
-import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
-
+import { ReadonlyURLSearchParams } from 'next/navigation';
+import {  useEffect,useState } from 'react';
 interface ParamsInterface {
     paymentID: string;
     paymentStatus: string;
     paymentRequestID: string;
 }
 
-function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
-    const [userData, setUserData] = useState<any>({});
-
+export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
+   
+   console.log({params:params});
+   
+    const [userData, setUserData] = useState<any>({})
     useEffect(() => {
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");
             if (data) {
                 try {
                     const swimmerData = JSON.parse(data);
-                    handleUser(swimmerData);
+                    handleUser(swimmerData)
+                    // setUserData(swimmerData);
                 } catch (error) {
                     console.error("Failed to parse swimmerData from localStorage", error);
                 }
@@ -31,27 +32,27 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
 
         async function handleUser(userData: any) {
             if (userData) {
-                userData.paymentID = params.paymentID;
-                userData.paymentStatus = params.paymentStatus;
-                userData.paymentRequestID = params.paymentRequestID;
+                userData.paymentID=params.get("payment_id");
+                userData.paymentStatus=params.get("payment_status");
+                userData.paymentRequestID=params.get("payment_request_id");
                 const swimmerData = await axios.post('/api/create-swimmer', { userData });
                 setUserData(swimmerData.data);
-                console.log({ swimmerData: swimmerData });
+                console.log({swimmerData:swimmerData});   
             }
         }
-    }, [params]);
+    },[]);
 
     return (
         <div className="w-screen">
             <div className="mx-auto mt-8 max-w-screen-lg px-2">
-                <div className="bg-white p-6 md:mx-auto">
+                <div className="bg-white p-6  md:mx-auto">
                     <svg viewBox="0 0 24 24" className="text-green-600 w-16 h-16 mx-auto my-6">
                         <path fill="currentColor"
                             d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
                         </path>
                     </svg>
                     <div className="text-center">
-                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus ? "Payment Done!" : "Payment Failed"}</h3>
+                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus?"Payment Done!":"Payment Failed"}</h3>
                         <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
                     </div>
                 </div>
@@ -60,7 +61,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                 </div>
                 <div className="mt-6 overflow-hidden rounded-xl border shadow-lg p-5">
                     <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2" aria-hidden="true">
-                        <thead className="hidden border-b lg:table-header-group">
+                    <thead className="hidden border-b lg:table-header-group">
                             <tr className="">
                                 <td width="50%" className="whitespace-normal py-4 text-xl font-bold text-black-500 sm:px-6">Fields</td>
                                 <td className="whitespace-normal py-4 text-xl font-bold text-black-500 sm:px-6 ">Values</td>
@@ -68,10 +69,11 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                         </thead>
                         <tbody className="lg:border-gray-300 ">
                             <tr className="">
-                                <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
+                                <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold  text-gray-900 sm:px-6">
                                     Swimmers Name
                                 </td>
                                 <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerFirstName} {userData?.swimmerSecondName}</td>
+                                {/* <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">Shivansh Kate</td> */}
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
@@ -95,7 +97,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Transaction ID
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.paymentID ?? ";skelgkrglerk;nglrs;kgf"}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.paymentID?? ";skelgkrglerk;nglrs;kgf"}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
@@ -117,25 +119,5 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
             </div>
         </div>
     );
-}
+};
 
-function PaymentStatusInner() {
-    const paymentParams = useSearchParams();
-    const params = {
-        paymentID: paymentParams.get("payment_id") ?? '',
-        paymentStatus: paymentParams.get("payment_status") ?? '',
-        paymentRequestID: paymentParams.get("payment_request_id") ?? ''
-    }
-
-    return <CreateSwimmer params={params} />;
-}
-
-export default function PaymentStatus() {
-    return (
-        <ErrorBoundary>
-            <Suspense fallback={<div>Loading...</div>}>
-                <PaymentStatusInner />
-            </Suspense>
-        </ErrorBoundary>
-    );
-}
