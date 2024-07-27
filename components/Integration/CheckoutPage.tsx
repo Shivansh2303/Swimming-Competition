@@ -61,8 +61,8 @@ const CheckoutForm = (props: any) => {
                                     <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.gender ?? "Female"}</div>
                                     <div className="w-1/2 px-2 py-2">Date of Birth</div>
                                     <div className="w-1/2 text-center px-2 py-2 border-r">{new Date(userData?.dob).toDateString() ?? new Date().toDateString()}</div>
-                                    <div className="w-1/2 px-2 py-2 border-b">Country & State</div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.state ?? "Delhi"}{", "}{userData?.Country ?? "India"}</div>
+                                    <div className="w-1/2 px-2 py-2 border-b">State & Country </div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.state ?? "Delhi"}{", "}{userData?.country ?? "India"}</div>
                                     <div className="w-1/2 px-2 py-2 border-b">Age Group</div>
                                     <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.ageGroup ?? "Masters Group"}</div>
                                     <div className="w-1/2 px-2 py-2">Parent Contact</div>

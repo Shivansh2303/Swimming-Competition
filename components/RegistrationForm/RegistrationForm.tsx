@@ -99,7 +99,7 @@ export default function SwimmingRegistrationForm() {
       dob: null,
       proofOfAge: null,
       ageGroup: '',
-      // events: [''],
+      events: [''],
       relay: false,
       swimathon: false,
       email: '',
@@ -125,10 +125,10 @@ export default function SwimmingRegistrationForm() {
   const calculateCompetitionFees = (userData: any) => {
     const currentDate = new Date();
 
-    const { swimmingEvents, relay, swimmingMarathon } = userData;
-    const hasSwimmingEvents = swimmingEvents ? 1 : 0;
+    const { events, relay, swimathon } = userData;
+    const hasSwimmingEvents = events ? 1 : 0;
     const hasRelay = relay ? 1 : 0;
-    const hasMarathon = swimmingMarathon ? 1 : 0;
+    const hasMarathon = swimathon ? 1 : 0;
 
     const feeStructure = [
         { date: new Date("2024-07-30"), swimmingEventFee: 1000, relayFee: 1500, marathonFee: 1500 },
@@ -160,12 +160,16 @@ export default function SwimmingRegistrationForm() {
 }
   const toggleItem =(inputValue:string)=>{
     if (inputValue) {
-      if (events.includes(inputValue)) {
+      if (formik.values.events.includes(inputValue)) {
         setError('');
-        setEvents(events.filter(item => item !== inputValue));
+        const tempEvents=events.filter(item => item !== inputValue);
+        setEvents(tempEvents);
+        formik.setFieldValue('events',events)
       }else if(events.length< 2){
         setError('');
-          setEvents([...events, inputValue]);
+        const tempEvents=[...events, inputValue]
+        setEvents(tempEvents);
+        formik.setFieldValue('events',tempEvents)
         } else {
           setError('You can only add up to 2 items.');
         }
@@ -181,9 +185,9 @@ export default function SwimmingRegistrationForm() {
     const file = e.target.files?.[0] || null;
     formik.setFieldValue('proofOfAge', file);
   };
- 
 
   useEffect(() => {
+  
     if(events.length<2) {setError('')}
     console.log('Formik values:', formik.values);
     console.log('Formik errors:', formik.errors);
@@ -259,7 +263,7 @@ export default function SwimmingRegistrationForm() {
         onChange={handleChange}
           className="peer h-full w-full rounded-[7px] bg-white border border-blue-gray-200 px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-800 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50">
         {State.getStatesOfCountry(formik.values?.country||"IN").map((option) => (
-            <option key={option.isoCode} value={option.isoCode} className='bg-white'>
+            <option key={option.isoCode} value={option.name} className='bg-white'>
               {option.name}
             </option>
           ))}
