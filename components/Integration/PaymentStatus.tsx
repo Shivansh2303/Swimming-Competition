@@ -26,7 +26,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 try {
                     const swimmerData = JSON.parse(data);
                     handleUser(swimmerData)
-                } catch (error) {s
+                } catch (error) {
                     console.error("Failed to parse swimmerData from localStorage", error);
                 }
             } else {
@@ -45,6 +45,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
             }
         }
     },[params]);
+    
 
     return (
         <div className="w-screen bg-white">
