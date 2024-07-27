@@ -178,11 +178,18 @@ export default function SwimmingRegistrationForm() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     console.log('Value changed:', e.target.name, e.target.value);
+   
     formik.handleChange(e);  // Continue to handle the change with Formik
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileData = reader.result;
+      localStorage.setItem('uploadedFile', fileData);
+    };
+    reader.readAsDataURL(file); // Read file as base64 encoded string
     formik.setFieldValue('proofOfAge', file);
   };
 

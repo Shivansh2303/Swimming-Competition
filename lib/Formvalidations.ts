@@ -11,7 +11,7 @@ const validationSchema = Yup.object({
   dob: Yup.date().required("Date of Birth is required").nullable(),
   proofOfAge: Yup.string().required("Proof of Age is required"),
   ageGroup: Yup.string().required("Age Group is required"),
-  // events: Yup.array().of(Yup.string()).max(2, 'You can select up to two events').required('At least one event is required'),
+  events: Yup.array().of(Yup.string()).max(2, 'You can select up to two events').required('At least one event is required'),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),

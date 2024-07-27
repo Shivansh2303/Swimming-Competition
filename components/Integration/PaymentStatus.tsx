@@ -10,11 +10,18 @@ interface ParamsInterface {
 }
 
 export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
-   
+    const [file, setFile] = useState<Blob>()
     const [userData, setUserData] = useState<any>({})
+    const base64toBlog=async(file:any)=>{
+        const base64Response=await fetch(file);
+        const blob=await base64Response.blob();
+        setFile(blob);
+        return blob; 
+    }
     useEffect(() => {
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");
+            
             if (data) {
                 try {
                     const swimmerData = JSON.parse(data);
@@ -30,12 +37,11 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
 
         async function handleUser(userData: any) {
             if (userData) {
-                userData.paymentID=params.get("payment_id");
-                userData.paymentStatus=params.get("payment_status");
-                userData.paymentRequestID=params.get("payment_request_id");
+                userData.paymentID=params.get("payment_id")??"";
+                userData.paymentStatus=params.get("payment_status")??"";
+                userData.paymentRequestID=params.get("payment_request_id")??"";
                 const swimmerData = await axios.post('/api/create-swimmer', { userData });
                 setUserData(swimmerData.data);
-                console.log({swimmerData:swimmerData});   
             }
         }
     },[params]);

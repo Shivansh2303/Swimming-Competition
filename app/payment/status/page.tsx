@@ -14,14 +14,21 @@ interface ParamsInterface {
 function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
     const [userData, setUserData] = useState<any>({});
     const [loading, setloading] = useState<boolean>(true);
+    const [file, setFile]=useState<Blob>()
+    const base64toBlog=async(file:any)=>{
+        const base64Response =await fetch(file)
+        const blob = await base64Response.blob();
+        setFile(blob)
+    }
 
     useEffect(() => {
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");
+            const file = localStorage.getItem("uploadedFile");
+            base64toBlog(file)
             if (data) {
                 try {
                     const swimmerData = JSON.parse(data);
-                    console.log({ swimmerData: swimmerData });
                     handleUser(swimmerData);
                 } catch (error) {
                     console.error("Failed to parse swimmerData from localStorage", error);
@@ -32,15 +39,14 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
         }
 
         async function handleUser(userData: any) {
-            console.log({ userData: userData });
             if (userData) {
-                userData.paymentID = params.paymentID;
-                userData.paymentStatus = params.paymentStatus;
-                userData.paymentRequestID = params.paymentRequestID;
+                userData.paymentID = params.paymentID??"";
+                userData.paymentStatus = params.paymentStatus??"";
+                userData.paymentRequestID = params.paymentRequestID??"";
+                userData.proofOfAge=file;
                 const swimmerData = await axios.post('/api/create-swimmer', { userData });
                 setUserData(swimmerData.data);
                 setloading(false)
-                console.log({ swimmerData1: swimmerData });
             }
         }
     }, [params]);
@@ -55,7 +61,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                         </path>
                     </svg>
                     <div className="text-center">
-                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus ? "Payment Done!" : "Payment"}</h3>
+                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus==='Credit' ? "Payment Done!" : "Payment"}</h3>
                         <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
                     </div>
                 </div>
