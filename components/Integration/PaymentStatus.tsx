@@ -26,8 +26,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 try {
                     const swimmerData = JSON.parse(data);
                     handleUser(swimmerData)
-                    setUserData(swimmerData);
-                } catch (error) {
+                } catch (error) {s
                     console.error("Failed to parse swimmerData from localStorage", error);
                 }
             } else {
@@ -40,6 +39,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 userData.paymentID=params.get("payment_id")??"";
                 userData.paymentStatus=params.get("payment_status")??"";
                 userData.paymentRequestID=params.get("payment_request_id")??"";
+                userData.proofOdAge=null;
                 const swimmerData = await axios.post('/api/create-swimmer', { userData });
                 setUserData(swimmerData.data);
             }
@@ -56,7 +56,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                         </path>
                     </svg>
                     <div className="text-center">
-                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus?"Payment Done!":"Payment Failed"}</h3>
+                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus?"Payment Done!":"Payment"}</h3>
                         <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
                     </div>
                 </div>
@@ -69,9 +69,9 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                         <tbody className="lg:border-gray-300 ">
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold  text-gray-900 sm:px-6">
-                                    Swimmers Name
+                                    Swimmer Name
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerFirstName} {userData?.swimmerSecondName}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerName}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
@@ -89,7 +89,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Amount
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">Rs. 1500</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.amount}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
@@ -101,7 +101,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Date & Time
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">15 October, 2021</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{new Date(userData?.createdAt).toLocaleString()??new Date()}</td>
                             </tr>
                         </tbody>
                     </table>

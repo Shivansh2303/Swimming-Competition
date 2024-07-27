@@ -6,48 +6,16 @@ import CheckboxField from './CheckBoxField';
 import FileUploader from './FileUploader';
 import DateSelector from './DatePicker';
 import { useRouter } from 'next/navigation';
-import {  useFormik } from 'formik';
+import { useFormik } from 'formik';
 import validationSchema from '@/lib/Formvalidations';
-import { Country, State } from "country-state-city";
+import {  State } from "country-state-city";
 import Label from './Label';
 
-const statesOptions = [
-  { value: "", label: "Select State" },
-  { value: "AP", label: "Andhra Pradesh" },
-  { value: "AR", label: "Arunachal Pradesh" },
-  { value: "AS", label: "Assam" },
-  { value: "BR", label: "Bihar" },
-  { value: "CT", label: "Chhattisgarh" },
-  { value: "GA", label: "Goa" },
-  { value: "GJ", label: "Gujarat" },
-  { value: "HR", label: "Haryana" },
-  { value: "HP", label: "Himachal Pradesh" },
-  { value: "JH", label: "Jharkhand" },
-  { value: "KA", label: "Karnataka" },
-  { value: "KL", label: "Kerala" },
-  { value: "MP", label: "Madhya Pradesh" },
-  { value: "MH", label: "Maharashtra" },
-  { value: "MN", label: "Manipur" },
-  { value: "ML", label: "Meghalaya" },
-  { value: "MZ", label: "Mizoram" },
-  { value: "NL", label: "Nagaland" },
-  { value: "OR", label: "Odisha" },
-  { value: "PB", label: "Punjab" },
-  { value: "RJ", label: "Rajasthan" },
-  { value: "SK", label: "Sikkim" },
-  { value: "TN", label: "Tamil Nadu" },
-  { value: "TG", label: "Telangana" },
-  { value: "TR", label: "Tripura" },
-  { value: "UP", label: "Uttar Pradesh" },
-  { value: "UK", label: "Uttarakhand" },
-  { value: "WB", label: "West Bengal" },
-];
 
 const genderOptions = [
   { value: "", label: "Select Gender" },
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Other", label: "Other" },
 ];
 
 const referral = [
@@ -84,145 +52,122 @@ const ageGroupOptions = [
 ];
 
 export default function SwimmingRegistrationForm() {
-  const [events, setEvents]=useState<string[]>([])
   const [error, setError] = useState<string>('');
+  const [event, setEvent] = useState<number>(0);
   const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
-      swimmerFirstName: '',
-      swimmerSecondName: '',
+      swimmerName: '',
       gender: '',
       school: '',
       grade: '',
-      country: '',
       state: '',
       dob: null,
       proofOfAge: null,
       ageGroup: '',
-      events: [''],
+      event_freestyle: false,
+      freestyleTime: "",
+      event_breast_Stroke: false,
+      breast_StrokeTime: "",
+      event_back_Stroke: false,
+      back_StrokeTime: "",
+      event_butterfly: false,
+      butterflyTime: "",
       relay: false,
-      swimathon: false,
       email: '',
       parentName: '',
       parent1Contact: '',
       parent2Contact: '',
       coachContact: '',
       referral: '',
-      amount:0
+      amount: 0
     },
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
-     
-      values.amount= calculateCompetitionFees(values);
-     if (typeof window !== "undefined") {
-      window.localStorage.setItem('swimmerData',JSON.stringify(values))
-    }
-     router.push('/payment')
+
+      values.amount = calculateCompetitionFees(values);
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem('swimmerData', JSON.stringify(values));
+      }
+      router.push('/payment');
     },
-    
   });
+
   const calculateCompetitionFees = (userData: any) => {
     const currentDate = new Date();
-
-    const { events, relay, swimathon } = userData;
-    const hasSwimmingEvents = events ? 1 : 0;
+    const { relay } = userData;
+    const hasSwimmingEvents = event? 1 : 0;
     const hasRelay = relay ? 1 : 0;
-    const hasMarathon = swimathon ? 1 : 0;
 
     const feeStructure = [
-        { date: new Date("2024-07-30"), swimmingEventFee: 1000, relayFee: 1500, marathonFee: 1500 },
-        { date: new Date("2024-08-10"), swimmingEventFee: 1500, relayFee: 2000, marathonFee: 2000 },
-        { date: new Date("2024-08-15"), swimmingEventFee: 2000, relayFee: 2500, marathonFee: 2500 },
-        { date: new Date("2024-08-25"), swimmingEventFee: 2500, relayFee: 3000, marathonFee: 3000 }
+      { date: new Date("2024-07-30"), swimmingEventFee: 1000, relayFee: 1500, marathonFee: 1500 },
+      { date: new Date("2024-08-10"), swimmingEventFee: 1500, relayFee: 2000, marathonFee: 2000 },
+      { date: new Date("2024-08-15"), swimmingEventFee: 2000, relayFee: 2500, marathonFee: 2500 },
+      { date: new Date("2024-08-25"), swimmingEventFee: 2500, relayFee: 3000, marathonFee: 3000 }
     ];
 
     let calculatedAmount = 0;
-
     for (const fee of feeStructure) {
-        if (currentDate < fee.date) {
-            calculatedAmount = hasSwimmingEvents * fee.swimmingEventFee +
-                hasRelay * fee.relayFee +
-                hasMarathon * fee.marathonFee;
-            break;
-        }
+      if (currentDate < fee.date) {
+        calculatedAmount = hasSwimmingEvents * fee.swimmingEventFee + hasRelay * fee.relayFee;
+        break;
+      }
     }
 
     if (calculatedAmount === 0) {
-        const lastFee = feeStructure[feeStructure.length - 1];
-        calculatedAmount = hasSwimmingEvents * lastFee.swimmingEventFee +
-            hasRelay * lastFee.relayFee +
-            hasMarathon * lastFee.marathonFee;
+      const lastFee = feeStructure[feeStructure.length - 1];
+      calculatedAmount = hasSwimmingEvents * lastFee.swimmingEventFee + hasRelay * lastFee.relayFee;
     }
 
-    return calculatedAmount
-   
-}
-  const toggleItem =(inputValue:string)=>{
-    if (inputValue) {
-      if (formik.values.events.includes(inputValue)) {
-        setError('');
-        const tempEvents=events.filter(item => item !== inputValue);
-        setEvents(tempEvents);
-        formik.setFieldValue('events',events)
-      }else if(events.length< 2){
-        setError('');
-        const tempEvents=[...events, inputValue]
-        setEvents(tempEvents);
-        formik.setFieldValue('events',tempEvents)
-        } else {
-          setError('You can only add up to 2 items.');
-        }
-    }
+    return calculatedAmount;
   }
 
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    const selectedCheckboxes = Object.keys(formik.values)
+      .filter(key => key.startsWith('event_') && formik.values[key])
+      .length;
+    setEvent(selectedCheckboxes);
+    if (selectedCheckboxes < 2 || !checked) {
+      formik.setFieldValue(name, checked);
+      if (!checked) {
+        formik.setFieldValue(`${name.replace('event_', '')}Time`, '');
+      }
+      setError('')
+    } else {
+      setError('Only two events can be selected at a time.');
+    }
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    console.log('Value changed:', e.target.name, e.target.value);
-   
-    formik.handleChange(e);  // Continue to handle the change with Formik
+    formik.handleChange(e);
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    // const reader = new FileReader();
-    // reader.onload = () => {
-    //   const fileData = reader.result;
-    //   localStorage.setItem('uploadedFile', fileData);
-    // };
-    // reader.readAsDataURL(file); // Read file as base64 encoded string
     formik.setFieldValue('proofOfAge', file);
   };
 
   useEffect(() => {
-  
-    if(events.length<2) {setError('')}
-    console.log('Formik values:', formik.values);
-    console.log('Formik errors:', formik.errors);
-  },[formik.errors,formik.values,events.length]);
+
+
+  }, [formik.errors]);
+
   return (
-    <form  onSubmit={formik.handleSubmit} className="max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200  mt-10 pt-10">
-      <h1 className="text-2xl mb-4 font-bold font-serif text-center">
-        Swim For India Academy
-      </h1>
-      <h1 className="text-2xl mb-4 font-semibold font-serif">
-        Delhi Open Talent Search Swimming Competition 2024 
-      </h1>
+    <form onSubmit={formik.handleSubmit} className="max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10">
+      <h1 className="text-2xl mb-4 mt-4 font-bold font-sans text-center">Swim For India Academy</h1>
+      <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">Sunday, 24 August</h1>
+      <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">Delhi Open Talent Search Swimming Competition 2024</h1>
 
       <InputField
-        id="swimmerFirstName"
-        label="Swimmer's First Name"
-        value={formik.values.swimmerFirstName}
+        id="swimmerName"
+        label="Swimmer's Name"
+        value={formik.values.swimmerName}
         onChange={handleChange}
       />
-      {formik.errors.swimmerFirstName && formik.touched.swimmerFirstName && <span className='text-red-700'>{formik.errors.swimmerFirstName}</span>}
-      <InputField
-        id="swimmerSecondName"
-        label="Swimmer's Second Name"
-        value={formik.values.swimmerSecondName}
-        onChange={handleChange}
-      />
-      {formik.errors.swimmerSecondName && formik.touched.swimmerSecondName && <span className='text-red-700'>{formik.errors.swimmerSecondName}</span>}
-      
+      {formik.errors.swimmerName && formik.touched.swimmerName && <span className='text-red-700'>{formik.errors.swimmerName}</span>}
+
       <SelectField
         id="gender"
         label="Gender"
@@ -231,6 +176,7 @@ export default function SwimmingRegistrationForm() {
         onChange={handleChange}
       />
       {formik.errors.gender && formik.touched.gender && <span className='text-red-700'>{formik.errors.gender}</span>}
+
       <InputField
         id="school"
         label="School Name"
@@ -244,39 +190,23 @@ export default function SwimmingRegistrationForm() {
         onChange={handleChange}
       />
       {formik.errors.grade && formik.touched.grade && <span className='text-red-700'>{formik.errors.grade}</span>}
-     
-      <div className="mb-4">
-      <Label htmlFor="country">country</Label>
-      <div className="relative h-10 w-full min-w-[200px]">
-        <select
-        name="country"
-        onChange={handleChange}
-          className="peer h-full w-full rounded-[7px] bg-white border border-blue-gray-200 px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-800 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50">
-          {Country.getAllCountries().map((option) => (
-            <option key={option.isoCode} value={option.isoCode} className='bg-white'>
-              {option.name}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
-      {formik.errors.country && formik.touched.country && <span className='text-red-700'>{formik.errors.country}</span>}
 
       <div className="mb-4">
-      <Label htmlFor="state">State</Label>
-      <div className="relative h-10 w-full min-w-[200px]">
-        <select
-        name="state"
-        onChange={handleChange}
-          className="peer h-full w-full rounded-[7px] bg-white border border-blue-gray-200 px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-800 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50">
-        {State.getStatesOfCountry(formik.values?.country||"IN").map((option) => (
-            <option key={option.isoCode} value={option.name} className='bg-white'>
-              {option.name}
-            </option>
-          ))}
-        </select>
+        <Label htmlFor="state">State</Label>
+        <div className="relative h-10 w-full min-w-[200px]">
+          <select
+            name="state"
+            onChange={handleChange}
+            className="peer h-full w-full rounded-[7px] bg-white border border-blue-gray-200 px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-800 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50">
+            <option key="" value="" className='bg-white'>Select State</option>
+            {State.getStatesOfCountry("IN").map((option) => (
+              <option key={option.isoCode} value={option.name} className='bg-white'>
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-    </div>
       {formik.errors.state && formik.touched.state && <span className='text-red-700'>{formik.errors.state}</span>}
 
       <DateSelector
@@ -302,41 +232,85 @@ export default function SwimmingRegistrationForm() {
         onChange={handleFileChange}
       />
       {formik.errors.proofOfAge && formik.touched.proofOfAge && <span className='text-red-700'>{formik.errors.proofOfAge}</span>}
-
-      <div className="mb-4">
-        <label htmlFor="events" className="block text-sm font-medium text-gray-700">
+      <div className='border-4 p-4 mb-2 rounded-lg'>
+        <label htmlFor="events" className="block mb-2 font-semibold text-gray-700 md:text-m text-sm">
           Select Swimming Events (Maximum Two)
         </label>
-        <div className="mt-1 ml-8 space-y-2">
-          {['50 meter Freestyle', '50 meter Breast Stroke', '50 meter Back Stroke', '50 meter Butterfly'].map((event) => (
-            <div key={event}>
-              <CheckboxField
-                id={event}
-                label={event}
-                checked={events.includes(event)}
-                onChange={e=>toggleItem(event)}
-              />
-            </div>
-          ))}
-        </div>
-        {error && <span className='text-red-700'>{error}</span>}
-      </div>
+        <div className=' ml-5 space-y-2  '>
+          <CheckboxField
+            id="event_freestyle"
+            label="50 meter Freestyle"
+            checked={formik.values.event_freestyle}
+            onChange={handleCheckboxChange}
+          />
+          {/* {formik.values.event_freestyle && (
+        <InputField
+          id="freestyleTime"
+          label="Freestyle"
+          value={formik.values.freestyleTime}
+          onChange={handleChange}
+        />
+      )}
+      {formik.errors.freestyleTime && formik.touched.freestyleTime && <span className='text-red-700'>{formik.errors.freestyleTime}</span>} */}
 
+          <CheckboxField
+            id="event_breast_Stroke"
+            label="50 meter Breast Stroke"
+            checked={formik.values.event_breast_Stroke}
+            onChange={handleCheckboxChange}
+          />
+          {/* {formik.values.event_breast_Stroke && (
+        <InputField
+          id="breast_StrokeTime"
+          label="Breast Stroke Timing"
+          value={formik.values.breast_StrokeTime}
+          onChange={handleChange}
+        />
+      )}
+      {formik.errors.breast_StrokeTime && formik.touched.breast_StrokeTime && <span className='text-red-700'>{formik.errors.breast_StrokeTime}</span>} */}
+
+          <CheckboxField
+            id="event_back_Stroke"
+            label="50 meter Back Stroke"
+            checked={formik.values.event_back_Stroke}
+            onChange={handleCheckboxChange}
+          />
+          {/* {formik.values.event_back_Stroke && (
+        <InputField
+          id="back_StrokeTime"
+          label="Back Stroke Timing"
+          value={formik.values.back_StrokeTime}
+          onChange={handleChange}
+        />
+      )}
+      {formik.errors.back_StrokeTime && formik.touched.back_StrokeTime && <span className='text-red-700'>{formik.errors.back_StrokeTime}</span>} */}
+
+          <CheckboxField
+            id="event_butterfly"
+            label="50 meter Butterfly"
+            checked={formik.values.event_butterfly}
+            onChange={handleCheckboxChange}
+          />
+          {/* {formik.values.event_butterfly && (
+        <InputField
+          id="butterflyTime"
+          label="Butterfly Timing"
+          value={formik.values.butterflyTime}
+          onChange={handleChange}
+        />
+      )}
+      {formik.errors.butterflyTime && formik.touched.butterflyTime && <span className='text-red-700'>{formik.errors.butterflyTime}</span>} */}
+
+          {error && <span className='text-red-700 md:text-m text-sm'>{error}</span>}
+        </div>
+      </div>
       <CheckboxField
         id="relay"
-        label="4x50 meter Mixed Relay 2 Boys 2 Girls"
+        label="2x50 meter Freestyle Relay (Any two swimmers, regardless of gender)"
         checked={formik.values.relay}
         onChange={handleChange}
       />
       {formik.errors.relay && formik.touched.relay && <span className='text-red-700'>{formik.errors.relay}</span>}
-
-      <CheckboxField
-        id="swimathon"
-        label="Swimathon Events (OPEN AGE GROUP)"
-        checked={formik.values.swimathon}
-        onChange={handleChange}
-      />
-      {formik.errors.swimathon && formik.touched.swimathon && <span className='text-red-700'>{formik.errors.swimathon}</span>}
 
       <InputField
         id="email"
@@ -345,10 +319,10 @@ export default function SwimmingRegistrationForm() {
         onChange={handleChange}
       />
       {formik.errors.email && formik.touched.email && <span className='text-red-700'>{formik.errors.email}</span>}
-        
+
       <InputField
         id="parentName"
-        label="Parent's / Guardian's Name)"
+        label="Parent's / Guardian's Name"
         value={formik.values.parentName}
         onChange={handleChange}
       />
@@ -363,8 +337,8 @@ export default function SwimmingRegistrationForm() {
       {formik.errors.parent1Contact && formik.touched.parent1Contact && <span className='text-red-700'>{formik.errors.parent1Contact}</span>}
 
       <InputField
-        id="coachContact"
-        label="Parent 2 Contact Number (WhatsApp)"
+        id="parent2Contact"
+        label="Parent 2 Contact Number (WhatsApp) Optional"
         value={formik.values.parent2Contact}
         onChange={handleChange}
       />
@@ -372,12 +346,12 @@ export default function SwimmingRegistrationForm() {
 
       <InputField
         id="coachContact"
-        label="Coach/Sports Teacher Contact Number (WhatsApp)"
+        label="Coach/Sports Teacher Contact Number"
         value={formik.values.coachContact}
         onChange={handleChange}
       />
       {formik.errors.coachContact && formik.touched.coachContact && <span className='text-red-700'>{formik.errors.coachContact}</span>}
-     
+
       <SelectField
         id="referral"
         label="How did you come to know of Swimming Competition 2024?"
@@ -387,11 +361,7 @@ export default function SwimmingRegistrationForm() {
       />
       {formik.errors.referral && formik.touched.referral && <span className='text-red-700'>{formik.errors.referral}</span>}
 
-      <br />
-      <button
-        type="submit"
-        className="m-8 ml-1 p-2 bg-blue-500 text-white rounded-md shadow-sm"
-      >
+      <button type="submit" className="mt-6 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 transition duration-300">
         Submit
       </button>
     </form>

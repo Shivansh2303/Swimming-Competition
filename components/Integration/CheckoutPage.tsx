@@ -54,7 +54,7 @@ const CheckoutForm = (props: any) => {
                     <div className="md:w-screen w-full md:pl-5">
                         <div className="p-6 bg-white rounded-lg">
                             <p className="pl-2 text-gray-800 font-bold text-xl">Swimmer Details</p>
-                            <p className=" pl-2 text-gray-600  text-m">{userData?.swimmerFirstName ?? "Shivansh Kate"}</p>
+                            <p className=" pl-2 text-gray-600  text-m">{userData?.swimmerName ?? "Shivansh Kate"}</p>
                             <p className="pl-2 text-gray-600 text-m">{userData?.email ?? "sample@mail.com"}</p>
                             <div className="text-[15px] mt-2">
                                 <div className="flex flex-wrap border rounded-lg mb-3">
@@ -62,8 +62,8 @@ const CheckoutForm = (props: any) => {
                                     <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.gender ?? "Female"}</div>
                                     <div className="w-1/2 px-2 py-2">Date of Birth</div>
                                     <div className="w-1/2 text-center px-2 py-2 border-r">{new Date(userData?.dob).toDateString() ?? new Date().toDateString()}</div>
-                                    <div className="w-1/2 px-2 py-2 border-b">State & Country </div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.state ?? "Delhi"}{", "}{userData?.country ?? "India"}</div>
+                                    <div className="w-1/2 px-2 py-2 border-b">State  </div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.state ?? "Delhi"}{", "}India</div>
                                     <div className="w-1/2 px-2 py-2 border-b">Age Group</div>
                                     <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.ageGroup ?? "Masters Group"}</div>
                                     <div className="w-1/2 px-2 py-2">Parent Contact</div>

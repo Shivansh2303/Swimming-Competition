@@ -6,8 +6,9 @@ export async function SwimmerCreate(data: any) {
   try {
     connectToMongoDB();
     const swimmer = await SwimmingCompetitionForm.create(data);
+    
     return swimmer;
   } catch (error: any) {
-    return { error: error.message };
+    throw new Error(error)
   }
 }

@@ -18,7 +18,7 @@ export default function FileUploader({ id, label, type,onChange }: FileUploaderP
         type={type}
         accept=".jpg,.jpeg,.png,.pdf" // Modify this to the file types you want to accept
         onChange={onChange}
-        className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-50 file:text-sm "
+        className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border-1 file:border-gray-300 file:rounded-md file:bg-gray-50 file:text-sm "
       />
     </div>
   );

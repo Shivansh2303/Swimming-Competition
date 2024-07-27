@@ -12,7 +12,7 @@ export async function InstamojoPaymentIntent(token: string, userData: any) {
         email: userData.email,
         amount:userData.amount ,
         purpose: "Swimming Competition",
-        buyer_name: `${userData.swimmerFirstName} ${userData.swimmerSecondName}`,
+        buyer_name: `${userData.swimmerName}`,
         redirect_url: `${BASE_URL}/payment/status`,
         phone:userData.parent1Contact
       },
