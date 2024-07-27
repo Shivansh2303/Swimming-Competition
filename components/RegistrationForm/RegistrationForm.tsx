@@ -50,7 +50,33 @@ const ageGroupOptions = [
   { value: "Masters B", label: "Masters Group - B: 41 to 50 yrs." },
   { value: "Masters C", label: "Masters Group - C: 51+ yrs." },
 ];
-
+interface FormValues {
+  swimmerName: string;
+  gender: string;
+  school: string;
+  grade: string;
+  state: string;
+  dob: string | null;
+  proofOfAge: string | null;
+  ageGroup: string;
+  event_freestyle: boolean;
+  freestyleTime: string;
+  event_breast_Stroke: boolean;
+  breast_StrokeTime: string;
+  event_back_Stroke: boolean;
+  back_StrokeTime: string;
+  event_butterfly: boolean;
+  butterflyTime: string;
+  relay: boolean;
+  email: string;
+  parentName: string;
+  parent1Contact: string;
+  parent2Contact: string;
+  coachContact: string;
+  referral: string;
+  amount: number;
+}
+  
 export default function SwimmingRegistrationForm() {
   const [error, setError] = useState<string>('');
   const [event, setEvent] = useState<number>(0);
@@ -125,16 +151,22 @@ export default function SwimmingRegistrationForm() {
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
-    const selectedCheckboxes = Object.keys(formik.values)
-      .filter(key => key.startsWith('event_') && formik.values[key])
+  
+    // Cast formik.values to the FormValues type
+    const values = formik.values as FormValues;
+    
+    const selectedCheckboxes = Object.keys(values)
+      .filter(key => key.startsWith('event_') && values[key as keyof FormValues])
       .length;
+    console.log(selectedCheckboxes);
+  
     setEvent(selectedCheckboxes);
     if (selectedCheckboxes < 2 || !checked) {
       formik.setFieldValue(name, checked);
       if (!checked) {
         formik.setFieldValue(`${name.replace('event_', '')}Time`, '');
       }
-      setError('')
+      setError('');
     } else {
       setError('Only two events can be selected at a time.');
     }
