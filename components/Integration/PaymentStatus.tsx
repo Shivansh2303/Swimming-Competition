@@ -21,7 +21,6 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
     useEffect(() => {
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");
-            
             if (data) {
                 try {
                     const swimmerData = JSON.parse(data);

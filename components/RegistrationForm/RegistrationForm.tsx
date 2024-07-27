@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import validationSchema from '@/lib/Formvalidations';
 import {  State } from "country-state-city";
 import Label from './Label';
+import axios from 'axios';
 
 
 const genderOptions = [
@@ -176,9 +177,12 @@ export default function SwimmingRegistrationForm() {
     formik.handleChange(e);
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async(e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    formik.setFieldValue('proofOfAge', file);
+    const formData=new FormData();
+    formData.append("file", file as Blob)
+    const response=await axios.post('/api/file-upload',formData)
+    formik.setFieldValue('proofOfAge', response?.data?.url);
   };
 
   useEffect(() => {
