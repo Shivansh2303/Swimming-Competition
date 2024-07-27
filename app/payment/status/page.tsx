@@ -21,6 +21,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
             if (data) {
                 try {
                     const swimmerData = JSON.parse(data);
+                    console.log({ swimmerData: swimmerData });
                     handleUser(swimmerData);
                 } catch (error) {
                     console.error("Failed to parse swimmerData from localStorage", error);
@@ -31,6 +32,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
         }
 
         async function handleUser(userData: any) {
+            console.log({ userData: userData });
             if (userData) {
                 userData.paymentID = params.paymentID;
                 userData.paymentStatus = params.paymentStatus;
@@ -38,7 +40,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                 const swimmerData = await axios.post('/api/create-swimmer', { userData });
                 setUserData(swimmerData.data);
                 setloading(false)
-                console.log({ swimmerData: swimmerData });
+                console.log({ swimmerData1: swimmerData });
             }
         }
     }, [params]);
@@ -46,14 +48,14 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
     return (
         <div className="w-screen">
             <div className="mx-auto mt-8 max-w-screen-lg px-2">
-                <div className="bg-white p-6 md:mx-auto">
-                    <svg viewBox="0 0 24 24" className="text-green-600 w-16 h-16 mx-auto my-6">
-                        <path fill="currentColor"
+                <div className="bg-white p-6 md:mx-auto ">
+                    <svg  viewBox="0 0 24 24" className={`text-green-600 w-16 h-16 mx-auto my-6 `}>
+                        <path fill="currentColor" className={`${loading?"hidden":""}`}
                             d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
                         </path>
                     </svg>
                     <div className="text-center">
-                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus ? "Payment Done!" : "Payment Failed"}</h3>
+                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus ? "Payment Done!" : "Payment"}</h3>
                         <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
                     </div>
                 </div>
