@@ -283,15 +283,16 @@ console.log(formik.values);
             checked={formik.values.event_freestyle}
             onChange={handleCheckboxChange}
           />
-          {/* {formik.values.event_freestyle && (
-        <InputField
+           { (
+        <input
+        className=' w-40 pl-2 rounded-sm text-sm'
           id="freestyleTime"
-          label="Freestyle"
+          placeholder="Ex 1 minute 52 seconds"
           value={formik.values.freestyleTime}
           onChange={handleChange}
         />
       )}
-      {formik.errors.freestyleTime && formik.touched.freestyleTime && <span className='text-red-700'>{formik.errors.freestyleTime}</span>} */}
+      {formik.errors.freestyleTime && formik.touched.freestyleTime && <span className='text-red-700'>{formik.errors.freestyleTime}</span>} 
 
           <CheckboxField
             id="event_breast_Stroke"
@@ -299,15 +300,17 @@ console.log(formik.values);
             checked={formik.values.event_breast_Stroke}
             onChange={handleCheckboxChange}
           />
-          {/* {formik.values.event_breast_Stroke && (
-        <InputField
+          {(
+        <input 
+        className=' w-40 pl-2 rounded-sm text-sm'
+
           id="breast_StrokeTime"
-          label="Breast Stroke Timing"
+          placeholder="Ex 1 minute 52 seconds"
           value={formik.values.breast_StrokeTime}
           onChange={handleChange}
         />
       )}
-      {formik.errors.breast_StrokeTime && formik.touched.breast_StrokeTime && <span className='text-red-700'>{formik.errors.breast_StrokeTime}</span>} */}
+      {formik.errors.breast_StrokeTime && formik.touched.breast_StrokeTime && <span className='text-red-700'>{formik.errors.breast_StrokeTime}</span>}
 
           <CheckboxField
             id="event_back_Stroke"
@@ -315,15 +318,17 @@ console.log(formik.values);
             checked={formik.values.event_back_Stroke}
             onChange={handleCheckboxChange}
           />
-          {/* {formik.values.event_back_Stroke && (
-        <InputField
+          { (
+        <input
+        className=' w-40 pl-2 rounded-sm text-sm'
+
           id="back_StrokeTime"
-          label="Back Stroke Timing"
+          placeholder="Ex 1 minute 52 seconds"
           value={formik.values.back_StrokeTime}
           onChange={handleChange}
         />
       )}
-      {formik.errors.back_StrokeTime && formik.touched.back_StrokeTime && <span className='text-red-700'>{formik.errors.back_StrokeTime}</span>} */}
+      {formik.errors.back_StrokeTime && formik.touched.back_StrokeTime && <span className='text-red-700'>{formik.errors.back_StrokeTime}</span>}
 
           <CheckboxField
             id="event_butterfly"
@@ -331,15 +336,17 @@ console.log(formik.values);
             checked={formik.values.event_butterfly}
             onChange={handleCheckboxChange}
           />
-          {/* {formik.values.event_butterfly && (
-        <InputField
+          { (
+        <input
+        className=' w-40 pl-2 rounded-sm text-sm'
+
           id="butterflyTime"
-          label="Butterfly Timing"
+          placeholder="Ex 1 minute 52 seconds"
           value={formik.values.butterflyTime}
           onChange={handleChange}
         />
       )}
-      {formik.errors.butterflyTime && formik.touched.butterflyTime && <span className='text-red-700'>{formik.errors.butterflyTime}</span>} */}
+      {formik.errors.butterflyTime && formik.touched.butterflyTime && <span className='text-red-700'>{formik.errors.butterflyTime}</span>} 
 
           {error && <span className='text-red-700 md:text-m text-sm'>{error}</span>}
         </div>
