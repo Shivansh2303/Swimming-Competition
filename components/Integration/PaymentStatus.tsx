@@ -10,14 +10,8 @@ interface ParamsInterface {
 }
 
 export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
-    const [file, setFile] = useState<Blob>()
     const [userData, setUserData] = useState<any>({})
-    const base64toBlog=async(file:any)=>{
-        const base64Response=await fetch(file);
-        const blob=await base64Response.blob();
-        setFile(blob);
-        return blob; 
-    }
+    
     useEffect(() => {
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");

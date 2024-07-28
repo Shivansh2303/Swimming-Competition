@@ -159,7 +159,6 @@ export default function SwimmingRegistrationForm() {
     const selectedCheckboxes = Object.keys(values)
       .filter(key => key.startsWith('event_') && values[key as keyof FormValues])
       .length;
-    console.log(selectedCheckboxes);
   
     setEvent(selectedCheckboxes);
     if (selectedCheckboxes < 2 || !checked) {
@@ -179,6 +178,7 @@ export default function SwimmingRegistrationForm() {
 
   const handleFileChange = async(e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
+    
     const formData=new FormData();
     formData.append("file", file as Blob)
     const response=await axios.post('/api/file-upload',formData)
@@ -187,8 +187,9 @@ export default function SwimmingRegistrationForm() {
 
   useEffect(() => {
 
+console.log(formik.values);
 
-  }, [formik.errors]);
+  }, [formik.values]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10">

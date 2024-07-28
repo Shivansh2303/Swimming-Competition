@@ -28,7 +28,7 @@ const SwimmingCompetitionFormSchema: Schema = new Schema({
   school: { type: String, required: true },
   state: { type: String, required: true },
   dob: { type: Date, required: true },
-  proofOfAge: { type: Buffer, required: false },
+  proofOfAge: { type: String, required: false },
   ageGroup: { type: String, required: true },
   relay: { type: Boolean, required: false },
   email: { type: String, required: true },

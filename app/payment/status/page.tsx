@@ -3,7 +3,7 @@
 import ErrorBoundary from '@/components/ErrorBoundary';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useRef } from 'react';
 
 interface ParamsInterface {
     paymentID: string;
@@ -13,19 +13,13 @@ interface ParamsInterface {
 
 function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
     const [userData, setUserData] = useState<any>({});
-    const [loading, setloading] = useState<boolean>(true);
-    const [file, setFile]=useState<Blob>()
-    const base64toBlog=async(file:any)=>{
-        const base64Response =await fetch(file)
-        const blob = await base64Response.blob();
-        setFile(blob)
-    }
+    const [loading, setLoading] = useState<boolean>(true);
+    const hasHandledUser = useRef(false); // Ref to track if handleUser has been called
 
     useEffect(() => {
         if (typeof window !== "undefined") {
             const data = localStorage.getItem("swimmerData");
-            const file = localStorage.getItem("uploadedFile");
-            base64toBlog(file)
+            
             if (data) {
                 try {
                     const swimmerData = JSON.parse(data);
@@ -39,14 +33,22 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
         }
 
         async function handleUser(userData: any) {
+            if (hasHandledUser.current) return; // Check if handleUser has already been called
+            hasHandledUser.current = true; // Set ref to true to prevent further calls
+
             if (userData) {
-                userData.paymentID = params.paymentID??"";
-                userData.paymentStatus = params.paymentStatus??"";
-                userData.paymentRequestID = params.paymentRequestID??"";
-                userData.proofOfAge=file;
-                const swimmerData = await axios.post('/api/create-swimmer', { userData });
-                setUserData(swimmerData.data);
-                setloading(false)
+                userData.paymentID = params.paymentID ?? "";
+                userData.paymentStatus = params.paymentStatus ?? "";
+                userData.paymentRequestID = params.paymentRequestID ?? "";
+
+                try {
+                    const response = await axios.post('/api/create-swimmer', { userData });
+                    setUserData(response.data);
+                } catch (error) {
+                    console.error("Failed to create swimmer", error);
+                } finally {
+                    setLoading(false);
+                }
             }
         }
     }, [params]);
@@ -55,13 +57,13 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
         <div className="w-screen">
             <div className="mx-auto mt-8 max-w-screen-lg px-2">
                 <div className="bg-white p-6 md:mx-auto ">
-                    <svg  viewBox="0 0 24 24" className={`text-green-600 w-16 h-16 mx-auto my-6 `}>
-                        <path fill="currentColor" className={`${loading?"hidden":""}`}
+                    <svg viewBox="0 0 24 24" className={`text-green-600 w-16 h-16 mx-auto my-6 `}>
+                        <path fill="currentColor" className={`${loading ? "hidden" : ""}`}
                             d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
                         </path>
                     </svg>
                     <div className="text-center">
-                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus==='Credit' ? "Payment Done!" : "Payment"}</h3>
+                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus === 'Credit' ? "Payment Done!" : "Payment"}</h3>
                         <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
                     </div>
                 </div>
@@ -69,14 +71,14 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                     <p className="flex-1 text-xl font-sans text-center font-semibold text-black-900">Here is your payment details</p>
                 </div>
                 <div className="mt-6 overflow-hidden rounded-xl border shadow-lg p-5">
-                    <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2 "  aria-hidden="true">
+                    <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2 " aria-hidden="true">
 
                         <tbody className="lg:border-gray-300 ">
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Swimmers Name
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerFirstName ?? "First Name"} {userData?.swimmerSecondName ?? "Last Name"}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerName ?? "Swimmmer Name"} </td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
@@ -106,7 +108,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">
                                     Date & Time
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{new Date(userData?.createdAt).toLocaleString()??new Date()}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{new Date(userData?.createdAt).toLocaleString() ?? new Date().toLocaleString()}</td>
                             </tr>
                         </tbody>
                     </table>

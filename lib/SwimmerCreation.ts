@@ -5,6 +5,10 @@ import { connectToMongoDB } from "./db";
 export async function SwimmerCreate(data: any) {
   try {
     connectToMongoDB();
+    const swimmerExist = await SwimmingCompetitionForm.findOne({paymentID:data.paymentID});
+    if (swimmerExist){
+      return swimmerExist
+    }
     const swimmer = await SwimmingCompetitionForm.create(data);
     
     return swimmer;
