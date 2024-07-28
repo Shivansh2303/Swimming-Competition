@@ -123,8 +123,11 @@ export default function SwimmingRegistrationForm() {
 
   const calculateCompetitionFees = (userData: any) => {
     const currentDate = new Date();
-    const { relay } = userData;
-    const hasSwimmingEvents = event? 1 : 0;
+    let hasSwimmingEvents=0;
+    const { relay,event_freestyle,event_breast_Stroke,event_butterfly,event_back_Stroke } = userData;
+    if(event_freestyle||event_breast_Stroke||event_butterfly||event_back_Stroke){
+       hasSwimmingEvents = 1 ;
+    }
     const hasRelay = relay ? 1 : 0;
 
     const feeStructure = [
@@ -160,7 +163,7 @@ export default function SwimmingRegistrationForm() {
       .filter(key => key.startsWith('event_') && values[key as keyof FormValues])
       .length;
   
-    setEvent(selectedCheckboxes);
+      
     if (selectedCheckboxes < 2 || !checked) {
       formik.setFieldValue(name, checked);
       if (!checked) {
