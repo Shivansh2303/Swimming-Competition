@@ -192,7 +192,6 @@ export default function SwimmingRegistrationForm() {
   };
 
   useEffect(() => {
-
     console.log("Values",formik.values);
     console.log("Errors",formik.errors);
 
@@ -234,6 +233,7 @@ export default function SwimmingRegistrationForm() {
         value={formik.values.school}
         onChange={handleChange}
       />
+      {formik.errors.school && formik.touched.school && <span className='text-red-700'>{formik.errors.school}</span>}
       <InputField
         id="grade"
         label="Grade/Class"

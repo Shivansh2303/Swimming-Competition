@@ -4,10 +4,10 @@ const validationSchema = Yup.object({
   swimmerFirstName: Yup.string().required("Swimmer’s First Name is required"),
   swimmerLastName: Yup.string().required("Swimmer’s Last Name is required"),
   gender: Yup.string().required("Gender is required"),
-  school: Yup.string().required("School/club/academy name is required"),
+  school: Yup.string().required("School name is required"),
   grade: Yup.string().required("Grade/Class is required"),
   state: Yup.string().required("State is required"),
-  dob: Yup.date().required("Date of Birth is required").nullable(),
+  dob: Yup.date().required("Date of Birth is required"),
   proofOfAge: Yup.string().required("Proof of Age is required"),
   ageGroup: Yup.string().required("Age Group is required"),
   email: Yup.string()
