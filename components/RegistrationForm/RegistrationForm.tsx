@@ -192,6 +192,7 @@ export default function SwimmingRegistrationForm() {
   };
 
   useEffect(() => {
+   
     console.log("Values",formik.values);
     console.log("Errors",formik.errors);
 
@@ -443,7 +444,17 @@ export default function SwimmingRegistrationForm() {
       />
       {formik.errors.terms_conditions && formik.touched.terms_conditions && <span className='text-red-700'>{formik.errors.terms_conditions}</span>}
       <br />
-      <button type="submit" className="mt-6 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 transition duration-300">
+      <button type="submit" className="mt-6 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 transition duration-300"
+      onClick={()=>{
+        const values = formik.values as FormValues;
+
+    const selectedCheckboxes = Object.keys(values)
+      .filter(key => key.startsWith('event_') && values[key as keyof FormValues])
+      .length;
+      if(selectedCheckboxes===0){
+        setError("Must select 1 swimming event.")
+      }
+      }}>
         Submit
       </button>
     </form>
