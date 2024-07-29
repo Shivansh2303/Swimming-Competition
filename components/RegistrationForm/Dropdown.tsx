@@ -17,7 +17,7 @@ interface SelectFieldProps {
 
 export default function SelectField({ id, label, value, options, onChange }: Readonly<SelectFieldProps>) {
   return (
-    <div className="mb-4">
+    <div className="mb-2">
       <Label htmlFor={id}>{label}</Label>
       <div className="relative h-10 w-full min-w-[200px]">
         <select

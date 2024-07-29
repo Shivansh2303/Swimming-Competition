@@ -82,7 +82,6 @@ interface FormValues {
 
 export default function SwimmingRegistrationForm() {
   const [error, setError] = useState<string>('');
-  const [event, setEvent] = useState<number>(0);
   const router = useRouter();
 
   const formik = useFormik({
@@ -194,9 +193,10 @@ export default function SwimmingRegistrationForm() {
 
   useEffect(() => {
 
-    console.log(formik.values);
+    console.log("Values",formik.values);
+    console.log("Errors",formik.errors);
 
-  }, [formik.values]);
+  }, [formik.values,formik.errors]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10">
@@ -441,6 +441,8 @@ export default function SwimmingRegistrationForm() {
         checked={formik.values.terms_conditions}
         onChange={e=>formik.setFieldValue('terms_conditions',!formik.values.terms_conditions)}
       />
+      {formik.errors.terms_conditions && formik.touched.terms_conditions && <span className='text-red-700'>{formik.errors.terms_conditions}</span>}
+      <br />
       <button type="submit" className="mt-6 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 transition duration-300">
         Submit
       </button>

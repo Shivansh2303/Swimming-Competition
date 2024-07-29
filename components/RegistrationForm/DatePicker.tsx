@@ -1,6 +1,5 @@
 import React from "react";
-import { Input, Popover, PopoverHandler, PopoverContent } from "@material-tailwind/react";
-import { format } from "date-fns";
+import {  Popover} from "@material-tailwind/react";
 import Label from "./Label";
 
 interface DateType {
@@ -9,12 +8,10 @@ interface DateType {
   onChange: (date: Date | undefined) => void;
 }
 
-export default function DateSelector({ id, label, onChange }: DateType) {
-  const [date, setDate] = React.useState<Date>();
+export default function DateSelector({ id, label, onChange }: Readonly<DateType>) {
 
   const handleDate = (event: React.ChangeEvent<HTMLInputElement>) => {  
     const selectedDate = event.target.value ? new Date(event.target.value) : undefined;
-    setDate(selectedDate);
     onChange(selectedDate);
   };
 

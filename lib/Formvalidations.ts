@@ -10,7 +10,6 @@ const validationSchema = Yup.object({
   dob: Yup.date().required("Date of Birth is required").nullable(),
   proofOfAge: Yup.string().required("Proof of Age is required"),
   ageGroup: Yup.string().required("Age Group is required"),
-  // events: Yup.array().of(Yup.string()).max(2, 'You can select up to two events').required('At least one event is required'),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
@@ -19,7 +18,9 @@ const validationSchema = Yup.object({
   parent2Contact: Yup.string().max(10).min(10),
   coachContact: Yup.string().required("Coach contact is required").max(10).min(10),
   referral: Yup.string().required("Referral is required"),
-  terms_conditions: Yup.boolean().required("Accept Terms and Conditions"),
+  terms_conditions: Yup.boolean()
+  .required("The terms and conditions must be accepted.")
+  .oneOf([true], "The terms and conditions must be accepted."),
   amount: Yup.number()
 });
 

@@ -12,7 +12,7 @@ interface InputFieldProps {
 
 export default function InputField({ id, label, type = 'text', value, onChange }: Readonly<InputFieldProps>) {
   return (
-    <div className={`w-full mb-12 mt-10 `}>
+    <div className={`w-full mb-10 `}>
       <div className="relative w-full min-w-[250px] h-10">
         <Label htmlFor={id}>{label}</Label>
         <input

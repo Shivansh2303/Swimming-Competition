@@ -9,7 +9,7 @@ interface CheckboxFieldProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function CheckboxField({ id, label, checked ,onChange }: CheckboxFieldProps) {
+export default function CheckboxField({ id, label, checked ,onChange }: Readonly<CheckboxFieldProps>) {
   return (<>
   <div className="">
       <div className="inline-flex items-center">
