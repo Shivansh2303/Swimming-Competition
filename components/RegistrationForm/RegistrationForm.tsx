@@ -30,7 +30,7 @@ const referral = [
 ];
 
 const ageGroupOptions = [
-  { value: "", label: "Select Age Group",startYear: 0, endYear: 0 },
+  { value: "", label: "Select Age Group", startYear: 0, endYear: 0 },
   { value: "Group 1", label: "Group - 1 (Born between 1/1/2007 to 31/12/2009)", startYear: 2007, endYear: 2009 },
   { value: "Group 2", label: "Group - 2 (Born 2010)", startYear: 2010, endYear: 2010 },
   { value: "Group 3", label: "Group - 3 (Born 2011)", startYear: 2011, endYear: 2011 },
@@ -143,10 +143,9 @@ export default function SwimmingRegistrationForm() {
     const hasRelay = relay ? 1 : 0;
 
     const feeStructure = [
-      { date: new Date("2024-07-30"), swimmingEventFee: 1000, relayFee: 1500, marathonFee: 1500 },
-      { date: new Date("2024-08-10"), swimmingEventFee: 1500, relayFee: 2000, marathonFee: 2000 },
-      { date: new Date("2024-08-15"), swimmingEventFee: 2000, relayFee: 2500, marathonFee: 2500 },
-      { date: new Date("2024-08-25"), swimmingEventFee: 2500, relayFee: 3000, marathonFee: 3000 }
+      { date: new Date("2024-08-10"), swimmingEventFee: 1000, relayFee: 1000, marathonFee: 2000 },
+      { date: new Date("2024-08-16"), swimmingEventFee: 1500, relayFee: 1500, marathonFee: 2500 },
+      { date: new Date("2024-08-25"), swimmingEventFee: 3000, relayFee: 3000, marathonFee: 3000 }
     ];
 
     let calculatedAmount = 0;
@@ -220,18 +219,18 @@ export default function SwimmingRegistrationForm() {
     }
     return "Unknown Group";
   };
-  
+
   const handleAgeGroupChange = (e: Date | undefined) => {
     console.log("Date", e);
-  
+
     if (!e) {
       formik.setFieldValue('ageGroup', "Unknown Group");
       return "Unknown Group";
     }
-  
+
     const birthYear = new Date(e).getFullYear();
     console.log("Birth Year", birthYear);
-  
+
     const ageGroup = getAgeGroup(birthYear);
     formik.setFieldValue('ageGroup', ageGroup);
     return ageGroup;
@@ -245,7 +244,7 @@ export default function SwimmingRegistrationForm() {
   }, [formik.values, formik.errors]);
 
   return (
-    <form onSubmit={formik.handleSubmit} className="max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10">
+    <form onSubmit={formik.handleSubmit} className={`max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10`} >
       <h1 className="md:text-3xl text-2xl mb-4 mt-4 font-bold font-sans  text-center text-gray-800">Swim For India Academy</h1>
       <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">Sunday, 24 August</h1>
       <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">Delhi Open Talent Search Swimming Competition 2024</h1>
@@ -311,7 +310,7 @@ export default function SwimmingRegistrationForm() {
       <DateSelector
         id="dob"
         label="Date of Birth"
-        onChange={(e) => {formik.setFieldValue('dob', e);console.log("Date", e);handleAgeGroupChange(e)}}
+        onChange={(e) => { formik.setFieldValue('dob', e); console.log("Date", e); handleAgeGroupChange(e) }}
       />
       {formik.errors.dob && formik.touched.dob && <span className='text-red-700'>{formik.errors.dob}</span>}
 
@@ -483,18 +482,36 @@ export default function SwimmingRegistrationForm() {
       />
       {formik.errors.referral && formik.touched.referral && <span className='text-red-700'>{formik.errors.referral}</span>}
 
-      <CheckboxField
-        id="terms_conditions"
-        label="I accept all the Terms & Conditions"
-        checked={formik.values.terms_conditions}
-        onChange={e => formik.setFieldValue('terms_conditions', !formik.values.terms_conditions)}
-      />
+      <div className="inline-flex items-center">
+        <label className="relative  flex items-center p-3 rounded-full cursor-pointer" htmlFor="terms_conditions">
+          <input
+            type="checkbox"
+            id="terms_conditions"
+            name="terms_conditions"
+            checked={formik.values.terms_conditions}
+            onChange={e => formik.setFieldValue('terms_conditions', !formik.values.terms_conditions)}
+            className="before:content[''] bg-white peer relative h-4 w-4 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
+          />
+        </label>
+        <p className='font-normal'>
+          I accept all the{" "}
+          <a
+            className={`md:text-m text-sm font-normal cursor-pointer select-none text-blue-500 underline`}
+            href="https://k6sa9dnnyttq1amd.public.blob.vercel-storage.com/Terms%20&%20Conditions-5kJqms5Hc2cLUpkrcCWPLvNsX7nl4a.pdf"
+            target="_blank" rel="noreferrer"
+          >
+            Terms & Conditions
+          </a>
+        </p>
+      </div>
+
+
       {formik.errors.terms_conditions && formik.touched.terms_conditions && <span className='text-red-700'>{formik.errors.terms_conditions}</span>}
       <br />
       <button type="submit" className="mt-6 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 transition duration-300"
       >
         Submit
       </button>
-    </form>
+    </form >
   );
 }
