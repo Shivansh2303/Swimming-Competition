@@ -82,6 +82,7 @@ interface FormValues {
 
 export default function SwimmingRegistrationForm() {
   const [error, setError] = useState<string>('');
+  const [fileSize, setFileSize] = useState<string>('');
   const router = useRouter();
 
   const formik = useFormik({
@@ -120,8 +121,6 @@ export default function SwimmingRegistrationForm() {
     const selectedCheckboxes = Object.keys(formvalues)
       .filter(key => key.startsWith('event_') && formvalues[key as keyof FormValues])
       .length;
-      console.log("Selected Checkboxes",selectedCheckboxes);
-      setError('Must select 1 swimming event.');
       if(selectedCheckboxes>=1){
        
         values.amount = calculateCompetitionFees(values);
@@ -196,11 +195,20 @@ export default function SwimmingRegistrationForm() {
   };
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    
     const file = e.target.files?.[0] || null;
-
+    if(!file) return;
+    if(file.size>1000000){
+      setFileSize("File size should be less than 1MB");
+      return;
+    }
     const formData = new FormData();
     formData.append("file", file as Blob)
     const response = await axios.post('/api/file-upload', formData)
+    if(!response?.data?.url){
+      setFileSize("Failed to upload file");
+      return;
+    }
     formik.setFieldValue('proofOfAge', response?.data?.url);
   };
 
@@ -288,6 +296,7 @@ export default function SwimmingRegistrationForm() {
         options={ageGroupOptions}
         onChange={handleChange}
       />
+     
       {formik.errors.ageGroup && formik.touched.ageGroup && <span className='text-red-700'>{formik.errors.ageGroup}</span>}
 
       <FileUploader
@@ -296,6 +305,7 @@ export default function SwimmingRegistrationForm() {
         type="file"
         onChange={handleFileChange}
       />
+      {fileSize &&<span className='text-red-700'>{fileSize}</span>}
       {formik.errors.proofOfAge && formik.touched.proofOfAge && <span className='text-red-700'>{formik.errors.proofOfAge}</span>}
 
       <div className='border-4 p-4 mb-2 rounded-lg'>
@@ -314,7 +324,7 @@ export default function SwimmingRegistrationForm() {
             <input
               disabled={!formik.values.event_freestyle}
 
-              className=' w-40 pl-2 rounded-md text-xs border-[1px] '
+              className='h-5 w-40 pl-2 rounded-md text-xs border-[1px] '
               id="freestyleTime"
               placeholder="Ex 1 minute 52 seconds"
               value={formik.values.freestyleTime}
@@ -335,7 +345,7 @@ export default function SwimmingRegistrationForm() {
             <label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime"> Please add event time here</label>
 
             <input
-              className=' w-40 pl-2 rounded-md text-xs border-[1px] '
+              className='h-5 w-40 pl-2 rounded-md text-xs border-[1px] '
               disabled={!formik.values.event_breast_Stroke}
               id="breast_StrokeTime"
               placeholder="Ex 1 minute 52 seconds"
@@ -356,7 +366,7 @@ export default function SwimmingRegistrationForm() {
           {(<>
             <label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime"> Please add event time here</label>
             <input
-              className=' w-40 pl-2 rounded-md text-xs border-[1px] '
+              className=' w-40 pl-2 rounded-md text-xs border-[1px] h-5 '
               disabled={!formik.values.event_back_Stroke}
               id="back_StrokeTime"
               placeholder="Ex 1 minute 52 seconds"
@@ -379,7 +389,7 @@ export default function SwimmingRegistrationForm() {
               Please add event time here</label>
             <input
               disabled={!formik.values.event_butterfly}
-              className={`w-40 pl-2 rounded-md text-xs border-[1px] border-gray-600}`}
+              className={`w-40 pl-2 rounded-md text-xs border-[1px] h-5 border-gray-600}`}
               id="butterflyTime"
               placeholder="Ex 1 minute 52 seconds"
               value={formik.values.butterflyTime}
