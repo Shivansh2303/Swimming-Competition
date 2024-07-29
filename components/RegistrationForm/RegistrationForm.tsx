@@ -206,7 +206,7 @@ export default function SwimmingRegistrationForm() {
 
       <InputField
         id="swimmerFirstName"
-        label="Swimmer's Name"
+        label="Swimmer's First Name"
         value={formik.values.swimmerFirstName}
         onChange={handleChange}
       />
