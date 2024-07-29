@@ -115,12 +115,25 @@ export default function SwimmingRegistrationForm() {
     },
     validationSchema,
     onSubmit: async (values) => {
+      const formvalues = formik.values as FormValues;
 
-      values.amount = calculateCompetitionFees(values);
-      if (typeof window !== "undefined") {
-        window.localStorage.setItem('swimmerData', JSON.stringify(values));
+    const selectedCheckboxes = Object.keys(formvalues)
+      .filter(key => key.startsWith('event_') && formvalues[key as keyof FormValues])
+      .length;
+      console.log("Selected Checkboxes",selectedCheckboxes);
+      setError('Must select 1 swimming event.');
+      if(selectedCheckboxes>=1){
+       
+        values.amount = calculateCompetitionFees(values);
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem('swimmerData', JSON.stringify(values));
+        }
+        router.push('/payment');
       }
-      router.push('/payment');
+      else{
+        setError("Must select 1 swimming event.")
+      }
+     
     },
   });
 
@@ -445,16 +458,7 @@ export default function SwimmingRegistrationForm() {
       {formik.errors.terms_conditions && formik.touched.terms_conditions && <span className='text-red-700'>{formik.errors.terms_conditions}</span>}
       <br />
       <button type="submit" className="mt-6 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 transition duration-300"
-      onClick={()=>{
-        const values = formik.values as FormValues;
-
-    const selectedCheckboxes = Object.keys(values)
-      .filter(key => key.startsWith('event_') && values[key as keyof FormValues])
-      .length;
-      if(selectedCheckboxes===0){
-        setError("Must select 1 swimming event.")
-      }
-      }}>
+     >
         Submit
       </button>
     </form>
