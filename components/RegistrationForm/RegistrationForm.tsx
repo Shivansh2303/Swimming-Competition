@@ -30,25 +30,22 @@ const referral = [
 ];
 
 const ageGroupOptions = [
-  { value: "", label: "Select Age Group" },
-  {
-    value: "Group 1",
-    label: "Group - 1 (Born between 1/1/2007 to 31/12/2009)",
-  },
-  { value: "Group 2", label: "Group - 2 (Born 2010)" },
-  { value: "Group 3", label: "Group - 3 (Born 2011)" },
-  { value: "Group 4", label: "Group - 4 (Born 2012)" },
-  { value: "Group 5", label: "Group - 5 (Born 2013)" },
-  { value: "Group 6", label: "Group - 6 (Born 2014)" },
-  { value: "Group 7", label: "Group - 7 (Born 2015)" },
-  { value: "Group 8", label: "Group - 8 (Born 2016)" },
-  { value: "Group 9", label: "Group - 9 (Born 2017)" },
-  { value: "Group 10", label: "Group - 10 (Born 2018)" },
-  { value: "Group 11", label: "Group - 11 (Born 2019)" },
-  { value: "Seniors", label: "Seniors Boys & Girls: 18 yrs. To 29 yrs." },
-  { value: "Masters A", label: "Masters Group - A: 30 to 40 yrs." },
-  { value: "Masters B", label: "Masters Group - B: 41 to 50 yrs." },
-  { value: "Masters C", label: "Masters Group - C: 51+ yrs." },
+  { value: "", label: "Select Age Group",startYear: 0, endYear: 0 },
+  { value: "Group 1", label: "Group - 1 (Born between 1/1/2007 to 31/12/2009)", startYear: 2007, endYear: 2009 },
+  { value: "Group 2", label: "Group - 2 (Born 2010)", startYear: 2010, endYear: 2010 },
+  { value: "Group 3", label: "Group - 3 (Born 2011)", startYear: 2011, endYear: 2011 },
+  { value: "Group 4", label: "Group - 4 (Born 2012)", startYear: 2012, endYear: 2012 },
+  { value: "Group 5", label: "Group - 5 (Born 2013)", startYear: 2013, endYear: 2013 },
+  { value: "Group 6", label: "Group - 6 (Born 2014)", startYear: 2014, endYear: 2014 },
+  { value: "Group 7", label: "Group - 7 (Born 2015)", startYear: 2015, endYear: 2015 },
+  { value: "Group 8", label: "Group - 8 (Born 2016)", startYear: 2016, endYear: 2016 },
+  { value: "Group 9", label: "Group - 9 (Born 2017)", startYear: 2017, endYear: 2017 },
+  { value: "Group 10", label: "Group - 10 (Born 2018)", startYear: 2018, endYear: 2018 },
+  { value: "Group 11", label: "Group - 11 (Born 2019)", startYear: 2019, endYear: 2019 },
+  { value: "Seniors", label: "Seniors Boys & Girls: 18 yrs. To 29 yrs.", startYear: 1994, endYear: 2004 },
+  { value: "Masters A", label: "Masters Group - A: 30 to 40 yrs.", startYear: 1982, endYear: 1992 },
+  { value: "Masters B", label: "Masters Group - B: 41 to 50 yrs.", startYear: 1972, endYear: 1981 },
+  { value: "Masters C", label: "Masters Group - C: 51+ yrs.", startYear: 1971, endYear: null },
 ];
 interface FormValues {
 
@@ -93,7 +90,7 @@ export default function SwimmingRegistrationForm() {
       school: '',
       grade: '',
       state: '',
-      dob: null,
+      dob: new Date().toISOString().split('T')[0],
       proofOfAge: null,
       ageGroup: '',
       event_freestyle: false,
@@ -118,21 +115,21 @@ export default function SwimmingRegistrationForm() {
     onSubmit: async (values) => {
       const formvalues = formik.values as FormValues;
 
-    const selectedCheckboxes = Object.keys(formvalues)
-      .filter(key => key.startsWith('event_') && formvalues[key as keyof FormValues])
-      .length;
-      if(selectedCheckboxes>=1){
-       
+      const selectedCheckboxes = Object.keys(formvalues)
+        .filter(key => key.startsWith('event_') && formvalues[key as keyof FormValues])
+        .length;
+      if (selectedCheckboxes >= 1) {
+
         values.amount = calculateCompetitionFees(values);
         if (typeof window !== "undefined") {
           window.localStorage.setItem('swimmerData', JSON.stringify(values));
         }
         router.push('/payment');
       }
-      else{
+      else {
         setError("Must select 1 swimming event.")
       }
-     
+
     },
   });
 
@@ -195,29 +192,57 @@ export default function SwimmingRegistrationForm() {
   };
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    
+
     const file = e.target.files?.[0] || null;
-    if(!file) return;
-    if(file.size>1000000){
+    if (!file) return;
+    if (file.size > 1000000) {
       setFileSize("File size should be less than 1MB");
       return;
     }
     const formData = new FormData();
     formData.append("file", file as Blob)
     const response = await axios.post('/api/file-upload', formData)
-    if(!response?.data?.url){
+    if (!response?.data?.url) {
       setFileSize("Failed to upload file");
       return;
     }
     formik.setFieldValue('proofOfAge', response?.data?.url);
   };
+  const getAgeGroup = (birthYear: number) => {
+    for (const group of ageGroupOptions) {
+      if (group.endYear === null) {
+        if (birthYear <= group.startYear) {
+          return group.value;
+        }
+      } else if (birthYear >= group.startYear && birthYear <= group.endYear) {
+        return group.value;
+      }
+    }
+    return "Unknown Group";
+  };
+  
+  const handleAgeGroupChange = (e: Date | undefined) => {
+    console.log("Date", e);
+  
+    if (!e) {
+      formik.setFieldValue('ageGroup', "Unknown Group");
+      return "Unknown Group";
+    }
+  
+    const birthYear = new Date(e).getFullYear();
+    console.log("Birth Year", birthYear);
+  
+    const ageGroup = getAgeGroup(birthYear);
+    formik.setFieldValue('ageGroup', ageGroup);
+    return ageGroup;
+  };
 
   useEffect(() => {
-   
-    console.log("Values",formik.values);
-    console.log("Errors",formik.errors);
 
-  }, [formik.values,formik.errors]);
+    console.log("Values", formik.values);
+    console.log("Errors", formik.errors);
+
+  }, [formik.values, formik.errors]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10">
@@ -256,6 +281,7 @@ export default function SwimmingRegistrationForm() {
         onChange={handleChange}
       />
       {formik.errors.school && formik.touched.school && <span className='text-red-700'>{formik.errors.school}</span>}
+
       <InputField
         id="grade"
         label="Grade/Class"
@@ -285,7 +311,7 @@ export default function SwimmingRegistrationForm() {
       <DateSelector
         id="dob"
         label="Date of Birth"
-        onChange={(e) => formik.setFieldValue('dob', e)}
+        onChange={(e) => {formik.setFieldValue('dob', e);console.log("Date", e);handleAgeGroupChange(e)}}
       />
       {formik.errors.dob && formik.touched.dob && <span className='text-red-700'>{formik.errors.dob}</span>}
 
@@ -296,7 +322,6 @@ export default function SwimmingRegistrationForm() {
         options={ageGroupOptions}
         onChange={handleChange}
       />
-     
       {formik.errors.ageGroup && formik.touched.ageGroup && <span className='text-red-700'>{formik.errors.ageGroup}</span>}
 
       <FileUploader
@@ -305,7 +330,7 @@ export default function SwimmingRegistrationForm() {
         type="file"
         onChange={handleFileChange}
       />
-      {fileSize &&<span className='text-red-700'>{fileSize}</span>}
+      {fileSize && <span className='text-red-700'>{fileSize}</span>}
       {formik.errors.proofOfAge && formik.touched.proofOfAge && <span className='text-red-700'>{formik.errors.proofOfAge}</span>}
 
       <div className='border-4 p-4 mb-2 rounded-lg'>
@@ -319,19 +344,19 @@ export default function SwimmingRegistrationForm() {
             checked={formik.values.event_freestyle}
             onChange={handleCheckboxChange}
           />
-          {(<><label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime"> Please add event time here</label>
-
-            <input
-              disabled={!formik.values.event_freestyle}
-
-              className='h-5 w-40 pl-2 rounded-md text-xs border-[1px] '
-              id="freestyleTime"
-              placeholder="Ex 1 minute 52 seconds"
-              value={formik.values.freestyleTime}
-              onChange={handleChange}
-              required={formik.values.event_freestyle}
-
-            /></>
+          {(
+            <>
+              <label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime"> Please add event time here</label>
+              <input
+                className='h-5 w-40 pl-2 rounded-md text-xs border-[1px] '
+                disabled={!formik.values.event_freestyle}
+                id="freestyleTime"
+                placeholder="Ex 1 minute 52 seconds"
+                value={formik.values.freestyleTime}
+                onChange={handleChange}
+                required={formik.values.event_freestyle}
+              />
+            </>
           )}
           {formik.errors.freestyleTime && formik.touched.freestyleTime && <span className='text-red-700'>{formik.errors.freestyleTime}</span>}
 
@@ -343,7 +368,6 @@ export default function SwimmingRegistrationForm() {
           />
           {(<>
             <label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime"> Please add event time here</label>
-
             <input
               className='h-5 w-40 pl-2 rounded-md text-xs border-[1px] '
               disabled={!formik.values.event_breast_Stroke}
@@ -351,7 +375,6 @@ export default function SwimmingRegistrationForm() {
               placeholder="Ex 1 minute 52 seconds"
               value={formik.values.breast_StrokeTime}
               onChange={handleChange}
-
               required={formik.values.event_breast_Stroke}
             /></>
           )}
@@ -394,15 +417,15 @@ export default function SwimmingRegistrationForm() {
               placeholder="Ex 1 minute 52 seconds"
               value={formik.values.butterflyTime}
               onChange={handleChange}
-
               required={formik.values.event_butterfly}
             /></>
           )}
           {formik.errors.butterflyTime && formik.touched.butterflyTime && <span className='text-red-700'>{formik.errors.butterflyTime}</span>}
 
         </div>
-          {error && <span className='text-red-700 md:text-m text-sm'>{error}</span>}
+        {error && <span className='text-red-700 md:text-m text-sm'>{error}</span>}
       </div>
+
       <CheckboxField
         id="relay"
         label="2x50 meter Freestyle Relay (Any two swimmers, regardless of gender)"
@@ -459,16 +482,17 @@ export default function SwimmingRegistrationForm() {
         onChange={handleChange}
       />
       {formik.errors.referral && formik.touched.referral && <span className='text-red-700'>{formik.errors.referral}</span>}
+
       <CheckboxField
         id="terms_conditions"
         label="I accept all the Terms & Conditions"
         checked={formik.values.terms_conditions}
-        onChange={e=>formik.setFieldValue('terms_conditions',!formik.values.terms_conditions)}
+        onChange={e => formik.setFieldValue('terms_conditions', !formik.values.terms_conditions)}
       />
       {formik.errors.terms_conditions && formik.touched.terms_conditions && <span className='text-red-700'>{formik.errors.terms_conditions}</span>}
       <br />
       <button type="submit" className="mt-6 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 transition duration-300"
-     >
+      >
         Submit
       </button>
     </form>
