@@ -1,7 +1,8 @@
 import * as Yup from "yup";
 
 const validationSchema = Yup.object({
-  swimmerName: Yup.string().required("Swimmer’s name is required"),
+  swimmerFirstName: Yup.string().required("Swimmer’s First Name is required"),
+  swimmerLastName: Yup.string().required("Swimmer’s Last Name is required"),
   gender: Yup.string().required("Gender is required"),
   school: Yup.string().required("School/club/academy name is required"),
   grade: Yup.string().required("Grade/Class is required"),
@@ -18,6 +19,7 @@ const validationSchema = Yup.object({
   parent2Contact: Yup.string().max(10).min(10),
   coachContact: Yup.string().required("Coach contact is required").max(10).min(10),
   referral: Yup.string().required("Referral is required"),
+  terms_conditions: Yup.boolean().required("Accept Terms and Conditions"),
   amount: Yup.number()
 });
 

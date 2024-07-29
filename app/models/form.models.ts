@@ -22,7 +22,8 @@ interface ISwimmingCompetitionForm extends Document {
 }
 
 const SwimmingCompetitionFormSchema: Schema = new Schema({
-  swimmerName: { type: String, required: true },
+  swimmerFirstName: { type: String, required: true },
+  swimmerLastName: { type: String, required: true },
   gender: { type: String, required: true },
   grade: { type: String, required: true },
   school: { type: String, required: true },
@@ -49,6 +50,7 @@ const SwimmingCompetitionFormSchema: Schema = new Schema({
   paymentStatus: { type: String, required: false },
   paymentRequestID: { type: String, required: false },
   amount: { type: Number, required: true },
+  terms_conditions: { type: Boolean, required: true},
 },{timestamps:true});
 
 const SwimmingCompetitionForm = models.SwimmingCompetitionForm || model('SwimmingCompetitionForm', SwimmingCompetitionFormSchema);

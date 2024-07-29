@@ -54,7 +54,7 @@ const CheckoutForm = (props: any) => {
                     <div className="md:w-screen w-full md:pl-5">
                         <div className="p-6 bg-white rounded-lg">
                             <p className="pl-2 text-gray-800 font-bold text-xl">Swimmer Details</p>
-                            <p className=" pl-2 text-gray-600  text-m">{userData?.swimmerName ?? "Shivansh Kate"}</p>
+                            <p className=" pl-2 text-gray-600  text-m">{userData?.swimmerFirstName ?? ""}{" "}{userData?.swimmerLastName ?? ""}</p>
                             <p className="pl-2 text-gray-600 text-m">{userData?.email ?? "sample@mail.com"}</p>
                             <div className="text-[15px] mt-2">
                                 <div className="flex flex-wrap border rounded-lg mb-3">

@@ -65,7 +65,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold  text-gray-900 sm:px-6">
                                     Swimmer Name
                                 </td>
-                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerName}</td>
+                                <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">{userData?.swimmerFirstName ?? ""}{" "}{userData?.swimmerLastName ?? ""}</td>
                             </tr>
                             <tr className="">
                                 <td width="50%" className="whitespace-no-wrap py-4 text-sm font-bold text-gray-900 sm:px-6">

@@ -8,10 +8,9 @@ import DateSelector from './DatePicker';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import validationSchema from '@/lib/Formvalidations';
-import {  State } from "country-state-city";
+import { State } from "country-state-city";
 import Label from './Label';
 import axios from 'axios';
-
 
 const genderOptions = [
   { value: "", label: "Select Gender" },
@@ -52,7 +51,9 @@ const ageGroupOptions = [
   { value: "Masters C", label: "Masters Group - C: 51+ yrs." },
 ];
 interface FormValues {
-  swimmerName: string;
+
+  swimmerFirstName: string;
+  swimmerLastName: string;
   gender: string;
   school: string;
   grade: string;
@@ -76,8 +77,9 @@ interface FormValues {
   coachContact: string;
   referral: string;
   amount: number;
+  terms_conditions: boolean;
 }
-  
+
 export default function SwimmingRegistrationForm() {
   const [error, setError] = useState<string>('');
   const [event, setEvent] = useState<number>(0);
@@ -85,7 +87,8 @@ export default function SwimmingRegistrationForm() {
 
   const formik = useFormik({
     initialValues: {
-      swimmerName: '',
+      swimmerFirstName: '',
+      swimmerLastName: '',
       gender: '',
       school: '',
       grade: '',
@@ -108,7 +111,8 @@ export default function SwimmingRegistrationForm() {
       parent2Contact: '',
       coachContact: '',
       referral: '',
-      amount: 0
+      amount: 0,
+      terms_conditions: false
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -123,10 +127,10 @@ export default function SwimmingRegistrationForm() {
 
   const calculateCompetitionFees = (userData: any) => {
     const currentDate = new Date();
-    let hasSwimmingEvents=0;
-    const { relay,event_freestyle,event_breast_Stroke,event_butterfly,event_back_Stroke } = userData;
-    if(event_freestyle||event_breast_Stroke||event_butterfly||event_back_Stroke){
-       hasSwimmingEvents = 1 ;
+    let hasSwimmingEvents = 0;
+    const { relay, event_freestyle, event_breast_Stroke, event_butterfly, event_back_Stroke } = userData;
+    if (event_freestyle || event_breast_Stroke || event_butterfly || event_back_Stroke) {
+      hasSwimmingEvents = 1;
     }
     const hasRelay = relay ? 1 : 0;
 
@@ -155,15 +159,15 @@ export default function SwimmingRegistrationForm() {
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
-  
+
     // Cast formik.values to the FormValues type
     const values = formik.values as FormValues;
-    
+
     const selectedCheckboxes = Object.keys(values)
       .filter(key => key.startsWith('event_') && values[key as keyof FormValues])
       .length;
-  
-      
+
+
     if (selectedCheckboxes < 2 || !checked) {
       formik.setFieldValue(name, checked);
       if (!checked) {
@@ -179,34 +183,41 @@ export default function SwimmingRegistrationForm() {
     formik.handleChange(e);
   };
 
-  const handleFileChange = async(e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    
-    const formData=new FormData();
+
+    const formData = new FormData();
     formData.append("file", file as Blob)
-    const response=await axios.post('/api/file-upload',formData)
+    const response = await axios.post('/api/file-upload', formData)
     formik.setFieldValue('proofOfAge', response?.data?.url);
   };
 
   useEffect(() => {
 
-console.log(formik.values);
+    console.log(formik.values);
 
   }, [formik.values]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10">
-      <h1 className="text-2xl mb-4 mt-4 font-bold font-sans text-center">Swim For India Academy</h1>
+      <h1 className="md:text-3xl text-2xl mb-4 mt-4 font-bold font-sans  text-center text-gray-800">Swim For India Academy</h1>
       <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">Sunday, 24 August</h1>
       <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">Delhi Open Talent Search Swimming Competition 2024</h1>
 
       <InputField
-        id="swimmerName"
+        id="swimmerFirstName"
         label="Swimmer's Name"
-        value={formik.values.swimmerName}
+        value={formik.values.swimmerFirstName}
         onChange={handleChange}
       />
-      {formik.errors.swimmerName && formik.touched.swimmerName && <span className='text-red-700'>{formik.errors.swimmerName}</span>}
+      {formik.errors.swimmerFirstName && formik.touched.swimmerFirstName && <span className='text-red-700'>{formik.errors.swimmerFirstName}</span>}
+      <InputField
+        id="swimmerLastName"
+        label="Swimmer's Last Name"
+        value={formik.values.swimmerLastName}
+        onChange={handleChange}
+      />
+      {formik.errors.swimmerLastName && formik.touched.swimmerLastName && <span className='text-red-700'>{formik.errors.swimmerLastName}</span>}
 
       <SelectField
         id="gender"
@@ -252,7 +263,7 @@ console.log(formik.values);
       <DateSelector
         id="dob"
         label="Date of Birth"
-        onChange={(date) => formik.setFieldValue('dob', date)}
+        onChange={(e) => formik.setFieldValue('dob', e)}
       />
       {formik.errors.dob && formik.touched.dob && <span className='text-red-700'>{formik.errors.dob}</span>}
 
@@ -272,27 +283,33 @@ console.log(formik.values);
         onChange={handleFileChange}
       />
       {formik.errors.proofOfAge && formik.touched.proofOfAge && <span className='text-red-700'>{formik.errors.proofOfAge}</span>}
+
       <div className='border-4 p-4 mb-2 rounded-lg'>
         <label htmlFor="events" className="block mb-2 font-semibold text-gray-700 md:text-m text-sm">
           Select Swimming Events (Maximum Two)
         </label>
-        <div className=' ml-5 space-y-2  '>
+        <div className=' ml-5 '>
           <CheckboxField
             id="event_freestyle"
             label="50 meter Freestyle"
             checked={formik.values.event_freestyle}
             onChange={handleCheckboxChange}
           />
-           { (
-        <input
-        className=' w-40 pl-2 rounded-sm text-sm'
-          id="freestyleTime"
-          placeholder="Ex 1 minute 52 seconds"
-          value={formik.values.freestyleTime}
-          onChange={handleChange}
-        />
-      )}
-      {formik.errors.freestyleTime && formik.touched.freestyleTime && <span className='text-red-700'>{formik.errors.freestyleTime}</span>} 
+          {(<><label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime"> Please add event time here</label>
+
+            <input
+              disabled={!formik.values.event_freestyle}
+
+              className=' w-40 pl-2 rounded-md text-xs border-[1px] '
+              id="freestyleTime"
+              placeholder="Ex 1 minute 52 seconds"
+              value={formik.values.freestyleTime}
+              onChange={handleChange}
+              required={formik.values.event_freestyle}
+
+            /></>
+          )}
+          {formik.errors.freestyleTime && formik.touched.freestyleTime && <span className='text-red-700'>{formik.errors.freestyleTime}</span>}
 
           <CheckboxField
             id="event_breast_Stroke"
@@ -300,17 +317,21 @@ console.log(formik.values);
             checked={formik.values.event_breast_Stroke}
             onChange={handleCheckboxChange}
           />
-          {(
-        <input 
-        className=' w-40 pl-2 rounded-sm text-sm'
+          {(<>
+            <label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime"> Please add event time here</label>
 
-          id="breast_StrokeTime"
-          placeholder="Ex 1 minute 52 seconds"
-          value={formik.values.breast_StrokeTime}
-          onChange={handleChange}
-        />
-      )}
-      {formik.errors.breast_StrokeTime && formik.touched.breast_StrokeTime && <span className='text-red-700'>{formik.errors.breast_StrokeTime}</span>}
+            <input
+              className=' w-40 pl-2 rounded-md text-xs border-[1px] '
+              disabled={!formik.values.event_breast_Stroke}
+              id="breast_StrokeTime"
+              placeholder="Ex 1 minute 52 seconds"
+              value={formik.values.breast_StrokeTime}
+              onChange={handleChange}
+
+              required={formik.values.event_breast_Stroke}
+            /></>
+          )}
+          {formik.errors.breast_StrokeTime && formik.touched.breast_StrokeTime && <span className='text-red-700'>{formik.errors.breast_StrokeTime}</span>}
 
           <CheckboxField
             id="event_back_Stroke"
@@ -318,17 +339,20 @@ console.log(formik.values);
             checked={formik.values.event_back_Stroke}
             onChange={handleCheckboxChange}
           />
-          { (
-        <input
-        className=' w-40 pl-2 rounded-sm text-sm'
+          {(<>
+            <label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime"> Please add event time here</label>
+            <input
+              className=' w-40 pl-2 rounded-md text-xs border-[1px] '
+              disabled={!formik.values.event_back_Stroke}
+              id="back_StrokeTime"
+              placeholder="Ex 1 minute 52 seconds"
+              value={formik.values.back_StrokeTime}
+              onChange={handleChange}
 
-          id="back_StrokeTime"
-          placeholder="Ex 1 minute 52 seconds"
-          value={formik.values.back_StrokeTime}
-          onChange={handleChange}
-        />
-      )}
-      {formik.errors.back_StrokeTime && formik.touched.back_StrokeTime && <span className='text-red-700'>{formik.errors.back_StrokeTime}</span>}
+              required={formik.values.event_back_Stroke}
+            /></>
+          )}
+          {formik.errors.back_StrokeTime && formik.touched.back_StrokeTime && <span className='text-red-700'>{formik.errors.back_StrokeTime}</span>}
 
           <CheckboxField
             id="event_butterfly"
@@ -336,20 +360,24 @@ console.log(formik.values);
             checked={formik.values.event_butterfly}
             onChange={handleCheckboxChange}
           />
-          { (
-        <input
-        className=' w-40 pl-2 rounded-sm text-sm'
+          {(<>
+            <label className="ml-4 mr-2 font-semibold text-gray-700 md:text-m text-sm" htmlFor="back_StrokeTime">
+              Please add event time here</label>
+            <input
+              disabled={!formik.values.event_butterfly}
+              className={`w-40 pl-2 rounded-md text-xs border-[1px] border-gray-600}`}
+              id="butterflyTime"
+              placeholder="Ex 1 minute 52 seconds"
+              value={formik.values.butterflyTime}
+              onChange={handleChange}
 
-          id="butterflyTime"
-          placeholder="Ex 1 minute 52 seconds"
-          value={formik.values.butterflyTime}
-          onChange={handleChange}
-        />
-      )}
-      {formik.errors.butterflyTime && formik.touched.butterflyTime && <span className='text-red-700'>{formik.errors.butterflyTime}</span>} 
+              required={formik.values.event_butterfly}
+            /></>
+          )}
+          {formik.errors.butterflyTime && formik.touched.butterflyTime && <span className='text-red-700'>{formik.errors.butterflyTime}</span>}
 
-          {error && <span className='text-red-700 md:text-m text-sm'>{error}</span>}
         </div>
+          {error && <span className='text-red-700 md:text-m text-sm'>{error}</span>}
       </div>
       <CheckboxField
         id="relay"
@@ -407,7 +435,12 @@ console.log(formik.values);
         onChange={handleChange}
       />
       {formik.errors.referral && formik.touched.referral && <span className='text-red-700'>{formik.errors.referral}</span>}
-
+      <CheckboxField
+        id="terms_conditions"
+        label="I accept all the Terms & Conditions"
+        checked={formik.values.terms_conditions}
+        onChange={e=>formik.setFieldValue('terms_conditions',!formik.values.terms_conditions)}
+      />
       <button type="submit" className="mt-6 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 transition duration-300">
         Submit
       </button>
