@@ -42,10 +42,10 @@ const ageGroupOptions = [
   { value: "Group 9", label: "Group - 9 (Born 2017)", startYear: 2017, endYear: 2017 },
   { value: "Group 10", label: "Group - 10 (Born 2018)", startYear: 2018, endYear: 2018 },
   { value: "Group 11", label: "Group - 11 (Born 2019)", startYear: 2019, endYear: 2019 },
-  { value: "Seniors", label: "Seniors Boys & Girls: 18 yrs. To 29 yrs.", startYear: 1994, endYear: 2004 },
-  { value: "Masters A", label: "Masters Group - A: 30 to 40 yrs.", startYear: 1982, endYear: 1992 },
-  { value: "Masters B", label: "Masters Group - B: 41 to 50 yrs.", startYear: 1972, endYear: 1981 },
-  { value: "Masters C", label: "Masters Group - C: 51+ yrs.", startYear: 1971, endYear: null },
+  { value: "Seniors", label: "Seniors Boys & Girls (Born between 1/1/1997 to 31/12/2006)", startYear: 1997, endYear: 2006 },
+  { value: "Masters A", label: "Masters Group - A (Born between 1/1/1987 to 31/12/1996)", startYear: 1987, endYear: 1996 },
+  { value: "Masters B", label: "Masters Group - B (Born between 1/1/1977 to 31/12/1986).", startYear: 1977, endYear: 1986 },
+  { value: "Masters C", label: "Masters Group - C (Born between 1/1/1976 & before)", startYear: 1976, endYear: null },
 ];
 interface FormValues {
 
