@@ -246,7 +246,7 @@ export default function SwimmingRegistrationForm() {
   return (
     <form onSubmit={formik.handleSubmit} className={`max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10`} >
       <h1 className="md:text-3xl text-2xl mb-4 mt-4 font-bold font-sans  text-center text-gray-800">Swim For India Academy</h1>
-      <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">Sunday, 24 August</h1>
+      <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">Sunday, 25 August</h1>
       <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">Delhi Open Talent Search Swimming Competition 2024</h1>
 
       <InputField
