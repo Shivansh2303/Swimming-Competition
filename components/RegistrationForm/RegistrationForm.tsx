@@ -483,7 +483,6 @@ export default function SwimmingRegistrationForm() {
       {formik.errors.referral && formik.touched.referral && <span className='text-red-700'>{formik.errors.referral}</span>}
 
       <div className="inline-flex items-center">
-        <label className="relative  flex items-center p-3 rounded-full cursor-pointer" htmlFor="terms_conditions">
           <input
             type="checkbox"
             id="terms_conditions"
@@ -492,8 +491,7 @@ export default function SwimmingRegistrationForm() {
             onChange={e => formik.setFieldValue('terms_conditions', !formik.values.terms_conditions)}
             className="before:content[''] bg-white peer relative h-4 w-4 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
           />
-        </label>
-        <p className='font-normal'>
+        <p className='font-normal ml-4'>
           I accept all the{" "}
           <a
             className={`md:text-m text-sm font-normal cursor-pointer select-none text-blue-500 underline`}

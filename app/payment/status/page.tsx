@@ -44,6 +44,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                 try {
                     const response = await axios.post('/api/create-swimmer', { userData });
                     setUserData(response.data);
+                    
                 } catch (error) {
                     console.error("Failed to create swimmer", error);
                 } finally {
