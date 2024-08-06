@@ -7,27 +7,27 @@ import nodemailer from "nodemailer";
 export async function SwimmerCreate(data: any) {
   try {
     connectToMongoDB();
-    const swimmerExist = await SwimmingCompetitionForm.findOne({paymentID:data.paymentID});
-    if (swimmerExist){
-      await axios.post('/api/email-service', { swimmerExist });
-      return swimmerExist
+    const swimmerExist = await SwimmingCompetitionForm.findOne({
+      paymentID: data.paymentID,
+    });
+    if (swimmerExist) {
+      return swimmerExist;
     }
     const swimmer = await SwimmingCompetitionForm.create(data);
     const transporter = nodemailer.createTransport({
       host: process.env.NEXT_PUBLIC_SMTP_HOST,
       port: parseInt(process.env.NEXT_PUBLIC_SMTP_PORT!),
-      secure: false, 
+      secure: false,
       auth: {
-        user:  process.env.NEXT_PUBLIC_SMTP_USER,
+        user: process.env.NEXT_PUBLIC_SMTP_USER,
         pass: process.env.NEXT_PUBLIC_SMTP_PASS,
       },
     });
 
-
     const mailOptions = {
-      from: 'info@swimforindiaacademy.com',
+      from: "info@swimforindiaacademy.com",
       to: swimmer.email,
-      subject: 'Swimming Competition Registration',
+      subject: "Swimming Competition Registration",
       html: `
        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
 <p>Dear Swimmer,</p>
@@ -44,16 +44,16 @@ export async function SwimmerCreate(data: any) {
 </div>
     `,
     };
-    transporter.sendMail(mailOptions, function(error:any, info:any){
+    transporter.sendMail(mailOptions, function (error: any, info: any) {
       if (error) {
-        console.log('Error:', error);
+        console.log("Error:", error);
       } else {
-        console.log('Email sent: ' + info.response);
+        console.log("Email sent: " + info.response);
       }
     });
     return swimmer;
   } catch (error: any) {
     console.error("Error: ", error);
-    throw new Error(error)
+    throw new Error(error);
   }
 }
