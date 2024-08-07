@@ -34,6 +34,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 userData.paymentRequestID=params.get("payment_request_id")??"";
                 userData.proofOdAge=null;
                 const swimmerData = await axios.post('/api/create-swimmer', { userData });
+                window.location.reload();
                 setUserData(swimmerData.data);
             }
         }
