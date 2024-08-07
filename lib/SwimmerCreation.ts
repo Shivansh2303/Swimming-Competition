@@ -13,7 +13,7 @@ export async function SwimmerCreate(data: any) {
       return swimmerExist;
     }
     const swimmer = await SwimmingCompetitionForm.create(data);
-    // await EmailService(swimmer);
+    await EmailService(swimmer);
     return swimmer;
   } catch (error: any) {
     console.error("Error: ", error);
