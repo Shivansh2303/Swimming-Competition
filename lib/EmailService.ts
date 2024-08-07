@@ -35,6 +35,9 @@ export default async function EmailService(userData: any) {
     transporter.sendMail(mailOptions, function (error: any, info: any) {
       if (error) {
         console.log("Error:", error);
+      }else{
+        console.log("Email sent: ",info.response);
+        
       }
     });
   } catch (error) {
