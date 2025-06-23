@@ -17,13 +17,17 @@
     "country-state-city": "^3.2.1",
     "date-fns": "^3.6.0",
     "formik": "^2.4.6",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.522.0",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.1",
     "next": "14.2.5",
+    "next-auth": "^4.24.11",
     "nodemailer": "^6.9.14",
     "react": "^18",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
+    "recharts": "^2.15.4",
     "yup": "^1.4.0"
   },
   "devDependencies": {
