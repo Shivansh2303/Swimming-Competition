@@ -10,7 +10,7 @@ const users = [
   },
 ];
 
-export const  authOptions = {
+ const  authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
