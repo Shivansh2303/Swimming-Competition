@@ -13,7 +13,7 @@ export async function connectToMongoDB() {
     }
     const cnx = await mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_URI);
     cachedConnection = cnx.connection;
-    console.log("MongoDB connected Successfullt!!");
+    console.log("MongoDB connected Successfully!!");
     return cachedConnection;
   } catch (error) {
     console.log(error);

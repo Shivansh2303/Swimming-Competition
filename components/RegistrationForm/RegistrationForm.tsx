@@ -31,21 +31,22 @@ const referral = [
 
 const ageGroupOptions = [
   { value: "", label: "Select Age Group", startYear: 0, endYear: 0 },
-  { value: "Group 1", label: "Group - 1 (Born between 1/1/2007 to 31/12/2009)", startYear: 2007, endYear: 2009 },
-  { value: "Group 2", label: "Group - 2 (Born 2010)", startYear: 2010, endYear: 2010 },
-  { value: "Group 3", label: "Group - 3 (Born 2011)", startYear: 2011, endYear: 2011 },
-  { value: "Group 4", label: "Group - 4 (Born 2012)", startYear: 2012, endYear: 2012 },
-  { value: "Group 5", label: "Group - 5 (Born 2013)", startYear: 2013, endYear: 2013 },
-  { value: "Group 6", label: "Group - 6 (Born 2014)", startYear: 2014, endYear: 2014 },
-  { value: "Group 7", label: "Group - 7 (Born 2015)", startYear: 2015, endYear: 2015 },
-  { value: "Group 8", label: "Group - 8 (Born 2016)", startYear: 2016, endYear: 2016 },
-  { value: "Group 9", label: "Group - 9 (Born 2017)", startYear: 2017, endYear: 2017 },
-  { value: "Group 10", label: "Group - 10 (Born 2018)", startYear: 2018, endYear: 2018 },
-  { value: "Group 11", label: "Group - 11 (Born 2019)", startYear: 2019, endYear: 2019 },
-  { value: "Seniors", label: "Seniors Boys & Girls (Born between 1/1/1997 to 31/12/2006)", startYear: 1997, endYear: 2006 },
-  { value: "Masters A", label: "Masters Group - A (Born between 1/1/1987 to 31/12/1996)", startYear: 1987, endYear: 1996 },
-  { value: "Masters B", label: "Masters Group - B (Born between 1/1/1977 to 31/12/1986).", startYear: 1977, endYear: 1986 },
-  { value: "Masters C", label: "Masters Group - C (Born between 1/1/1976 & before)", startYear: 1976, endYear: null },
+  { value: "Group 1", label: "Group - 1 (Born between 1/1/2008 to 31/12/2010", startYear: 2008,endYear: 2010 },
+  { value: "Group 2", label: "Group - 2 (Born 2011)", startYear: 2010, endYear: 2010 },
+  { value: "Group 3", label: "Group - 3 (Born 2012)", startYear: 2011, endYear: 2011 },
+  { value: "Group 4", label: "Group - 4 (Born 2013)", startYear: 2012, endYear: 2012 },
+  { value: "Group 5", label: "Group - 5 (Born 2014)", startYear: 2013, endYear: 2013 },
+  { value: "Group 6", label: "Group - 6 (Born 2015)", startYear: 2014, endYear: 2014 },
+  { value: "Group 7", label: "Group - 7 (Born 2016)", startYear: 2015, endYear: 2015 },
+  { value: "Group 8", label: "Group - 8 (Born 2017)", startYear: 2016, endYear: 2016 },
+  { value: "Group 9", label: "Group - 9 (Born 2018)", startYear: 2017, endYear: 2017 },
+  { value: "Group 10", label: "Group - 10 (Born 2019)", startYear: 2018, endYear: 2018 },
+  { value: "Group 11", label: "Group - 11 (Born 2020)", startYear: 2019, endYear: 2019 },
+  { value: "Seniors", label: "Seniors Boys & Girls:18 yrs to 29 yrs"},
+  { value: "Masters A", label: "Men & Women: 30 to 40 yrs", startYear: 1987, endYear: 1996 },
+  { value: "Masters B", label: "Men & Women: 41 to 50 yrs", startYear: 1977, endYear: 1986 },
+  { value: "Masters C", label: "Men & Women: 51 to 60 yrs", startYear: 1976, endYear: null },
+  { value: "Masters D", label: "Men & Women: 61+ yrs", startYear: 1976, endYear: null },
 ];
 interface FormValues {
 
@@ -67,6 +68,7 @@ interface FormValues {
   event_butterfly: boolean;
   butterflyTime: string;
   relay: boolean;
+  swimathon: boolean;
   email: string;
   parentName: string;
   parent1Contact: string;
@@ -102,6 +104,7 @@ export default function SwimmingRegistrationForm() {
       event_butterfly: false,
       butterflyTime: "",
       relay: false,
+swimathon:false,
       email: '',
       parentName: '',
       parent1Contact: '',
@@ -136,29 +139,30 @@ export default function SwimmingRegistrationForm() {
   const calculateCompetitionFees = (userData: any) => {
     const currentDate = new Date();
     let hasSwimmingEvents = 0;
-    const { relay, event_freestyle, event_breast_Stroke, event_butterfly, event_back_Stroke } = userData;
+    const { relay, event_freestyle, event_breast_Stroke, event_butterfly, event_back_Stroke,marathon } = userData;
     if (event_freestyle || event_breast_Stroke || event_butterfly || event_back_Stroke) {
       hasSwimmingEvents = 1;
     }
     const hasRelay = relay ? 1 : 0;
+    const hasSwimathon=marathon ? 1 : 0;
 
     const feeStructure = [
-      { date: new Date("2024-08-10"), swimmingEventFee: 1000, relayFee: 1000, marathonFee: 2000 },
-      { date: new Date("2024-08-16"), swimmingEventFee: 1500, relayFee: 1500, marathonFee: 2500 },
-      { date: new Date("2024-08-25"), swimmingEventFee: 3000, relayFee: 3000, marathonFee: 3000 }
+      { date: new Date("2025-06-22"), swimmingEventFee: 1000, relayFee: 1000, marathonFee: 2000 },
+      { date: new Date("2025-07-03"), swimmingEventFee: 1500, relayFee: 1500, marathonFee: 2500 },
+      { date: new Date("2025-07-25"), swimmingEventFee: 3000, relayFee: 3000, marathonFee: 3000 }
     ];
 
     let calculatedAmount = 0;
     for (const fee of feeStructure) {
       if (currentDate < fee.date) {
-        calculatedAmount = hasSwimmingEvents * fee.swimmingEventFee + hasRelay * fee.relayFee;
+        calculatedAmount = hasSwimmingEvents * fee.swimmingEventFee + hasRelay * fee.relayFee + hasSwimathon * fee.marathonFee;
         break;
       }
     }
 
     if (calculatedAmount === 0) {
       const lastFee = feeStructure[feeStructure.length - 1];
-      calculatedAmount = hasSwimmingEvents * lastFee.swimmingEventFee + hasRelay * lastFee.relayFee;
+      calculatedAmount = hasSwimmingEvents * lastFee.swimmingEventFee + hasRelay * lastFee.relayFee + hasSwimathon * lastFee.marathonFee;
     }
 
     return calculatedAmount;
@@ -213,7 +217,7 @@ export default function SwimmingRegistrationForm() {
         if (birthYear <= group.startYear) {
           return group.value;
         }
-      } else if (birthYear >= group.startYear && birthYear <= group.endYear) {
+      } else if (group.startYear !== undefined && group.endYear !== undefined && birthYear >= group.startYear && birthYear <= group.endYear) {
         return group.value;
       }
     }
@@ -238,7 +242,6 @@ export default function SwimmingRegistrationForm() {
 
   useEffect(() => {
 
-    console.log("Values", formik.values);
     console.log("Errors", formik.errors);
 
   }, [formik.values, formik.errors]);
@@ -246,8 +249,8 @@ export default function SwimmingRegistrationForm() {
   return (
     <form onSubmit={formik.handleSubmit} className={`max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-200 mt-10 pt-10`} >
       <h1 className="md:text-3xl text-2xl mb-4 mt-4 font-bold font-sans  text-center text-gray-800">Swim For India Academy</h1>
-      <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">Sunday, 25 August</h1>
-      <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">Delhi Open Talent Search Swimming Competition 2024</h1>
+      <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">Sunday, 3 August</h1>
+      <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">Delhi Open Talent Search Swimming Competition 2025</h1>
 
       <InputField
         id="swimmerFirstName"
@@ -432,7 +435,15 @@ export default function SwimmingRegistrationForm() {
         onChange={handleChange}
       />
       {formik.errors.relay && formik.touched.relay && <span className='text-red-700'>{formik.errors.relay}</span>}
-
+      
+     
+      <CheckboxField
+        id="marathon"
+        label="Swimathon (Open to all age group)"
+        checked={formik.values.swimathon}
+        onChange={handleChange}
+        />
+      {formik.errors.swimathon && formik.touched.swimathon && <span className='text-red-700'>{formik.errors.swimathon}</span>}
       <InputField
         id="email"
         label="Email Address (of parent)"
@@ -467,7 +478,7 @@ export default function SwimmingRegistrationForm() {
 
       <InputField
         id="coachContact"
-        label="Coach/Sports Teacher Contact Number"
+        label="Coach/Sports Teacher Contact Number (WhatsApp)"
         value={formik.values.coachContact}
         onChange={handleChange}
       />
@@ -475,7 +486,7 @@ export default function SwimmingRegistrationForm() {
 
       <SelectField
         id="referral"
-        label="How did you come to know of Swimming Competition 2024?"
+        label="How did you come to know of Swimming Competition 2025?"
         value={formik.values.referral}
         options={referral}
         onChange={handleChange}
