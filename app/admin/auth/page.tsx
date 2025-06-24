@@ -5,7 +5,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
@@ -14,7 +14,7 @@ export default function LoginPage() {
 
     try {
       const response = await signIn("credentials", {
-        email,
+        username,
         password,
         redirect: false,
       });
@@ -64,10 +64,10 @@ export default function LoginPage() {
               </svg>
             </span>
             <input
-              type="email"
+              type="text"
               placeholder="Type your username"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
