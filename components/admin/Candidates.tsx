@@ -54,6 +54,139 @@ export default function SwimmerPerformance() {
   }, []);
   const [filteredSwimmers, setFilteredSwimmers] = useState<Swimmer[]>(swimmers);
 
+  const swimmerData=() => {
+    return (
+      swimmers.length === 0 ? (
+          <tr>
+            <td colSpan={19} className="text-center py-10 text-gray-500">
+              No swimmers found.
+            </td>
+          </tr>
+        ) : (
+          filteredSwimmers.map((swimmer) => (
+            <tr key={swimmer._id} className="border-t">
+              <td className="px-4 font-medium">
+          {swimmer.swimmerFirstName} {swimmer.swimmerLastName}
+              </td>
+              <td className="">{swimmer.gender}</td>
+              <td className="">{swimmer.grade}</td>
+              <td className="">{swimmer.school}</td>
+              <td className="">{swimmer.state}</td>
+              <td className="">
+          {swimmer.dob ? new Date(swimmer.dob).toLocaleDateString() : "N/A"}
+              </td>
+              <td className="">{swimmer.email}</td>
+              <td className="">{swimmer.ageGroup}</td>
+              <td className=" ">
+          <div>
+            {swimmer.event_freestyle ? (
+              <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
+                freestyle {swimmer.freestyleTime ?? "N/A"}
+              </span>
+            ) : null}
+          </div>
+          <div>
+            {swimmer.event_back_Stroke ? (
+              <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
+                Backstroke {swimmer.back_StrokeTime ?? "N/A"}
+              </span>
+            ) : null}
+          </div>
+          <div>
+            {swimmer.event_breast_Stroke ? (
+              <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
+                breast Stroke {swimmer.breast_StrokeTime ?? "N/A"}
+              </span>
+            ) : null}
+          </div>
+          <div>
+            {swimmer.event_butterfly ? (
+              <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
+                butterfly {swimmer.butterflyTime ?? "N/A"}
+              </span>
+            ) : null}
+          </div>
+              </td>
+              <td className="">
+          <input type="checkbox" name="relay" checked={swimmer.relay} readOnly />
+              </td>
+              <td className="">
+          <input type="checkbox" name="swimation" checked={swimmer.swimation} readOnly />
+              </td>
+              <td className="">
+          {swimmer.proofOfAge ? (
+            <a
+              href={swimmer.proofOfAge}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              View
+            </a>
+          ) : (
+            <span className="text-gray-400">N/A</span>
+          )}
+              </td>
+              <td className="">{swimmer.parentName || "N/A"}</td>
+              <td className="px-4">
+          {swimmer.parent1Contact ? (
+            <a
+              href={`https://wa.me/${swimmer.parent1Contact.replace(/\D/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:underline"
+            >
+              {swimmer.parent1Contact}
+            </a>
+          ) : (
+            <span className="text-gray-400">N/A</span>
+          )}
+              </td>
+              <td className="px-4">
+          {swimmer.parent2Contact ? (
+            <a
+              href={`https://wa.me/${swimmer.parent2Contact.replace(/\D/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:underline"
+            >
+              {swimmer.parent2Contact}
+            </a>
+          ) : (
+            <span className="text-gray-400">N/A</span>
+          )}
+              </td>
+              <td className="px-4">
+          {swimmer.coachContact ? (
+            <a
+              href={`https://wa.me/${swimmer.coachContact.replace(/\D/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:underline"
+            >
+              {swimmer.coachContact}
+            </a>
+          ) : (
+            <span className="text-gray-400">N/A</span>
+          )}
+              </td>
+              <td className="">
+          <span className="ml-2 text-gray-600">₹{swimmer.amount}</span>
+              </td>
+              <td className="">
+          {swimmer.terms_conditions ? (
+            <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Accepted</span>
+          ) : (
+            <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">Not Accepted</span>
+          )}
+              </td>
+              <td className="">{swimmer.referral || "N/A"}</td>
+            </tr>
+          ))
+        )
+    )
+  }
+
   useEffect(() => {
     const handler = setTimeout(() => {
       const filtered = swimmers.filter((s) => {
@@ -121,126 +254,18 @@ export default function SwimmerPerformance() {
         </tr>
         </thead>
         <tbody className="text-gray-700 ">
-        {filteredSwimmers.map((swimmer) => (
-          <tr key={swimmer._id} className="border-t">
-          <td className="px-4 font-medium">
-            {swimmer.swimmerFirstName} {swimmer.swimmerLastName}
-          </td>
-          <td className="">{swimmer.gender}</td>
-          <td className="">{swimmer.grade}</td>
-          <td className="">{swimmer.school}</td>
-          <td className="">{swimmer.state}</td>
-          <td className="">
-            {swimmer.dob ? new Date(swimmer.dob).toLocaleDateString() : "N/A"}
-          </td>
-          <td className="">{swimmer.email}</td>
-          <td className="">{swimmer.ageGroup}</td>
-          <td className=" ">
-            <div>
-            {swimmer.event_freestyle ? (
-            <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
-              freestyle {swimmer.freestyleTime ?? "N/A"}
-            </span>
-            ) : <></>}
-            </div><div>
-            {swimmer.event_back_Stroke ? (
-            <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
-              Backstroke {swimmer.back_StrokeTime ?? "N/A"}
-            </span>
-            ) : <></>}
-            </div><div>
-            {swimmer.event_breast_Stroke ? (
-            <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
-              breast Stroke {swimmer.breast_StrokeTime ?? "N/A"}
-            </span>
-            ) : <></>}
-            </div><div>
-            {swimmer.event_butterfly ? (
-            <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
-              butterfly {swimmer.butterflyTime ?? "N/A"}
-            </span>
-            ) : <></>}
-            </div>
-          </td>
-          <td className="">
-             <input type="checkbox" name="swimation" id="swimation" checked={swimmer.relay}/>
-           
-          </td>
-          <td className="">
-            <input type="checkbox" name="swimation" id="swimation" checked={swimmer.swimation}/>
-
-          </td>
-          <td className="">
-            {swimmer.proofOfAge ? (
-            <a
-              href={swimmer.proofOfAge}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              View
-            </a>
-            ) : (
-            <span className="text-gray-400">N/A</span>
-            )}
-          </td>
-          <td className="">{swimmer.parentName || "N/A"}</td>
-          <td className="px-4">
-            {swimmer.parent1Contact ? (
-            <a
-              href={`https://wa.me/${swimmer.parent1Contact.replace(/\D/g, "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-600 hover:underline"
-            >
-              {swimmer.parent1Contact}
-            </a>
-            ) : (
-            <span className="text-gray-400">N/A</span>
-            )}
-          </td>
-          <td className="px-4">
-            {swimmer.parent2Contact ? (
-            <a
-              href={`https://wa.me/${swimmer.parent2Contact.replace(/\D/g, "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-600 hover:underline"
-            >
-              {swimmer.parent2Contact}
-            </a>
-            ) : (
-            <span className="text-gray-400">N/A</span>
-            )}
-          </td>
-          <td className="px-4">
-            {swimmer.coachContact ? (
-            <a
-              href={`https://wa.me/${swimmer.coachContact.replace(/\D/g, "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-600 hover:underline"
-            >
-              {swimmer.coachContact}
-            </a>
-            ) : (
-            <span className="text-gray-400">N/A</span>
-            )}
-          </td>
-          <td className="">
-           
-            <span className="ml-2 text-gray-600">₹{swimmer.amount}</span>
-          </td>
-          <td className="">
-            {swimmer.terms_conditions ? (
-            <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Accepted</span>
-            ) : (
-            <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">Not Accepted</span>
-            )}
-          </td>
-          <td className="">{swimmer.referral || "N/A"}</td>
+        {swimmers.length === 0 ? (
+          <tr>
+            <td colSpan={19} className="text-center py-10">
+              <span className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center h-72">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-700"></div>
+      </div>
+          Loading swimmers...
+              </span>
+            </td>
           </tr>
-        ))}
+        ) : swimmerData()}
         </tbody>
       </table>
       </div>

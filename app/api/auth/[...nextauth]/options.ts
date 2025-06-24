@@ -11,8 +11,8 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
+        username: { label: "Username", type: "text",placeholder: "your-cool-username" },
+        password: { label: "Password", type: "password" ,placeholder: "your-awesome-password"},
       },
       async authorize(credentials) {
         const users = [
@@ -38,7 +38,5 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  pages: {
-    signIn: "/admin/auth",
-  },
+ 
 };
