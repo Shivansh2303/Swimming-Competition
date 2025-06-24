@@ -17,10 +17,10 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         const users = [
           {
-            id: "1",
-            name: "Admin User",
-            username:"admin",
-            password: "admin@123",
+            id: process.env.NEXT_PUBLIC_ADMIN_ID as string??"",
+            name: process.env.NEXT_PUBLIC_ADMIN_NAME as string??"",
+            username:process.env.NEXT_PUBLIC_ADMIN_USERNAME as string??"",
+            password: process.env.NEXT_PUBLIC_ADMIN_PASSWORD as string ??"",
           },
         ];
         if (!credentials?.username || !credentials?.password) {

@@ -20,7 +20,6 @@ export default function LoginPage() {
       });
 
       if (response?.ok && response?.status === 200) {
-        console.log("Login successful:", response);
         router.push("/admin");
       } else {
         alert("Login failed: No token received.");
