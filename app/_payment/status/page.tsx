@@ -53,6 +53,14 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
         }
     }, [params,handleUser,loading]);
 
+    // Extract payment status message to avoid nested ternary
+    let paymentStatusMessage = "";
+    if (userData?.paymentStatus === 'Credit') {
+        paymentStatusMessage = "Payment Done!";
+    } else if (userData?.paymentStatus === '') {
+        paymentStatusMessage = "Payment Failed";
+    }
+
     return (
         <div className={`w-screen`}>
         <div className={`mx-auto mt-8 max-w-screen-lg px-2  ${loading ? "opacity-20" : ""}`}>
@@ -64,7 +72,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                 </svg>
                 <div className="text-center">
                     <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
-                        {userData?.paymentStatus === 'Credit' ? "Payment Done!" : userData?.paymentStatus === '' ? "Payment Failed" : ""}
+                        {paymentStatusMessage}
                     </h3>
                     <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
                 </div>
@@ -72,7 +80,12 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
             <div className="sm:flex sm:items-center sm:justify-between flex-col sm:flex-row">
                 <p className="flex-1 text-xl font-sans text-center font-semibold text-black-900">Here is your payment details</p>
             </div>
+             
             <div className="mt-6 overflow-hidden rounded-xl border shadow-lg p-5">
+                <div className="text-center mt-5 p-5">
+                <p className="text-2xl font-bold text-gray-600 ">Swim For India Academy</p>
+                <p className="text-xl font-bold">Delhi Open Talent Search Swimming Competition 2025</p>
+            </div>
                 <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2 " aria-hidden="true">
                     <tbody className="lg:border-gray-300">
                         <tr className="">
@@ -104,7 +117,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                                 Amount
                             </td>
                             <td className="whitespace-no-wrap py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
-                                Rs. {userData?.amount ?? "xxx"}
+                                Rs. {userData?.amount ?? "xxxx` "}
                             </td>
                         </tr>
                         <tr className="">

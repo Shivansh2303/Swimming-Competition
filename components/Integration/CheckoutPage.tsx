@@ -45,7 +45,7 @@ const CheckoutForm = (props: any) => {
 
     return (
         <form onSubmit={handleSubmit} className={`w-full mx-auto bg-white rounded-lg  `}>
-            <div className="text-center mt-5 p-5">
+              <div className="text-center mt-5 p-5">
                 <p className="text-2xl font-bold text-gray-600 ">Swim For India Academy</p>
                 <p className="text-xl font-bold">Delhi Open Talent Search Swimming Competition 2025</p>
             </div>
