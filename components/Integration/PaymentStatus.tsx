@@ -54,6 +54,10 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 <div className="sm:flex sm:items-center sm:justify-between flex-col sm:flex-row">
                     <p className="flex-1 text-xl font-sans text-center font-semibold text-black-900">Here is your payment details</p>
                 </div>
+                 <div className="text-center mt-5 p-5">
+                <p className="text-2xl font-bold text-gray-600 ">Swim For India Academy</p>
+                <p className="text-xl font-bold">Delhi Open Talent Search Swimming Competition 2025</p>
+            </div>
                 <div className="mt-6 overflow-hidden rounded-xl border shadow-lg p-5 ">
                     <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2 bg-gray-400" aria-hidden="true">
                   
