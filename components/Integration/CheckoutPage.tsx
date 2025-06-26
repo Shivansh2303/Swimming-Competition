@@ -47,7 +47,7 @@ const CheckoutForm = (props: any) => {
         <form onSubmit={handleSubmit} className={`w-full mx-auto bg-white rounded-lg  `}>
             <div className="text-center mt-5 p-5">
                 <p className="text-2xl font-bold text-gray-600 ">Swim For India Academy</p>
-                <p className="text-xl font-bold">Delhi Open Talent Search Swimming Competition 2024</p>
+                <p className="text-xl font-bold">Delhi Open Talent Search Swimming Competition 2025</p>
             </div>
             <div className={`container mx-auto  p-8  bg-gray-200 rounded-lg max-w-4xl ${loading ? "opacity-20" : ""} `}>
                 <div className="flex flex-col md:flex-row">
@@ -65,9 +65,9 @@ const CheckoutForm = (props: any) => {
                                     <div className="w-1/2 px-2 py-2 border-b">State  </div>
                                     <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.state ?? "Delhi"}{", "}India</div>
                                     <div className="w-1/2 px-2 py-2 border-b">Age Group</div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.ageGroup ?? "Masters Group"}</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-b border-r">{userData?.ageGroup ?? ""}</div>
                                     <div className="w-1/2 px-2 py-2">Parent Contact</div>
-                                    <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.parent1Contact ?? "9999999999"}</div>
+                                    <div className="w-1/2 text-center px-2 py-2 border-r">{userData?.parent1Contact ?? "xxxxxxxxxx"}</div>
                                 </div>
                                 <div className="flex justify-between font-bold text-sm mb-2">
                                     <p>Total Amount</p>

@@ -26,11 +26,15 @@ export default function AgeGroupOverview() {
       const res = await fetch("/api/admin");
       const swimmers = await res.json();
 
+
       const groupCount: Record<string, number> = {};
-      swimmers.data.forEach((s: any) => {
-        const group = s.ageGroup ?? "Unknown";
-        groupCount[group] = (groupCount[group] || 0) + 1;
-      });
+      if (Array.isArray(swimmers.data)) {
+        swimmers.data.forEach((s: any) => {
+          if (!s) return; // Check if swimmer exists
+          const group = s.ageGroup ?? "Unknown";
+          groupCount[group] = (groupCount[group] || 0) + 1;
+        });
+      }
 
       const formatted = Object.entries(groupCount).map(([group, count]) => ({
         name: group,

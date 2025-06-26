@@ -22,15 +22,17 @@ export default function SwimmerStatsCard() {
         maleAmount = 0,
         femaleAmount = 0;
 
-      data.forEach((swimmer: any) => {
-        if (swimmer.gender === "Male") {
-          maleCount++;
-          maleAmount += swimmer.amount ?? 0;
-        } else if (swimmer.gender === "Female") {
-          femaleCount++;
-          femaleAmount += swimmer.amount ?? 0;
-        }
-      });
+      if (data && Array.isArray(data)) {
+        data.forEach((swimmer: any) => {
+          if (swimmer.gender === "Male") {
+        maleCount++;
+        maleAmount += swimmer.amount ?? 0;
+          } else if (swimmer.gender === "Female") {
+        femaleCount++;
+        femaleAmount += swimmer.amount ?? 0;
+          }
+        });
+      }
 
       setStats({ maleCount, femaleCount, maleAmount, femaleAmount });
       setTotalSwimmers(maleCount + femaleCount);

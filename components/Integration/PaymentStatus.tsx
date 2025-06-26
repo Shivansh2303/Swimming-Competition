@@ -3,11 +3,7 @@
 import axios from 'axios';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import {  useEffect,useState } from 'react';
-interface ParamsInterface {
-    paymentID: string;
-    paymentStatus: string;
-    paymentRequestID: string;
-}
+
 
 export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
     const [userData, setUserData] = useState<any>({})

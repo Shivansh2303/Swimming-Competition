@@ -17,9 +17,10 @@ export default async function EmailService(userData: any) {
       to: "salisak929@hostlace.com",
       subject: "Swimming Competition Registration",
       html: `
-             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <p>Dear Swimmer,</p>
-      <p>Thank you for registering in the Delhi Open Talent Search Swimming Competition 2024.</p>
+      <p>Thank you for registering in the Delhi Open Talent Search Swimming Competition 2025.</p>
+      <p><strong>Event Date: 3rd August 2025, SUnday</strong></p>
       <p>Our Contact details are:</p>
       <p>Questions? Call/WhatsApp <strong>7065195811, 9310523009</strong></p>
       <p>Email: <a href="mailto:info@swimforindiaacademy.com" style="color: #1a73e8;">info@swimforindiaacademy.com</a></p>
@@ -30,7 +31,7 @@ export default async function EmailService(userData: any) {
       <p>Respectfully Yours,</p>
       <p>Dr. Jitender Tokas<br>Organizing Secretary</p>
     </div>
-          `,
+        `,
     };
     transporter.sendMail(mailOptions, function (error: any, info: any) {
       if (error) {
