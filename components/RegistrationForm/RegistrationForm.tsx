@@ -185,6 +185,7 @@ export default function SwimmingRegistrationForm() {
       relay: false,
       swimathon: false,
       email: "",
+      confirm_email:"",
       parentName: "",
       parent1Contact: "",
       parent2Contact: "",
@@ -210,9 +211,16 @@ export default function SwimmingRegistrationForm() {
         setError("Must select 1 swimming event.");
       }
     },
+    validate(values) {
+      const errors: Partial<typeof values> = {};
+      if (values.email !== values.confirm_email) {
+      errors.confirm_email = "Email must match";
+      }
+      return errors;
+    },
   });
   
-
+  
   const calculateCompetitionFees = (userData: any) => {
     const currentDate = new Date();
     let hasSwimmingEvents = 0;
@@ -401,6 +409,7 @@ export default function SwimmingRegistrationForm() {
       onSubmit={formik.handleSubmit}
       className={`max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-300 mt-10 pt-10`}
     >
+      <div>
       <h1 className="md:text-3xl text-2xl mb-4 mt-4 font-bold font-sans  text-center text-gray-800">
         Swim For India Academy
       </h1>
@@ -410,6 +419,23 @@ export default function SwimmingRegistrationForm() {
       <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">
         Delhi Open Talent Search Swimming Competition 2025
       </h1>
+      </div>
+      <div className="mb-6 p-4 bg-blue-200 rounded-lg border border-blue-400 text-center shadow">
+        <p className="font-semibold text-blue-900 mb-2">
+          Want to stay updated with our Delhi Open Talent Search Swimming Competition?
+        </p>
+        <p className="mb-2 text-blue-800">
+          Click the link below to join our official WhatsApp group for all event updates, announcements, and registration alerts.
+        </p>
+        <a
+          href="https://chat.whatsapp.com/InMpz909Yg34jCeXtnBya6"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition"
+        >
+          Join WhatsApp Group
+        </a>
+      </div>
       <InputField
         id="swimmerFirstName"
         label="Swimmer's First Name"
@@ -676,6 +702,15 @@ export default function SwimmingRegistrationForm() {
       />
       {formik.errors.email && formik.touched.email && (
         <span className="text-red-700">{formik.errors.email}</span>
+      )}
+      <InputField
+        id="confirm_email"
+        label="Confirm Email Address (of parent)"
+        value={formik.values.confirm_email}
+        onChange={handleChange}
+      />
+      {formik.errors.confirm_email && formik.touched.confirm_email && (
+        <span className="text-red-700">{formik.errors.confirm_email}</span>
       )}
       <InputField
         id="parentName"
