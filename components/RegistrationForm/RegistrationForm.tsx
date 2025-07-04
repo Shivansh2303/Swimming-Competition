@@ -401,7 +401,7 @@ export default function SwimmingRegistrationForm() {
 
   useEffect(() => {
     console.log("Errors", formik.errors);
-    console.log("values", formik.values);
+    // console.log("values", formik.values);
   }, [formik.values, formik.errors]);
 
   return (
@@ -428,7 +428,7 @@ export default function SwimmingRegistrationForm() {
           Click the link below to join our official WhatsApp group for all event updates, announcements, and registration alerts.
         </p>
         <a
-          href="https://chat.whatsapp.com/InMpz909Yg34jCeXtnBya6"
+          href="https://chat.whatsapp.com/InMpz9O9Yg34jCeXtnBya6?mode=ac_c"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition"
