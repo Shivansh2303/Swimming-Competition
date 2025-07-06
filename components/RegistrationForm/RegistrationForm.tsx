@@ -413,7 +413,7 @@ export default function SwimmingRegistrationForm() {
         Swim For India Academy
       </h1>
       <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">
-        Thursday, 24 August
+        Sunday, 24 August
       </h1>
       <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">
         Delhi Open Talent Search Swimming Competition 2025
