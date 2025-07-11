@@ -789,7 +789,7 @@ export default function SwimmingRegistrationForm() {
           I accept all the{" "}
           <a
             className={`md:text-m text-sm font-normal cursor-pointer select-none text-blue-500 underline`}
-            href="https://k6sa9dnnytt q1amd.public.blob.vercel-storage.com/Terms%20%26%20Conditions.pdf"
+            href="https://k6sa9dnnyttq1amd.public.blob.vercel-storage.com/Terms%20%26%20Conditions.pdf"
             target="_blank"
             rel="noreferrer"
           >
