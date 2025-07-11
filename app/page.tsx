@@ -1,7 +1,6 @@
 import SwimmingRegistrationForm from "@/components/RegistrationForm/RegistrationForm";
 import RegistrationClosed from "@/components/RegistrationForm/RegistrationClosed";
 const IsRegistrationOpen = process.env.NEXT_PUBLIC_IS_REGISTRATION_OPEN === 'true'; 
-console.log("IsRegistrationOpen:", (IsRegistrationOpen));
 export default function Home() {
   return (
     IsRegistrationOpen ? (
