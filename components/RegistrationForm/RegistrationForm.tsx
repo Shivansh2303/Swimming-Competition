@@ -147,7 +147,7 @@ interface FormValues {
   event_butterfly: boolean;
   butterflyTime: string;
   relay: boolean;
-  swimathon: boolean;
+  // swimathon: boolean;
   email: string;
   parentName: string;
   parent1Contact: string;
@@ -183,7 +183,7 @@ export default function SwimmingRegistrationForm() {
       event_butterfly: false,
       butterflyTime: "",
       relay: false,
-      swimathon: false,
+      // swimathon: false,
       email: "",
       confirm_email:"",
       parentName: "",
@@ -230,7 +230,7 @@ export default function SwimmingRegistrationForm() {
       event_breast_Stroke,
       event_butterfly,
       event_back_Stroke,
-      swimathon,
+      // swimathon,
     } = userData;
     if (
       event_freestyle ||
@@ -241,7 +241,7 @@ export default function SwimmingRegistrationForm() {
       hasSwimmingEvents = 1;
     }
     const hasRelay = relay ? 1 : 0;
-    const hasSwimathon = swimathon ? 1 : 0;
+    // const hasSwimathon = swimathon ? 1 : 0;
     const date1 = new Date(
       (process.env.NEXT_PUBLIC_LATE_FEES_DATE1 as string) ?? ""
     );
@@ -302,8 +302,7 @@ export default function SwimmingRegistrationForm() {
       if (currentDate < fee.date) {
         calculatedAmount =
           swimmingEventsCount * fee.swimmingEventFee +
-          hasRelay * fee.relayFee +
-          hasSwimathon * fee.marathonFee;
+          hasRelay * fee.relayFee;
         break;
       }
     }
@@ -312,8 +311,7 @@ export default function SwimmingRegistrationForm() {
       const lastFee = feeStructure[feeStructure.length - 1];
       calculatedAmount =
         hasSwimmingEvents * lastFee.swimmingEventFee +
-        hasRelay * lastFee.relayFee +
-        hasSwimathon * lastFee.marathonFee;
+        hasRelay * lastFee.relayFee;
     }
 
     return calculatedAmount;
@@ -693,15 +691,6 @@ export default function SwimmingRegistrationForm() {
       />
       {formik.errors.relay && formik.touched.relay && (
         <span className="text-red-700">{formik.errors.relay}</span>
-      )}
-      <CheckboxField
-        id="swimathon"
-        label="Swimathon (Open to all age group)"
-        checked={formik.values.swimathon}
-        onChange={handleChange}
-      />
-      {formik.errors.swimathon && formik.touched.swimathon && (
-        <span className="text-red-700">{formik.errors.swimathon}</span>
       )}
       <InputField
         id="email"
