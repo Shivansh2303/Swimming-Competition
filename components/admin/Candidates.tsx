@@ -22,7 +22,7 @@ type Swimmer = {
   event_butterfly:	false;
   butterflyTime  : string;
   relay: boolean;
-  swimathon: boolean;
+  // swimathon: boolean;
   parentName: string;
   parent1Contact: string;
   parent2Contact: string;
@@ -111,9 +111,9 @@ export default function SwimmerPerformance() {
               <td className="">
           <input type="checkbox" name="relay" checked={swimmer.relay} readOnly />
               </td>
-              <td className="">
+              {/* <td className="">
           <input type="checkbox" name="swimation" checked={swimmer.swimathon} readOnly />
-              </td>
+              </td> */}
               <td className="">
           {swimmer.proofOfAge ? (
             <a

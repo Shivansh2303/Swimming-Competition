@@ -12,7 +12,7 @@ interface ISwimmingCompetitionForm extends Document {
   ageGroup: string;
   events: [];
   relay: boolean;
-  swimathon: boolean;
+  // swimathon: boolean;
   email: string;
   parent1Contact: string;
   parent2Contact: string;
@@ -33,7 +33,7 @@ const SwimmingCompetitionFormSchema: Schema = new Schema(
     proofOfAge: { type: String, required: false },
     ageGroup: { type: String, required: true },
     relay: { type: Boolean, required: false },
-    swimathon: { type: Boolean, required: false },
+    // swimathon: { type: Boolean, required: false },
     email: { type: String, required: true },
     event_freestyle: { type: Boolean, required: false },
     freestyleTime: { type: String, required: false },
