@@ -435,6 +435,15 @@ export default function SwimmingRegistrationForm() {
           Join WhatsApp Group
         </a>
         <p className="mt-4 text-blue-900 font-semibold"></p>
+        <p className="mt-4 text-blue-900 font-semibold">
+          For sponsorship collaborations please write a mail at{" "}
+          <a
+            href="mailto:swimforindiaacademy@gmail.com"
+            className="text-blue-700 underline"
+          >
+            swimforindiaacademy@gmail.com
+          </a>
+        </p>
       </div>
       <InputField
         id="swimmerFirstName"
