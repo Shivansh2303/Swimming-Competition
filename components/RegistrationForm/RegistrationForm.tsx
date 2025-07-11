@@ -434,6 +434,7 @@ export default function SwimmingRegistrationForm() {
         >
           Join WhatsApp Group
         </a>
+        <p className="mt-4 text-blue-900 font-semibold"></p>
       </div>
       <InputField
         id="swimmerFirstName"
@@ -779,7 +780,7 @@ export default function SwimmingRegistrationForm() {
           I accept all the{" "}
           <a
             className={`md:text-m text-sm font-normal cursor-pointer select-none text-blue-500 underline`}
-            href="https://k6sa9dnnyttq1amd.public.blob.vercel-storage.com/Terms%20&%20Conditions-5kJqms5Hc2cLUpkrcCWPLvNsX7nl4a.pdf"
+            href="https://k6sa9dnnyttq1amd.public.blob.vercel-storage.com/Terms%20%26%20Conditions.pdf"
             target="_blank"
             rel="noreferrer"
           >
