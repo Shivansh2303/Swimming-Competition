@@ -62,54 +62,68 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                             d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
                         </path>
                     </svg>
-                    <h3 className="md:text-3xl text-xl text-gray-900 font-bold text-center mb-2">
-                        {userData?.paymentStatus === 'Credit' ? "Payment Done!" : userData?.paymentStatus === '' ? "Payment Failed" : ""}
-                    </h3>
+                    {(() => {
+                        let paymentMessage = "";
+                        if (userData?.paymentStatus === 'Credit') {
+                            paymentMessage = "Payment Done!";
+                        } else if (userData?.paymentStatus === '') {
+                            paymentMessage = "Payment Failed";
+                        }
+                        return (
+                            <h3 className="md:text-3xl text-xl text-gray-900 font-bold text-center mb-2">
+                                {paymentMessage}
+                            </h3>
+                        );
+                    })()}
                     <p className="text-gray-600 mb-4 text-center">Thank you for completing your secure online payment.</p>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
                     <p className="text-lg font-semibold text-center w-full">Here is your payment details</p>
                 </div>
-                <div className="text-center mb-6">
-                    <p className="text-2xl font-bold text-indigo-700">Swim For India Academy</p>
-                    <p className="text-lg font-semibold text-gray-700">Delhi Open Talent Search Swimming Competition 2025</p>
-                </div>
-                <div className="overflow-hidden rounded-xl border border-gray-200 shadow p-5 bg-gray-50">
-                    <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2">
-                        <thead>
-                            <tr>
-                                <th className="py-3 text-sm font-bold text-gray-900 text-left">Field</th>
-                                <th className="py-3 text-sm font-bold text-gray-900 text-left">Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="py-3 text-sm font-bold text-gray-900">Swimmer&#39;s Name</td>
-                                <td className="py-3 text-sm text-gray-700">{userData?.swimmerFirstName ?? "First Name"}{" "}{userData?.swimmerLastName ?? "Last Name"}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-3 text-sm font-bold text-gray-900">Email</td>
-                                <td className="py-3 text-sm text-gray-700">{userData?.email ?? "example@mail.com"}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-3 text-sm font-bold text-gray-900">Contact</td>
-                                <td className="py-3 text-sm text-gray-700">{userData?.parent1Contact ?? "xxxxxxxxxx"}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-3 text-sm font-bold text-gray-900">Amount</td>
-                                <td className="py-3 text-sm text-gray-700">Rs. {userData?.amount ?? "xxx"}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-3 text-sm font-bold text-gray-900">Transaction ID</td>
-                                <td className="py-3 text-sm text-gray-700">{userData?.paymentID ?? "xxxxxxxxxx"}</td>
-                            </tr>
-                            <tr>
-                                <td className="py-3 text-sm font-bold text-gray-900">Date & Time</td>
-                                <td className="py-3 text-sm text-gray-700">{userData?.createdAt ? new Date(userData?.createdAt).toLocaleString() : new Date().toLocaleString()}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                {!loading && (
+                    <div className="text-center mb-6">
+                        <p className="text-2xl font-bold text-indigo-700">Swim For India Academy</p>
+                        <p className="text-lg font-semibold text-gray-700">Delhi Open Talent Search Swimming Competition 2025</p>
+                    </div>
+                )}
+                {!loading && (
+                    <div className="overflow-hidden rounded-xl border border-gray-200 shadow p-5 bg-gray-50">
+                        <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2">
+                            <thead>
+                                <tr>
+                                    <th className="py-3 text-sm font-bold text-gray-900 text-left">Field</th>
+                                    <th className="py-3 text-sm font-bold text-gray-900 text-left">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="py-3 text-sm font-bold text-gray-900">Swimmer&#39;s Name</td>
+                                    <td className="py-3 text-sm text-gray-700">{userData?.swimmerFirstName ?? "First Name"}{" "}{userData?.swimmerLastName ?? "Last Name"}</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 text-sm font-bold text-gray-900">Email</td>
+                                    <td className="py-3 text-sm text-gray-700">{userData?.email ?? "example@mail.com"}</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 text-sm font-bold text-gray-900">Contact</td>
+                                    <td className="py-3 text-sm text-gray-700">{userData?.parent1Contact ?? "xxxxxxxxxx"}</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 text-sm font-bold text-gray-900">Amount</td>
+                                    <td className="py-3 text-sm text-gray-700">Rs. {userData?.amount ?? "xxx"}</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 text-sm font-bold text-gray-900">Transaction ID</td>
+                                    <td className="py-3 text-sm text-gray-700">{userData?.paymentID ?? "xxxxxxxxxx"}</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 text-sm font-bold text-gray-900">Date & Time</td>
+                                    <td className="py-3 text-sm text-gray-700">{userData?.createdAt ? new Date(userData?.createdAt).toLocaleString() : new Date().toLocaleString()}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                )}
                 <div className="text-center mt-8">
                     <p className="text-lg font-semibold text-gray-800 mb-4">Have a great day!</p>
                     <a href="/" className="inline-block px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg shadow transition-colors duration-200">
