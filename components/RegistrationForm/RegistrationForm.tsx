@@ -29,101 +29,201 @@ const referral = [
   { value: "Other", label: "Other" },
 ];
 
-const ageGroupOptions = [
+const ageGroupOptionsMale = [
   { value: "", label: "Select Age Group", startYear: 0, endYear: 0 },
   {
-    value: "Group 1 Boys & Girls",
-    label: "Group - 1 Boys & Girls (Born between 1/1/2008 to 31/12/2010",
+    value: "Group 1 Boys",
+    label: "Group - 1 Boys (Born between 1/1/2008 to 31/12/2010)",
     startYear: 2008,
     endYear: 2010,
   },
   {
-    value: "Group 2 Boys & Girls",
-    label: "Group - 2 Boys & Girls (Born 2011)",
+    value: "Group 2 Boys",
+    label: "Group - 2 Boys (Born 2011)",
     startYear: 2011,
     endYear: 2011,
   },
   {
-    value: "Group 3 Boys & Girls",
-    label: "Group - 3 Boys & Girls (Born 2012)",
+    value: "Group 3 Boys",
+    label: "Group - 3 Boys (Born 2012)",
     startYear: 2012,
     endYear: 2012,
   },
   {
-    value: "Group 4 Boys & Girls",
-    label: "Group - 4 Boys & Girls (Born 2013)",
+    value: "Group 4 Boys",
+    label: "Group - 4 Boys (Born 2013)",
     startYear: 2013,
     endYear: 2013,
   },
   {
-    value: "Group 5 Boys & Girls",
-    label: "Group - 5 Boys & Girls (Born 2014)",
+    value: "Group 5 Boys",
+    label: "Group - 5 Boys (Born 2014)",
     startYear: 2014,
     endYear: 2014,
   },
   {
-    value: "Group 6 Boys & Girls",
-    label: "Group - 6 Boys & Girls (Born 2015)",
+    value: "Group 6 Boys",
+    label: "Group - 6 Boys (Born 2015)",
     startYear: 2015,
     endYear: 2015,
   },
   {
-    value: "Group 7 Boys & Girls",
-    label: "Group - 7 Boys & Girls (Born 2016)",
+    value: "Group 7 Boys",
+    label: "Group - 7 Boys (Born 2016)",
     startYear: 2016,
     endYear: 2016,
   },
   {
-    value: "Group 8 Boys & Girls",
-    label: "Group - 8 Boys & Girls (Born 2017)",
+    value: "Group 8 Boys",
+    label: "Group - 8 Boys (Born 2017)",
     startYear: 2017,
     endYear: 2017,
   },
   {
-    value: "Group 9 Boys & Girls",
-    label: "Group - 9 Boys & Girls (Born 2018)",
+    value: "Group 9 Boys",
+    label: "Group - 9 Boys (Born 2018)",
     startYear: 2018,
     endYear: 2018,
   },
   {
-    value: "Group 10 Boys & Girls",
-    label: "Group - 10 Boys & Girls (Born 2019)",
+    value: "Group 10 Boys",
+    label: "Group - 10 Boys (Born 2019)",
     startYear: 2019,
     endYear: 2019,
   },
   {
-    value: "Group 11 Boys & Girls",
-    label: "Group - 11 Boys & Girls (Born 2020)",
+    value: "Group 11 Boys",
+    label: "Group - 11 Boys (Born 2020)",
     startYear: 2020,
     endYear: 2020,
   },
   {
-    value: "Seniors Boys & Girls:18 yrs to 29 yrs",
-    label: "Seniors Boys & Girls:18 yrs to 29 yrs",
+    value: "Seniors Men: 18 yrs to 29 yrs",
+    label: "Seniors Men: 18 yrs to 29 yrs",
     startYear: 2007,
     endYear: 1996,
   },
   {
-    value: "Group A Men & Women: 30 to 40 yrs",
-    label: "Group-A Men & Women: 30 to 40 yrs",
+    value: "Group A Men: 30 to 40 yrs",
+    label: "Group-A Men: 30 to 40 yrs",
     startYear: 1995,
     endYear: 1985,
   },
   {
-    value: "Group B Men & Women: 41 to 50 yrs",
-    label: "Group-B Men & Women: 41 to 50 yrs",
+    value: "Group B Men: 41 to 50 yrs",
+    label: "Group-B Men: 41 to 50 yrs",
     startYear: 1984,
     endYear: 1975,
   },
   {
-    value: "Group C Men & Women: 51 to 60 yrs",
-    label: "Group-C Men & Women: 51 to 60 yrs",
+    value: "Group C Men: 51 to 60 yrs",
+    label: "Group-C Men: 51 to 60 yrs",
     startYear: 1974,
     endYear: 1965,
   },
   {
-    value: "Group D Men & Women:61+ yrs",
-    label: "Group-D Men & Women: 61+ yrs",
+    value: "Group D Men: 61+ yrs",
+    label: "Group-D Men: 61+ yrs",
+    startYear: 1964,
+    endYear: null,
+  },
+];
+
+const ageGroupOptionsFemale = [
+  { value: "", label: "Select Age Group", startYear: 0, endYear: 0 },
+  {
+    value: "Group 1 Girls",
+    label: "Group - 1 Girls (Born between 1/1/2008 to 31/12/2010)",
+    startYear: 2008,
+    endYear: 2010,
+  },
+  {
+    value: "Group 2 Girls",
+    label: "Group - 2 Girls (Born 2011)",
+    startYear: 2011,
+    endYear: 2011,
+  },
+  {
+    value: "Group 3 Girls",
+    label: "Group - 3 Girls (Born 2012)",
+    startYear: 2012,
+    endYear: 2012,
+  },
+  {
+    value: "Group 4 Girls",
+    label: "Group - 4 Girls (Born 2013)",
+    startYear: 2013,
+    endYear: 2013,
+  },
+  {
+    value: "Group 5 Girls",
+    label: "Group - 5 Girls (Born 2014)",
+    startYear: 2014,
+    endYear: 2014,
+  },
+  {
+    value: "Group 6 Girls",
+    label: "Group - 6 Girls (Born 2015)",
+    startYear: 2015,
+    endYear: 2015,
+  },
+  {
+    value: "Group 7 Girls",
+    label: "Group - 7 Girls (Born 2016)",
+    startYear: 2016,
+    endYear: 2016,
+  },
+  {
+    value: "Group 8 Girls",
+    label: "Group - 8 Girls (Born 2017)",
+    startYear: 2017,
+    endYear: 2017,
+  },
+  {
+    value: "Group 9 Girls",
+    label: "Group - 9 Girls (Born 2018)",
+    startYear: 2018,
+    endYear: 2018,
+  },
+  {
+    value: "Group 10 Girls",
+    label: "Group - 10 Girls (Born 2019)",
+    startYear: 2019,
+    endYear: 2019,
+  },
+  {
+    value: "Group 11 Girls",
+    label: "Group - 11 Girls (Born 2020)",
+    startYear: 2020,
+    endYear: 2020,
+  },
+  {
+    value: "Seniors Women: 18 yrs to 29 yrs",
+    label: "Seniors Women: 18 yrs to 29 yrs",
+    startYear: 2007,
+    endYear: 1996,
+  },
+  {
+    value: "Group A Women: 30 to 40 yrs",
+    label: "Group-A Women: 30 to 40 yrs",
+    startYear: 1995,
+    endYear: 1985,
+  },
+  {
+    value: "Group B Women: 41 to 50 yrs",
+    label: "Group-B Women: 41 to 50 yrs",
+    startYear: 1984,
+    endYear: 1975,
+  },
+  {
+    value: "Group C Women: 51 to 60 yrs",
+    label: "Group-C Women: 51 to 60 yrs",
+    startYear: 1974,
+    endYear: 1965,
+  },
+  {
+    value: "Group D Women: 61+ yrs",
+    label: "Group-D Women: 61+ yrs",
     startYear: 1964,
     endYear: null,
   },
@@ -147,7 +247,6 @@ interface FormValues {
   event_butterfly: boolean;
   butterflyTime: string;
   relay: boolean;
-  // swimathon: boolean;
   email: string;
   parentName: string;
   parent1Contact: string;
@@ -183,7 +282,6 @@ export default function SwimmingRegistrationForm() {
       event_butterfly: false,
       butterflyTime: "",
       relay: false,
-      // swimathon: false,
       email: "",
       confirm_email:"",
       parentName: "",
@@ -230,7 +328,6 @@ export default function SwimmingRegistrationForm() {
       event_breast_Stroke,
       event_butterfly,
       event_back_Stroke,
-      // swimathon,
     } = userData;
     if (
       event_freestyle ||
@@ -241,7 +338,6 @@ export default function SwimmingRegistrationForm() {
       hasSwimmingEvents = 1;
     }
     const hasRelay = relay ? 1 : 0;
-    // const hasSwimathon = swimathon ? 1 : 0;
     const date1 = new Date(
       (process.env.NEXT_PUBLIC_LATE_FEES_DATE1 as string) ?? ""
     );
@@ -267,9 +363,7 @@ export default function SwimmingRegistrationForm() {
         relayFee: process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT1
           ? parseInt(process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT1, 10)
           : 0,
-        marathonFee: process.env.NEXT_PUBLIC_MARATHON_LATE_FEES_AMOUNT1
-          ? parseInt(process.env.NEXT_PUBLIC_MARATHON_LATE_FEES_AMOUNT1, 10)
-          : 0,
+       
       },
       {
         date: date2,
@@ -279,9 +373,7 @@ export default function SwimmingRegistrationForm() {
         relayFee: process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT2
           ? parseInt(process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT2, 10)
           : 0,
-        marathonFee: process.env.NEXT_PUBLIC_MARATHON_LATE_FEES_AMOUNT2
-          ? parseInt(process.env.NEXT_PUBLIC_MARATHON_LATE_FEES_AMOUNT2, 10)
-          : 0,
+        
       },
       {
         date: date3,
@@ -291,9 +383,7 @@ export default function SwimmingRegistrationForm() {
         relayFee: process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT3
           ? parseInt(process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT3, 10)
           : 0,
-        marathonFee: process.env.NEXT_PUBLIC_MARATHON_LATE_FEES_AMOUNT3
-          ? parseInt(process.env.NEXT_PUBLIC_MARATHON_LATE_FEES_AMOUNT3, 10)
-          : 0,
+        
       },
     ];
 
@@ -360,18 +450,12 @@ export default function SwimmingRegistrationForm() {
     }
     formik.setFieldValue("proofOfAge", response?.data?.url);
   };
-  const getAgeGroup = (birthYear: number) => {
-    for (const group of ageGroupOptions) {
+  const getAgeGroup = (birthYear: number, gender?: string) => {
+    const groups = formik.values.gender === "Male" ? ageGroupOptionsMale : ageGroupOptionsFemale;
+    for (const group of groups) {
       if (group.endYear === null) {
-        // For open-ended groups (e.g., Masters D: 61+ yrs)
-        if (birthYear <= group.startYear) {
-          return group.value;
-        }
-      } else if (
-        group.startYear !== undefined &&
-        group.endYear !== undefined
-      ) {
-        // Handle both increasing and decreasing year ranges
+        if (birthYear <= group.startYear) return group.value;
+      } else if (group.startYear !== undefined && group.endYear !== undefined) {
         if (
           (group.startYear <= group.endYear && birthYear >= group.startYear && birthYear <= group.endYear) ||
           (group.startYear > group.endYear && birthYear <= group.startYear && birthYear >= group.endYear)
@@ -383,26 +467,31 @@ export default function SwimmingRegistrationForm() {
     return "Unknown Group";
   };
 
-  const handleAgeGroupChange = (e: Date | undefined) => {
-
-    if (!e) {
-      formik.setFieldValue("ageGroup", "Unknown Group");
-      return "Unknown Group";
+  // Enhanced: Auto-select age group on DOB or gender change
+  useEffect(() => {
+    if (formik.values.dob && formik.values.gender) {
+      const birthYear = new Date(formik.values.dob).getFullYear();
+      const ageGroup = getAgeGroup(birthYear, formik.values.gender);
+      formik.setFieldValue("ageGroup", ageGroup);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values.dob, formik.values.gender]);
 
-    const birthYear = new Date(e).getFullYear();
-
-    const ageGroup = getAgeGroup(birthYear);
-    formik.setFieldValue("ageGroup", ageGroup);
-    return ageGroup;
-  };
+  let ageGroupOptions: typeof ageGroupOptionsMale | typeof ageGroupOptionsFemale | Array<{ value: string; label: string }>;
+  if (formik.values.gender === "Male") {
+    ageGroupOptions = ageGroupOptionsMale;
+  } else if (formik.values.gender === "Female") {
+    ageGroupOptions = ageGroupOptionsFemale;
+  } else {
+    ageGroupOptions = [{ value: "", label: "Select Age Group" }];
+  }
 
   useEffect(() => {
     console.log("Errors", formik.errors);
   }, [formik.values, formik.errors]);
 
   return (
-    <form
+     <form
       onSubmit={formik.handleSubmit}
       className={`max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-300 mt-10 pt-10`}
     >
@@ -520,8 +609,6 @@ export default function SwimmingRegistrationForm() {
         label="Date of Birth"
         onChange={(e) => {
           formik.setFieldValue("dob", e);
-          console.log("Date", e);
-          handleAgeGroupChange(e);
         }}
       />
       {formik.errors.dob && formik.touched.dob && (
@@ -685,7 +772,7 @@ export default function SwimmingRegistrationForm() {
       </div>
       <CheckboxField
         id="relay"
-        label="Relay 2x50 (Teams consist of 2 swimmers, regardless of gender.)"
+        label="Mixed Freestyle Relay 2x50m (Teams consist of 2 swimmers, regardless of gender.)"
         checked={formik.values.relay}
         onChange={handleChange}
       />
