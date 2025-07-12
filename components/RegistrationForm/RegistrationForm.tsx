@@ -391,7 +391,7 @@ export default function SwimmingRegistrationForm() {
     for (const fee of feeStructure) {
       if (currentDate < fee.date) {
         calculatedAmount =
-          swimmingEventsCount * fee.swimmingEventFee +
+          hasSwimmingEvents * fee.swimmingEventFee +
           hasRelay * fee.relayFee;
         break;
       }
