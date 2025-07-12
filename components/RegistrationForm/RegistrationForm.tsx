@@ -772,7 +772,7 @@ export default function SwimmingRegistrationForm() {
       </div>
       <CheckboxField
         id="relay"
-        label="Mixed Freestyle Relay 2x50m (Teams consist of 2 swimmers, regardless of gender.)"
+        label="2x50m Mixed Freestyle Relay (Teams consist of 2 swimmers, regardless of gender.)"
         checked={formik.values.relay}
         onChange={handleChange}
       />
