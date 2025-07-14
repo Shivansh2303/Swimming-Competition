@@ -22,7 +22,8 @@ type Swimmer = {
   event_butterfly:	false;
   butterflyTime  : string;
   relay: boolean;
-  // swimathon: boolean;
+  swimmer1: string; 
+  swimmer2: string;
   parentName: string;
   parent1Contact: string;
   parent2Contact: string;
@@ -111,9 +112,16 @@ export default function SwimmerPerformance() {
               <td className="">
           <input type="checkbox" name="relay" checked={swimmer.relay} readOnly />
               </td>
-              {/* <td className="">
-          <input type="checkbox" name="swimation" checked={swimmer.swimathon} readOnly />
-              </td> */}
+              <td className="">
+          {swimmer.swimmer1 ? (
+            <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
+              {swimmer.swimmer1}</span>):"N/A"}
+              </td>
+              <td className="">
+          {swimmer.swimmer2 ? (
+            <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
+              {swimmer.swimmer2}</span>):"N/A"}
+              </td>
               <td className="">
           {swimmer.proofOfAge ? (
             <a
@@ -243,7 +251,8 @@ export default function SwimmerPerformance() {
           <th className="sticky top-0 bg-white z-10 py-2 px-4">Age Group</th>
           <th className="sticky top-0 bg-white z-10 py-2 px-4">Event & Duration</th>
           <th className="sticky top-0 bg-white z-10 py-2 px-4">Relay</th>
-          <th className="sticky top-0 bg-white z-10 py-2 px-4">Swimation</th>
+          <th className="sticky top-0 bg-white z-10 py-2 px-4">Swimmer 1</th>
+          <th className="sticky top-0 bg-white z-10 py-2 px-4">Swimmer 2</th>
           <th className="sticky top-0 bg-white z-10 py-2 px-4">Proof Of Age</th>
           <th className="sticky top-0 bg-white z-10 py-2 px-4">Parent Name</th>
           <th className="sticky top-0 bg-white z-10 py-2 px-4">Parent Contact 1</th>
