@@ -106,25 +106,25 @@ const ageGroupOptionsMale = [
   {
     value: "Group A Men: 30 to 40 yrs",
     label: "Group-A Men: 30 to 40 yrs",
-    startYear: 1995,
-    endYear: 1985,
+    startYear: 1997,
+    endYear: 1988,
   },
   {
     value: "Group B Men: 41 to 50 yrs",
     label: "Group-B Men: 41 to 50 yrs",
-    startYear: 1984,
-    endYear: 1975,
+    startYear: 1987,
+    endYear: 1978,
   },
   {
     value: "Group C Men: 51 to 60 yrs",
     label: "Group-C Men: 51 to 60 yrs",
-    startYear: 1974,
-    endYear: 1965,
+    startYear: 1977,
+    endYear: 1968,
   },
   {
     value: "Group D Men: 61+ yrs",
     label: "Group-D Men: 61+ yrs",
-    startYear: 1964,
+    startYear: 1967,
     endYear: null,
   },
 ];
@@ -282,8 +282,10 @@ export default function SwimmingRegistrationForm() {
       event_butterfly: false,
       butterflyTime: "",
       relay: false,
+      swimmer1: "",
+      swimmer2: "",
       email: "",
-      confirm_email:"",
+      confirm_email: "",
       parentName: "",
       parent1Contact: "",
       parent2Contact: "",
@@ -312,13 +314,12 @@ export default function SwimmingRegistrationForm() {
     validate(values) {
       const errors: Partial<typeof values> = {};
       if (values.email !== values.confirm_email) {
-      errors.confirm_email = "Email must match";
+        errors.confirm_email = "Email must match";
       }
       return errors;
     },
   });
-  
-  
+
   const calculateCompetitionFees = (userData: any) => {
     const currentDate = new Date();
     let hasSwimmingEvents = 0;
@@ -363,7 +364,6 @@ export default function SwimmingRegistrationForm() {
         relayFee: process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT1
           ? parseInt(process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT1, 10)
           : 0,
-       
       },
       {
         date: date2,
@@ -373,7 +373,6 @@ export default function SwimmingRegistrationForm() {
         relayFee: process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT2
           ? parseInt(process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT2, 10)
           : 0,
-        
       },
       {
         date: date3,
@@ -383,7 +382,6 @@ export default function SwimmingRegistrationForm() {
         relayFee: process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT3
           ? parseInt(process.env.NEXT_PUBLIC_RELAY_LATE_FEES_AMOUNT3, 10)
           : 0,
-        
       },
     ];
 
@@ -391,8 +389,7 @@ export default function SwimmingRegistrationForm() {
     for (const fee of feeStructure) {
       if (currentDate < fee.date) {
         calculatedAmount =
-          hasSwimmingEvents * fee.swimmingEventFee +
-          hasRelay * fee.relayFee;
+          hasSwimmingEvents * fee.swimmingEventFee + hasRelay * fee.relayFee;
         break;
       }
     }
@@ -451,14 +448,21 @@ export default function SwimmingRegistrationForm() {
     formik.setFieldValue("proofOfAge", response?.data?.url);
   };
   const getAgeGroup = (birthYear: number, gender?: string) => {
-    const groups = formik.values.gender === "Male" ? ageGroupOptionsMale : ageGroupOptionsFemale;
+    const groups =
+      formik.values.gender === "Male"
+        ? ageGroupOptionsMale
+        : ageGroupOptionsFemale;
     for (const group of groups) {
       if (group.endYear === null) {
         if (birthYear <= group.startYear) return group.value;
       } else if (group.startYear !== undefined && group.endYear !== undefined) {
         if (
-          (group.startYear <= group.endYear && birthYear >= group.startYear && birthYear <= group.endYear) ||
-          (group.startYear > group.endYear && birthYear <= group.startYear && birthYear >= group.endYear)
+          (group.startYear <= group.endYear &&
+            birthYear >= group.startYear &&
+            birthYear <= group.endYear) ||
+          (group.startYear > group.endYear &&
+            birthYear <= group.startYear &&
+            birthYear >= group.endYear)
         ) {
           return group.value;
         }
@@ -477,7 +481,10 @@ export default function SwimmingRegistrationForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.dob, formik.values.gender]);
 
-  let ageGroupOptions: typeof ageGroupOptionsMale | typeof ageGroupOptionsFemale | Array<{ value: string; label: string }>;
+  let ageGroupOptions:
+    | typeof ageGroupOptionsMale
+    | typeof ageGroupOptionsFemale
+    | Array<{ value: string; label: string }>;
   if (formik.values.gender === "Male") {
     ageGroupOptions = ageGroupOptionsMale;
   } else if (formik.values.gender === "Female") {
@@ -485,33 +492,42 @@ export default function SwimmingRegistrationForm() {
   } else {
     ageGroupOptions = [{ value: "", label: "Select Age Group" }];
   }
-
+  useEffect(() => {
+    if (formik.values.relay) {
+      if (!formik.values.swimmer1 || !formik.values.swimmer2) {
+        formik.setFieldError("swimmer1", "Relay swimmer 1 is required");
+        formik.setFieldError("swimmer2", "Relay swimmer 2 is required");
+      }
+    }
+  }, [formik, formik.values.relay, formik.values.swimmer1, formik.values.swimmer2]);
   useEffect(() => {
     console.log("Errors", formik.errors);
   }, [formik.values, formik.errors]);
 
   return (
-     <form
+    <form
       onSubmit={formik.handleSubmit}
       className={`max-w-4xl mx-auto p-6 shadow-md rounded-lg bg-blue-300 mt-10 pt-10`}
     >
       <div>
-      <h1 className="md:text-3xl text-2xl mb-4 mt-4 font-bold font-sans  text-center text-gray-800">
-        Swim For India Academy
-      </h1>
-      <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">
-        Sunday, 24 August
-      </h1>
-      <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">
-        Delhi Open Talent Search Swimming Competition 2025
-      </h1>
+        <h1 className="md:text-3xl text-2xl mb-4 mt-4 font-bold font-sans  text-center text-gray-800">
+          Swim For India Academy
+        </h1>
+        <h1 className="md:text-2xl text-lg mb-4 font-bold font-sans text-center text-gray-800">
+          Sunday, 24 August
+        </h1>
+        <h1 className="md:text-[25px] text-lg text-center mb-4 font-bold font-sans">
+          Delhi Open Talent Search Swimming Competition 2025
+        </h1>
       </div>
       <div className="mb-6 p-4 bg-blue-200 rounded-lg border border-blue-400 text-center shadow">
         <p className="font-semibold text-blue-900 mb-2">
-          Want to stay updated with our Delhi Open Talent Search Swimming Competition?
+          Want to stay updated with our Delhi Open Talent Search Swimming
+          Competition?
         </p>
         <p className="mb-2 text-blue-800">
-          Click the link below to join our official WhatsApp group for all event updates, announcements, and registration alerts.
+          Click the link below to join our official WhatsApp group for all event
+          updates, announcements, and registration alerts.
         </p>
         <a
           href="https://chat.whatsapp.com/InMpz9O9Yg34jCeXtnBya6?mode=ac_c"
@@ -770,15 +786,37 @@ export default function SwimmingRegistrationForm() {
           <span className="text-red-700 md:text-m text-sm">{error}</span>
         )}
       </div>
-      <CheckboxField
-        id="relay"
-        label="2x50m Mixed Freestyle Relay (Teams consist of 2 swimmers, regardless of gender.)"
-        checked={formik.values.relay}
-        onChange={handleChange}
-      />
-      {formik.errors.relay && formik.touched.relay && (
-        <span className="text-red-700">{formik.errors.relay}</span>
-      )}
+      <div className="border-4 p-4 mb-2 rounded-lg">
+        <CheckboxField
+          id="relay"
+          label="2x50m Mixed Freestyle Relay (Teams consist of 2 swimmers, regardless of gender.)"
+          checked={formik.values.relay}
+          onChange={handleChange}
+        />
+        {formik.errors.relay && formik.touched.relay && (
+          <span className="text-red-700">{formik.errors.relay}</span>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputField
+            id="swimmer1"
+            label="Relay Swimmer 1 Name"
+            value={formik.values.swimmer1}
+            onChange={handleChange}
+          />
+          {formik.errors.swimmer1 && formik.touched.swimmer1 && (
+            <span className="text-red-700">{formik.errors.swimmer1}</span>
+          )}
+          <InputField
+            id="swimmer2"
+            label="Relay Swimmer 2 Name"
+            value={formik.values.swimmer2}
+            onChange={handleChange}
+          />
+          {formik.errors.swimmer2 && formik.touched.swimmer2 && (
+            <span className="text-red-700">{formik.errors.swimmer2}</span>
+          )}
+        </div>
+      </div>
       <InputField
         id="email"
         label="Email Address (of parent)"
