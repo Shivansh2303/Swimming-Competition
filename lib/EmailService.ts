@@ -5,7 +5,7 @@ export default async function EmailService(userData: any) {
     const transporter = nodemailer.createTransport({
       host: process.env.NEXT_PUBLIC_SMTP_HOST,
       port: parseInt(process.env.NEXT_PUBLIC_SMTP_PORT!),
-      secure: false, // Use `true` for port 465, `false` for all other ports
+      secure: true, // Use `true` for port 465, `false` for all other ports
       auth: {
         user: process.env.NEXT_PUBLIC_SMTP_USER,
         pass: process.env.NEXT_PUBLIC_SMTP_PASS,
@@ -14,7 +14,7 @@ export default async function EmailService(userData: any) {
 
     const mailOptions = {
       from: "info@swimforindiaacademy.com",
-      to: "salisak929@hostlace.com",
+      to: userData.email,
       subject: "Swimming Competition Registration",
       html: `
          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -36,9 +36,9 @@ export default async function EmailService(userData: any) {
     transporter.sendMail(mailOptions, function (error: any, info: any) {
       if (error) {
         console.log("Error:", error);
-      }else{
+      }
+      else{
         console.log("Email sent: ",info.response);
-        
       }
     });
   } catch (error) {
