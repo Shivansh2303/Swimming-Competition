@@ -3,19 +3,20 @@ import nodemailer from "nodemailer";
 export default async function EmailService(userData: any) {
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.NEXT_PUBLIC_SMTP_HOST,
-      port: parseInt(process.env.NEXT_PUBLIC_SMTP_PORT!),
-      secure: true, // Use `true` for port 465, `false` for all other ports
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
-        user: process.env.NEXT_PUBLIC_SMTP_USER,
+        user: "kateshivansh2303@gmail.com",
         pass: process.env.NEXT_PUBLIC_SMTP_PASS,
       },
     });
 
     const mailOptions = {
-      from: "info@swimforindiaacademy.com",
+      from: `"Swim For India Academy" <kateshivansh2303@gmail.com>`,
       to: userData.email,
       subject: "Swimming Competition Registration",
+      replyTo: "info@swimforindiaacademy.com",
       html: `
          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <p>Dear Swimmer,</p>
@@ -36,9 +37,8 @@ export default async function EmailService(userData: any) {
     transporter.sendMail(mailOptions, function (error: any, info: any) {
       if (error) {
         console.log("Error:", error);
-      }
-      else{
-        console.log("Email sent: ",info.response);
+      } else {
+        console.log("Email sent: ", info.response);
       }
     });
   } catch (error) {
