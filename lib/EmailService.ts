@@ -3,14 +3,19 @@ import nodemailer from "nodemailer";
 export default async function EmailService(userData: any) {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
+      host: process.env.NEXT_PUBLIC_SMTP_HOST,
+      port: parseInt(process.env.NEXT_PUBLIC_SMTP_PORT!),
       secure: true,
       auth: {
-        user: "kateshivansh2303@gmail.com",
+        user: process.env.NEXT_PUBLIC_SMTP_USER,
         pass: process.env.NEXT_PUBLIC_SMTP_PASS,
       },
     });
+    try{
+      await transporter.verify();
+      console.log("SMTP server is ready to take our messages");
+    }catch (error) {
+      console.error("Error verifying SMTP server:", error);}
     const mailOptions = {
       from: `"Swim For India Academy" <kateshivansh2303@gmail.com>`,
       to: userData.email,
