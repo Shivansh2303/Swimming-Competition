@@ -2,6 +2,10 @@ import nodemailer from "nodemailer";
 
 export default async function EmailService(userData: any) {
   try {
+    console.log(process.env.NEXT_PUBLIC_SMTP_HOST);
+    console.log(process.env.NEXT_PUBLIC_SMTP_PORT);
+    console.log(process.env.NEXT_PUBLIC_SMTP_USER);
+    console.log(process.env.NEXT_PUBLIC_SMTP_PASS);
     const transporter = nodemailer.createTransport({
       host: process.env.NEXT_PUBLIC_SMTP_HOST,
       port: parseInt(process.env.NEXT_PUBLIC_SMTP_PORT!),

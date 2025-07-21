@@ -28,6 +28,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "recharts": "^2.15.4",
+    "vercel": "^44.5.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
