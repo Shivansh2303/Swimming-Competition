@@ -19,6 +19,7 @@ export default async function EmailService(userData: any) {
       html: `
          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <p>Dear Swimmer, ${userData.swimmerFirstName} ${userData.swimmerLastName}</p>
+      <p>Transaction ID: ${userData.paymentID}</p>
       <p>Thank you for registering in the Delhi Open Talent Search Swimming Competition 2025.</p>
       <p><strong>Event Date: 3rd August 2025, Sunday</strong></p>
       <p>Our Contact details are:</p>
