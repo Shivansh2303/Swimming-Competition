@@ -56,24 +56,26 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
       }
     }
   }, [params, handleUser, loading]);
+  const sendEmail = async (): Promise<void> => {
+    if (typeof window !== "undefined") {
+      const data = localStorage.getItem("swimmerData");
 
-  const sendEmail = async () => {
-    console.log(userData.email);
-    if (!userData?.email) return;
-    try {
-      await axios.post("/api/resend-email", { userData });
-      window.alert("Confirmation email sent!");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Failed to resend confirmation email:",
-          error.response?.data || error.message
-        );
+      if (data) {
+        try {
+          const parsedUserData = JSON.parse(data);
+          await axios.post("/api/resend-email", {
+            userData: parsedUserData,
+          });
+          alert("Confirmation email resent successfully!");
+        } catch (error) {
+          console.error("Failed to resend confirmation email", error);
+        }
       } else {
-        console.error("Failed to resend confirmation email", error);
+        console.warn("No swimmerData found in localStorage");
       }
     }
   };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-10 px-2">
       <div
