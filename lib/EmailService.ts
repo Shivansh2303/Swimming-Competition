@@ -2,7 +2,6 @@ import nodemailer from "nodemailer";
 
 export default async function EmailService(userData: any) {
   try {
-    console.log("11 userdata: ", userData )
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -12,7 +11,6 @@ export default async function EmailService(userData: any) {
         pass: process.env.NEXT_PUBLIC_SMTP_PASS,
       },
     });
-    console.log("12 Email service initialized");
     const mailOptions = {
       from: `"Swim For India Academy" <kateshivansh2303@gmail.com>`,
       to: userData.email,
@@ -42,7 +40,7 @@ export default async function EmailService(userData: any) {
         console.log("Email sent: ", info.response);
       }
     });
-    console.log("13 Email sent successfully");
+    console.log("Email sent successfully");
   } catch (error) {
     console.error("Error: ", error);
   }
