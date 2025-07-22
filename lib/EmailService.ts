@@ -1,25 +1,36 @@
 import nodemailer from "nodemailer";
 
-export default async function EmailService(userData: any) {
+export default async function EmailService({
+  swimmerFirstName,
+  swimmerLastName,
+  email,
+  paymentID,
+}:  any) {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
+      host: process.env.NEXT_PUBLIC_SMTP_HOST,
+      port: parseInt(process.env.NEXT_PUBLIC_SMTP_PORT!),
       secure: true,
       auth: {
-        user: "kateshivansh2303@gmail.com",
+        user: process.env.NEXT_PUBLIC_SMTP_USER,
         pass: process.env.NEXT_PUBLIC_SMTP_PASS,
       },
     });
+    try {
+      await transporter.verify();
+      console.log("SMTP server is ready to take our messages");
+    } catch (error) {
+      console.error("Error verifying SMTP server:", error);
+    }
     const mailOptions = {
       from: `"Swim For India Academy" <kateshivansh2303@gmail.com>`,
-      to: userData.email,
+      to: email,
       subject: "Swimming Competition Registration",
       replyTo: "info@swimforindiaacademy.com",
       html: `
          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-      <p>Dear Swimmer, ${userData.swimmerFirstName} ${userData.swimmerLastName}</p>
-      <p>Transaction ID: ${userData.paymentID}</p>
+      <p>Dear Swimmer, ${swimmerFirstName} ${swimmerLastName}</p>
+      <p>Transaction ID: ${paymentID}</p>
       <p>Thank you for registering in the Delhi Open Talent Search Swimming Competition 2025.</p>
       <p><strong>Event Date: 3rd August 2025, Sunday</strong></p>
       <p>Our Contact details are:</p>
