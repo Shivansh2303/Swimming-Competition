@@ -7,12 +7,11 @@ export async function GET(req: NextRequest) {
   try {
     await connectToMongoDB();
     const { searchParams } = new URL(req.url);
-    const paymentID = searchParams.get("paymentID");
     const paymentRequestID = searchParams.get("paymentRequestID");
-    if (!paymentID || !paymentRequestID) {
+    if ( !paymentRequestID) {
       return NextResponse.json({ error: "Missing paymentID parameter" }, { status: 400 });
     }
-    const swimmer = await SwimmingCompetitionForm.findOne({ paymentID, paymentRequestID });
+    const swimmer = await SwimmingCompetitionForm.findOne({ paymentRequestID });
     return NextResponse.json(swimmer, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

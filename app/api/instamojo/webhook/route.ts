@@ -41,12 +41,10 @@ export async function POST(req: NextRequest) {
       const email = updatedSwimmer.email;
       const paymentID = updatedSwimmer.paymentID;
       EmailService({ swimmerFirstName, swimmerLastName, email, paymentID });
-      console.log("Email sent successfully for swimmer:", updatedSwimmer._id);
       return NextResponse.json({
         message: "Swimmer updated and email sent successfully",
       });
     }
-    console.error("Failed to update swimmer:", swimmer._id);
     return NextResponse.json(
       { error: "Failed to update swimmer" },
       { status: 500 }

@@ -30,7 +30,6 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 userData.paymentRequestID=params.get("payment_request_id")??"";
                 userData.proofOdAge=null;
                 const swimmerData = await axios.get('/api/swimmer-info');
-                console.log("Swimmer Data:", swimmerData.data);
                 setUserData(swimmerData.data);
                 window.location.reload();
             }
