@@ -15,47 +15,35 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
   const [userData, setUserData] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const hasHandledUser = useRef(false); // Ref to track if handleUser has been called
-  const handleUser = useCallback(
-    async (userData: any) => {
-      if (hasHandledUser.current) return; // Check if handleUser has already been called
-      hasHandledUser.current = true; // Set ref to true to prevent further calls
+  const handleUser = useCallback(async () => {
+    if (hasHandledUser.current) return; // Check if handleUser has already been called
+    hasHandledUser.current = true; // Set ref to true to prevent further calls
+    const paymentID = params.paymentID ?? "";
+    const paymentRequestID = params.paymentRequestID ?? "";
 
-      if (userData) {
-        userData.paymentID = params.paymentID ?? "";
-        userData.paymentStatus = params.paymentStatus ?? "";
-        userData.paymentRequestID = params.paymentRequestID ?? "";
-
-        try {
-          const response = await axios.post("/api/create-swimmer", {
-            userData,
-          });
-          setUserData(response.data);
-        } catch (error) {
-          console.error("Failed to create swimmer", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    },
-    [params.paymentID, params.paymentRequestID, params.paymentStatus]
-  );
+    try {
+      const response = await axios.get("/api/swimmer-info", {
+        params: {
+          paymentID: paymentID,
+          paymentRequestID: paymentRequestID,
+        },
+      });
+      console.log("Swimmer Data:", response.data);
+      setUserData(response.data);
+    } catch (error) {
+      console.error("Failed to create swimmer", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [params.paymentID, params.paymentRequestID]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const data = localStorage.getItem("swimmerData");
-
-      if (data && loading) {
-        try {
-          const swimmerData = JSON.parse(data);
-          handleUser(swimmerData);
-        } catch (error) {
-          console.error("Failed to parse swimmerData from localStorage", error);
-        }
-      } else {
-        console.warn("No swimmerData found in localStorage");
-      }
+    if (loading) {
+      handleUser();
+    } else {
+      console.warn("No swimmerData found in localStorage");
     }
-  }, [params, handleUser, loading]);
+  }, [loading, handleUser]);
   const sendEmail = async (): Promise<void> => {
     if (typeof window !== "undefined") {
       const rawData = {
@@ -64,7 +52,6 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
         swimmerLastName: userData?.swimmerLastName ?? "",
         paymentID: userData?.paymentID ?? "",
       };
-
       try {
         await axios.post("/api/resend-email", rawData);
 
@@ -85,28 +72,50 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
         }`}
       >
         <div className="flex flex-col items-center">
-          <svg
-            viewBox="0 0 24 24"
-            className={`text-green-600 w-20 h-20 mb-6 drop-shadow-lg ${
-              loading ? "hidden" : ""
-            }`}
-          >
-            <path
-              fill="currentColor"
-              d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z"
-            ></path>
-          </svg>
           {(() => {
             let paymentMessage = "";
-            if (userData?.paymentStatus === "Credit") {
+            let isCredit = userData?.paymentStatus === "Credit";
+            if (isCredit) {
               paymentMessage = "Payment Done!";
-            } else if (userData?.paymentStatus === "") {
+            } else if (userData?.paymentStatus === "Failed") {
               paymentMessage = "Payment Failed";
+            } else {
+              paymentMessage = "Payment Failed! Please try again.";
             }
             return (
-              <h3 className="md:text-3xl text-xl text-gray-900 font-bold text-center mb-2">
-                {paymentMessage}
-              </h3>
+              <>
+                {isCredit ? (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className={`text-green-600 w-20 h-20 mb-6 drop-shadow-lg ${loading ? "hidden" : ""}`}
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z"
+                    ></path>
+                  </svg>
+                ) : (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className={`text-red-600 w-20 h-20 mb-6 drop-shadow-lg ${loading ? "hidden" : ""}`}
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="12"
+                      fill="currentColor"
+                      opacity="0.15"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M16.24 7.76a1 1 0 0 0-1.41 0L12 10.59 9.17 7.76A1 1 0 1 0 7.76 9.17L10.59 12l-2.83 2.83a1 1 0 1 0 1.41 1.41L12 13.41l2.83 2.83a1 1 0 0 0 1.41-1.41L13.41 12l2.83-2.83a1 1 0 0 0 0-1.41z"
+                    />
+                  </svg>
+                )}
+                <h3 className="md:text-3xl text-xl text-gray-900 font-bold text-center mb-2">
+                  {paymentMessage}
+                </h3>
+              </>
             );
           })()}
           <p className="text-gray-600 mb-4 text-center">
@@ -185,6 +194,14 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                 </tr>
                 <tr>
                   <td className="py-3 text-sm font-bold text-gray-900">
+                    Payment Status 
+                  </td>
+                  <td className="py-3 text-sm text-gray-700">
+                    {userData?.paymentStatus ?? "Pending"}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-3 text-sm font-bold text-gray-900">
                     Date & Time
                   </td>
                   <td className="py-3 text-sm text-gray-700">
@@ -199,17 +216,22 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
         )}
         {!loading && (
           <div className="text-center mt-8">
-            <p className="text-gray-600 mb-2">
-              If you do not receive an email, click &quot;Resend Confirmation
-              Email&quot;.
-            </p>
-            <button
-              className="inline-block px-6 py-2 mb-4 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-lg shadow transition-colors duration-200"
-              disabled={loading}
-              onClick={sendEmail}
-            >
-              Resend Confirmation Email
-            </button>
+            {userData?.paymentStatus === "Credit" && (
+              <div>
+                <p className="text-gray-600 mb-2">
+                  If you do not receive an email, click &quot;Resend
+                  Confirmation Email&quot;.
+                </p>
+                <button
+                  className="inline-block px-6 py-2 mb-4 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-lg shadow transition-colors duration-200"
+                  disabled={loading}
+                  onClick={sendEmail}
+                >
+                  Resend Confirmation Email
+                </button>
+              </div>
+            )}
+
             <p className="text-lg font-semibold text-gray-800 mb-4">
               Have a great day!
             </p>

@@ -29,7 +29,8 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                 userData.paymentStatus=params.get("payment_status")??"";
                 userData.paymentRequestID=params.get("payment_request_id")??"";
                 userData.proofOdAge=null;
-                const swimmerData = await axios.post('/api/create-swimmer', { userData });
+                const swimmerData = await axios.get('/api/swimmer-info');
+                console.log("Swimmer Data:", swimmerData.data);
                 setUserData(swimmerData.data);
                 window.location.reload();
             }
@@ -47,7 +48,7 @@ export default function CreateSwimmer(params:Readonly<ReadonlyURLSearchParams>){
                         </path>
                     </svg>
                     <div className="text-center">
-                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus?"Payment Done!":"Payment"}</h3>
+                        <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">{userData?.paymentStatus?"Payment Done!":"payment Incomplete!"}</h3>
                         <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
                     </div>
                 </div>
