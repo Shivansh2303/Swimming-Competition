@@ -50,7 +50,7 @@ const SwimmingCompetitionFormSchema: Schema = new Schema(
     parentName: { type: String, required: true },
     referral: { type: String, required: false },
     paymentID: { type: String, required: false },
-    paymentStatus: { type: String, required: false },
+    paymentStatus: { type: String, required: false, default: "pending" },
     paymentRequestID: { type: String, required: false },
     amount: { type: Number, required: true },
     terms_conditions: { type: Boolean, required: true },

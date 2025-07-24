@@ -24,11 +24,9 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
     try {
       const response = await axios.get("/api/swimmer-info", {
         params: {
-          paymentID: paymentID,
           paymentRequestID: paymentRequestID,
         },
       });
-      console.log("Swimmer Data:", response.data);
       setUserData(response.data);
     } catch (error) {
       console.error("Failed to create swimmer", error);
@@ -80,7 +78,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
             } else if (userData?.paymentStatus === "Failed") {
               paymentMessage = "Payment Failed";
             } else {
-              paymentMessage = "Payment Failed! Please try again.";
+              paymentMessage = "Payment Status";
             }
             return (
               <>
@@ -127,7 +125,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
             Here is your payment details
           </p>
         </div>
-        {!loading && (
+        
           <div className="text-center mb-6">
             <p className="text-2xl font-bold text-indigo-700">
               Swim For India Academy
@@ -136,8 +134,8 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
               Delhi Open Talent Search Swimming Competition 2025
             </p>
           </div>
-        )}
-        {!loading && (
+        
+        {!loading && userData?(
           <div className="overflow-hidden rounded-xl border border-gray-200 shadow p-5 bg-gray-50">
             <table className="min-w-full border-separate border-spacing-y-2 border-spacing-x-2">
               <thead>
@@ -212,6 +210,10 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
                 </tr>
               </tbody>
             </table>
+          </div>
+        ): (
+          <div className="text-center text-gray-500 mt-4">
+            No payment details found.
           </div>
         )}
         {!loading && (
