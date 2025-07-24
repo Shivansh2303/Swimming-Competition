@@ -52,7 +52,6 @@ export default async function EmailService({
         console.log("Email sent: ", info.response);
       }
     });
-    console.log("Email sent successfully");
   } catch (error) {
     console.error("Error: ", error);
   }

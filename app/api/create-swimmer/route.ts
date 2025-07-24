@@ -5,6 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const { userData } = await req.json();
+    if (!userData || Object.keys(userData).length === 0) {
+      return NextResponse.json({ error: "No user data provided" }, { status: 400 });
+    }
     const swimmer = await SwimmerCreate(userData);
     return NextResponse.json(swimmer, { status: 200 });
   } catch (error: any) {

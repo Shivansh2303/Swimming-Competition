@@ -499,7 +499,12 @@ export default function SwimmingRegistrationForm() {
         formik.setFieldError("swimmer2", "Relay swimmer 2 is required");
       }
     }
-  }, [formik, formik.values.relay, formik.values.swimmer1, formik.values.swimmer2]);
+  }, [
+    formik,
+    formik.values.relay,
+    formik.values.swimmer1,
+    formik.values.swimmer2,
+  ]);
   useEffect(() => {
     console.log("Errors", formik.errors);
   }, [formik.values, formik.errors]);
