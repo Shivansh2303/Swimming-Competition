@@ -35,7 +35,6 @@ const CheckoutForm = (props: any) => {
         try {
             const response = await axios.post('/api/create-customer', {}); // instamojo token
             const { data: paymentResponse } = await axios.post('/api/create-payment-intent', { token: response.data, userData }); // create payment intent
-            userData.paymentRequestID= paymentResponse.id;
             await axios.post('/api/create-swimmer', { userData }); // create swimmer or user
             router.push(paymentResponse.longurl)
         } catch (err: any) {

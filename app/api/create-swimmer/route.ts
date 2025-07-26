@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No user data provided" }, { status: 400 });
     }
     const swimmer = await SwimmerCreate(userData);
+   
     return NextResponse.json(swimmer, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
