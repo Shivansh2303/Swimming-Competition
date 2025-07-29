@@ -26,7 +26,7 @@ export default async function EmailService(userData: any) {
       <p>Dear Swimmer, ${userData.swimmerFirstName} ${userData.swimmerLastName}</p>
       <p>Transaction ID: ${userData.paymentID}</p>
       <p>Thank you for registering in the Delhi Open Talent Search Swimming Competition 2025.</p>
-      <p><strong>Event Date: 3rd August 2025, Sunday</strong></p>
+      <p><strong>Event Date: 24th August 2025, Sunday</strong></p>
       <p>Our Contact details are:</p>
       <p>Questions? Call/WhatsApp <strong>7065195811, 9310523009</strong></p>
       <p>Email: <a href="mailto:info@swimforindiaacademy.com" style="color: #1a73e8;">info@swimforindiaacademy.com</a></p>
