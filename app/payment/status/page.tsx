@@ -15,7 +15,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
   const [userData, setUserData] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const hasHandledUser = useRef(false); // Ref to track if handleUser has been called
-  const handleUser = useCallback(
+    const handleUser = useCallback(
     async (userData: any) => {
       if (hasHandledUser.current) return; // Check if handleUser has already been called
       hasHandledUser.current = true; // Set ref to true to prevent further calls
@@ -40,7 +40,7 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
     [params.paymentID, params.paymentRequestID, params.paymentStatus]
   );
 
-  useEffect(() => {
+   useEffect(() => {
     if (typeof window !== "undefined") {
       const data = localStorage.getItem("swimmerData");
 
@@ -58,21 +58,21 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
   }, [params, handleUser, loading]);
   const sendEmail = async (): Promise<void> => {
     if (typeof window !== "undefined") {
-      const data = localStorage.getItem("swimmerData");
+      const rawData = {
+        email: userData?.email ?? null,
+        swimmerFirstName: userData?.swimmerFirstName ?? "",
+        swimmerLastName: userData?.swimmerLastName ?? "",
+        paymentID: userData?.paymentID ?? "",
+      };
+      try {
+        await axios.post("/api/resend-email", rawData);
 
-      if (data) {
-        try {
-          const parsedUserData = JSON.parse(data);
-          await axios.post("/api/resend-email", {
-            userData: parsedUserData,
-          });
-          alert("Confirmation email resent successfully!");
-        } catch (error) {
-          console.error("Failed to resend confirmation email", error);
-        }
-      } else {
-        console.warn("No swimmerData found in localStorage");
+        alert("Confirmation email resent successfully!");
+      } catch (error) {
+        console.error("Failed to resend confirmation email", error);
       }
+    } else {
+      console.warn("sendEmail function can only be called in the browser");
     }
   };
 
