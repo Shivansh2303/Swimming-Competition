@@ -33,10 +33,17 @@ const CheckoutForm = (props: any) => {
         event.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post('/api/create-customer', {}); // instamojo token
-            const { data: paymentResponse } = await axios.post('/api/create-payment-intent', { token: response.data, userData }); // create payment intent
-            await axios.post('/api/create-swimmer', { userData }); // create swimmer or user
-            router.push(paymentResponse.longurl)
+            const response = await axios.post('/api/create-customer', {});
+            const { data: paymentResponse } = await axios.post('/api/create-payment-intent', { token: response.data, userData });
+            userData.paymentRequestID = paymentResponse.id;
+          const user_response = await axios.post("/api/create-swimmer", {
+            userData,
+          });
+          if (user_response.status !== 200) {
+            throw new Error("Failed to create swimmer");        
+          } else {
+            router.push(paymentResponse.longurl);
+          }
         } catch (err: any) {
             console.error(err);
         } finally {

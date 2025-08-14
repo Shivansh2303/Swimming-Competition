@@ -36,11 +36,8 @@ export async function POST(req: NextRequest) {
       { new: true }
     );
     if (updatedSwimmer) {
-      const swimmerFirstName = updatedSwimmer.swimmerFirstName;
-      const swimmerLastName = updatedSwimmer.swimmerLastName;
-      const email = updatedSwimmer.email;
-      const paymentID = updatedSwimmer.paymentID;
-      EmailService({ swimmerFirstName, swimmerLastName, email, paymentID });
+     
+      EmailService(updatedSwimmer);
       return NextResponse.json({
         message: "Swimmer updated and email sent successfully",
       });

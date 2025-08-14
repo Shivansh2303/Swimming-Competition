@@ -98,32 +98,32 @@ const ageGroupOptionsMale = [
     endYear: 2020,
   },
   {
-    value: "Seniors Boys: 18 yrs to 27 yrs",
-    label: "Seniors Boys: 18 yrs to 27 yrs",
+    value: "Seniors Men: 18 yrs to 29 yrs",
+    label: "Seniors Men: 18 yrs to 29 yrs",
     startYear: 2007,
-    endYear: 1998,
+    endYear: 1996,
   },
   {
-    value: "Group A Men: 28 to 37 yrs",
-    label: "Group-A Men: 28 to 37 yrs",
+    value: "Group A Men: 30 to 40 yrs",
+    label: "Group-A Men: 30 to 40 yrs",
     startYear: 1997,
     endYear: 1988,
   },
   {
-    value: "Group B Men: 38 to 47 yrs",
-    label: "Group-B Men: 38 to 47 yrs",
+    value: "Group B Men: 41 to 50 yrs",
+    label: "Group-B Men: 41 to 50 yrs",
     startYear: 1987,
     endYear: 1978,
   },
   {
-    value: "Group C Men: 48 to 57 yrs",
-    label: "Group-C Men: 48 to 57 yrs",
+    value: "Group C Men: 51 to 60 yrs",
+    label: "Group-C Men: 51 to 60 yrs",
     startYear: 1977,
     endYear: 1968,
   },
   {
-    value: "Group D Men: 58+ yrs",
-    label: "Group-D Men: 58+ yrs",
+    value: "Group D Men: 61+ yrs",
+    label: "Group-D Men: 61+ yrs",
     startYear: 1967,
     endYear: null,
   },
@@ -198,33 +198,33 @@ const ageGroupOptionsFemale = [
     endYear: 2020,
   },
   {
-    value: "Seniors Girls: 18 yrs to 27 yrs",
-    label: "Seniors Girls: 18 yrs to 27 yrs",
+    value: "Seniors Women: 18 yrs to 29 yrs",
+    label: "Seniors Women: 18 yrs to 29 yrs",
     startYear: 2007,
-    endYear: 1998,
+    endYear: 1996,
   },
   {
-    value: "Group A Women: 28 to 37 yrs",
-    label: "Group-A Women: 28 to 37 yrs",
-    startYear: 1997,
-    endYear: 1988,
+    value: "Group A Women: 30 to 40 yrs",
+    label: "Group-A Women: 30 to 40 yrs",
+    startYear: 1995,
+    endYear: 1985,
   },
   {
-    value: "Group B Women: 38 to 47 yrs",
-    label: "Group-B Women: 38 to 47 yrs",
-    startYear: 1987,
-    endYear: 1978,
+    value: "Group B Women: 41 to 50 yrs",
+    label: "Group-B Women: 41 to 50 yrs",
+    startYear: 1984,
+    endYear: 1975,
   },
   {
-    value: "Group C Women: 48 to 57 yrs",
-    label: "Group-C Women: 48 to 57 yrs",
-    startYear: 1977,
-    endYear: 1968,
+    value: "Group C Women: 51 to 60 yrs",
+    label: "Group-C Women: 51 to 60 yrs",
+    startYear: 1974,
+    endYear: 1965,
   },
   {
-    value: "Group D Women: 58+ yrs",
-    label: "Group-D Women: 58+ yrs",
-    startYear: 1967,
+    value: "Group D Women: 61+ yrs",
+    label: "Group-D Women: 61+ yrs",
+    startYear: 1964,
     endYear: null,
   },
 ];
@@ -294,6 +294,7 @@ export default function SwimmingRegistrationForm() {
       amount: 0,
       terms_conditions: false,
     },
+    
     validationSchema,
     onSubmit: async (values) => {
       const formvalues = formik.values as FormValues;
@@ -311,10 +312,11 @@ export default function SwimmingRegistrationForm() {
         setError("Must select 1 swimming event.");
       }
     },
+
     validate(values) {
       const errors: Partial<typeof values> = {};
-      if (values.email !== values.confirm_email) {
-        errors.confirm_email = "Email must match";
+      if (values.email && values.confirm_email && values.email !== values.confirm_email) {
+      errors.confirm_email = "Emails do not match";
       }
       return errors;
     },
@@ -349,11 +351,6 @@ export default function SwimmingRegistrationForm() {
       (process.env.NEXT_PUBLIC_LATE_FEES_DATE2 as string) ?? ""
     );
 
-    const swimmingEventsCount =
-      (event_freestyle ? 1 : 0) +
-      (event_breast_Stroke ? 1 : 0) +
-      (event_butterfly ? 1 : 0) +
-      (event_back_Stroke ? 1 : 0);
 
     const feeStructure = [
       {
@@ -438,15 +435,22 @@ export default function SwimmingRegistrationForm() {
       setFileSize("File size should be less than 1MB");
       return;
     }
+    setFileSize(""); // Clear previous error
     const formData = new FormData();
     formData.append("file", file as Blob);
-    const response = await axios.post("/api/file-upload", formData);
-    if (!response?.data?.url) {
+    try {
+      const response = await axios.post("/api/file-upload", formData);
+      if (!response?.data?.url) {
+        setFileSize("Failed to upload file");
+        return;
+      }
+      formik.setFieldValue("proofOfAge", response.data.url);
+    } catch (err) {
+      console.error("File upload error:", err);
       setFileSize("Failed to upload file");
-      return;
     }
-    formik.setFieldValue("proofOfAge", response?.data?.url);
   };
+
   const getAgeGroup = (birthYear: number, gender?: string) => {
     const groups =
       formik.values.gender === "Male"
@@ -492,6 +496,7 @@ export default function SwimmingRegistrationForm() {
   } else {
     ageGroupOptions = [{ value: "", label: "Select Age Group" }];
   }
+
   useEffect(() => {
     if (formik.values.relay) {
       if (!formik.values.swimmer1 || !formik.values.swimmer2) {
@@ -505,9 +510,6 @@ export default function SwimmingRegistrationForm() {
     formik.values.swimmer1,
     formik.values.swimmer2,
   ]);
-  useEffect(() => {
-    console.log("Errors", formik.errors);
-  }, [formik.values, formik.errors]);
 
   return (
     <form

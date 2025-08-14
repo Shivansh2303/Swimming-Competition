@@ -12,6 +12,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Missing paymentID parameter" }, { status: 400 });
     }
     const swimmer = await SwimmingCompetitionForm.findOne({ paymentRequestID });
+    if (!swimmer) {
+      return NextResponse.json({ error: "Swimmer not found" }, { status: 404 });
+    }
     return NextResponse.json(swimmer, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
