@@ -1,6 +1,11 @@
 import nodemailer from "nodemailer";
 
-export default async function EmailService(userData: any) {
+export default async function EmailService({
+  swimmerFirstName,
+  swimmerLastName,
+  email,
+  paymentID,
+}:  any) {
   try {
     const transporter = nodemailer.createTransport({
       host: process.env.NEXT_PUBLIC_SMTP_HOST,
@@ -11,22 +16,23 @@ export default async function EmailService(userData: any) {
         pass: process.env.NEXT_PUBLIC_SMTP_PASS,
       },
     });
-    try{
+    try {
       await transporter.verify();
       console.log("SMTP server is ready to take our messages");
-    }catch (error) {
-      console.error("Error verifying SMTP server:", error);}
+    } catch (error) {
+      console.error("Error verifying SMTP server:", error);
+    }
     const mailOptions = {
       from: `"Swim For India Academy" <kateshivansh2303@gmail.com>`,
-      to: userData.email,
+      to: email,
       subject: "Swimming Competition Registration",
       replyTo: "info@swimforindiaacademy.com",
       html: `
          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-      <p>Dear Swimmer, ${userData.swimmerFirstName} ${userData.swimmerLastName}</p>
-      <p>Transaction ID: ${userData.paymentID}</p>
+      <p>Dear Swimmer, ${swimmerFirstName} ${swimmerLastName}</p>
+      <p>Transaction ID: ${paymentID}</p>
       <p>Thank you for registering in the Delhi Open Talent Search Swimming Competition 2025.</p>
-      <p><strong>Event Date: 3rd August 2025, Sunday</strong></p>
+      <p><strong>Event Date: 24th August 2025, Sunday</strong></p>
       <p>Our Contact details are:</p>
       <p>Questions? Call/WhatsApp <strong>7065195811, 9310523009</strong></p>
       <p>Email: <a href="mailto:info@swimforindiaacademy.com" style="color: #1a73e8;">info@swimforindiaacademy.com</a></p>
@@ -46,7 +52,6 @@ export default async function EmailService(userData: any) {
         console.log("Email sent: ", info.response);
       }
     });
-    console.log("Email sent successfully");
   } catch (error) {
     console.error("Error: ", error);
   }

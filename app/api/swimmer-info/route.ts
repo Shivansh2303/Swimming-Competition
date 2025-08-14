@@ -8,9 +8,6 @@ export async function GET(req: NextRequest) {
     await connectToMongoDB();
     const { searchParams } = new URL(req.url);
     const paymentRequestID = searchParams.get("paymentRequestID");
-    if (!paymentRequestID) {
-      return NextResponse.json({ error: "Missing paymentRequestID or paymentID parameter" }, { status: 400 });
-    }
     if ( !paymentRequestID) {
       return NextResponse.json({ error: "Missing paymentID parameter" }, { status: 400 });
     }

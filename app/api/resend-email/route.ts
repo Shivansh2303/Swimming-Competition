@@ -1,13 +1,18 @@
-// app/api/resend-email/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import EmailService from "@/lib/EmailService";
+
 export async function POST(req: NextRequest) {
   try {
-    if (!req.body) {
+    const body = await req.json();
+
+    if (!body) {
       return NextResponse.json({ error: "No data provided" }, { status: 400 });
     }
-    const { userData } = await req.json();
-    const swimmer = await EmailService(userData);
+
+    const { email, swimmerFirstName, swimmerLastName, paymentID } = body;
+
+    const swimmer = await EmailService({ swimmerFirstName, swimmerLastName, email, paymentID });
+
     return NextResponse.json(swimmer, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
