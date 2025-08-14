@@ -4,42 +4,38 @@ import EmailService from "@/lib/EmailService";
 import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
-    const formData = await req.formData();
-    const payload: Record<string, string> = {};
-    formData.forEach((value, key) => {
-      if (typeof value === "string") {
-        payload[key] = value;
-      } else if (value instanceof File) {
-        payload[key] = value.name;
-      } else {
-        payload[key] = String(value);
-      }
-    });
-    connectToMongoDB();
-    const swimmer = await SwimmingCompetitionForm.findOne({
-      paymentRequestID: payload.payment_request_id,
-    });
+    const payload = await req.json();
+    // Validate required fields
+    const { paymentRequestID, paymentID, paymentStatus } = payload.userData;
+    if (!paymentRequestID || !paymentID || !paymentStatus) {
+      return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+    }
+
+    await connectToMongoDB();
+
+    // Find swimmer by paymentRequestID
+    const swimmer = await SwimmingCompetitionForm.findOne({ paymentRequestID });
 
     if (!swimmer) {
       console.error(
         "Swimmer not found for paymentRequestID:",
-        payload.payment_request_id
+        paymentRequestID
       );
       return NextResponse.json({ error: "Swimmer not found" }, { status: 404 });
     }
     const updatedSwimmer = await SwimmingCompetitionForm.findByIdAndUpdate(
       swimmer._id,
       {
-        paymentID: payload.payment_id,
-        paymentStatus: payload.status,
+        paymentID: paymentID,
+        paymentStatus: paymentStatus,
       },
       { new: true }
     );
     if (updatedSwimmer) {
-     
       EmailService(updatedSwimmer);
       return NextResponse.json({
         message: "Swimmer updated and email sent successfully",
+        swimmer: updatedSwimmer,
       });
     }
     return NextResponse.json(
