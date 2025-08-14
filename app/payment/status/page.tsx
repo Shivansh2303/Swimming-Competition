@@ -15,49 +15,64 @@ function CreateSwimmer({ params }: Readonly<{ params: ParamsInterface }>) {
   const [userData, setUserData] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const hasHandledUser = useRef(false); // Ref to track if handleUser has been called
-      const handleUser = useCallback(
-        async () => {
-          if (hasHandledUser.current) return;
-          hasHandledUser.current = true;
+  const handleUser = useCallback(
+    async (userData: any) => {
+      if (hasHandledUser.current) return; // Check if handleUser has already been called
+      hasHandledUser.current = true; // Set ref to true to prevent further calls
 
-          try {
-            const response = await axios.get("/api/swimmer-info", {
-              params: {
-                paymentRequestID: params.paymentRequestID,
-          
-              },
-            });
-            setUserData(response.data);
-          } catch (error) {
-            console.error("Failed to create swimmer", error);
-          } finally {
-            setLoading(false);
-          }
-        },
-        [params.paymentRequestID]
-      );
-     
+      if (userData) {
+        userData.paymentID = params.paymentID ?? "";
+        userData.paymentStatus = params.paymentStatus ?? "";
+        userData.paymentRequestID = params.paymentRequestID ?? "";
+
+        try {
+          const response = await axios.post("/api/instamojo/webhook", {
+            userData,
+          });
+          setUserData(response.data.swimmer);
+        } catch (error) {
+          console.error("Failed to create swimmer", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    },
+    [params.paymentID, params.paymentRequestID, params.paymentStatus]
+  );
 
   useEffect(() => {
-    handleUser();
-  }, [handleUser]);
+    if (typeof window !== "undefined") {
+      const data = localStorage.getItem("swimmerData");
+
+      if (data && loading) {
+        try {
+          const swimmerData = JSON.parse(data);
+          handleUser(swimmerData);
+        } catch (error) {
+          console.error("Failed to parse swimmerData from localStorage", error);
+        }
+      } else {
+        console.warn("No swimmerData found in localStorage");
+      }
+    }
+  }, [params, handleUser, loading]);
   const sendEmail = async (): Promise<void> => {
     if (typeof window !== "undefined") {
-      const rawData = {
-        email: userData?.email ?? null,
-        swimmerFirstName: userData?.swimmerFirstName ?? "",
-        swimmerLastName: userData?.swimmerLastName ?? "",
-        paymentID: userData?.paymentID ?? "",
-      };
-      try {
-        await axios.post("/api/resend-email", rawData);
+      const data = localStorage.getItem("swimmerData");
 
-        alert("Confirmation email resent successfully!");
-      } catch (error) {
-        console.error("Failed to resend confirmation email", error);
+      if (data) {
+        try {
+          const parsedUserData = JSON.parse(data);
+          await axios.post("/api/resend-email", {
+            userData: parsedUserData,
+          });
+          alert("Confirmation email resent successfully!");
+        } catch (error) {
+          console.error("Failed to resend confirmation email", error);
+        }
+      } else {
+        console.warn("No swimmerData found in localStorage");
       }
-    } else {
-      console.warn("sendEmail function can only be called in the browser");
     }
   };
 
