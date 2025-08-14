@@ -35,7 +35,15 @@ const CheckoutForm = (props: any) => {
         try {
             const response = await axios.post('/api/create-customer', {});
             const { data: paymentResponse } = await axios.post('/api/create-payment-intent', { token: response.data, userData });
-            router.push(paymentResponse.longurl)
+            userData.paymentRequestID = paymentResponse.id;
+          const user_response = await axios.post("/api/create-swimmer", {
+            userData,
+          });
+          if (user_response.status !== 200) {
+            throw new Error("Failed to create swimmer");        
+          } else {
+            router.push(paymentResponse.longurl);
+          }
         } catch (err: any) {
             console.error(err);
         } finally {

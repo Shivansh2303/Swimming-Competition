@@ -294,6 +294,7 @@ export default function SwimmingRegistrationForm() {
       amount: 0,
       terms_conditions: false,
     },
+    
     validationSchema,
     onSubmit: async (values) => {
       const formvalues = formik.values as FormValues;
@@ -311,10 +312,11 @@ export default function SwimmingRegistrationForm() {
         setError("Must select 1 swimming event.");
       }
     },
+
     validate(values) {
       const errors: Partial<typeof values> = {};
-      if (values.email !== values.confirm_email) {
-        errors.confirm_email = "Email must match";
+      if (values.email && values.confirm_email && values.email !== values.confirm_email) {
+      errors.confirm_email = "Emails do not match";
       }
       return errors;
     },
@@ -349,11 +351,6 @@ export default function SwimmingRegistrationForm() {
       (process.env.NEXT_PUBLIC_LATE_FEES_DATE2 as string) ?? ""
     );
 
-    const swimmingEventsCount =
-      (event_freestyle ? 1 : 0) +
-      (event_breast_Stroke ? 1 : 0) +
-      (event_butterfly ? 1 : 0) +
-      (event_back_Stroke ? 1 : 0);
 
     const feeStructure = [
       {
@@ -438,16 +435,22 @@ export default function SwimmingRegistrationForm() {
       setFileSize("File size should be less than 1MB");
       return;
     }
+    setFileSize(""); // Clear previous error
     const formData = new FormData();
     formData.append("file", file as Blob);
-    const response = await axios.post("/api/file-upload", formData);
-    console.log("File upload response:", response);
-    if (!response?.data?.url) {
+    try {
+      const response = await axios.post("/api/file-upload", formData);
+      if (!response?.data?.url) {
+        setFileSize("Failed to upload file");
+        return;
+      }
+      formik.setFieldValue("proofOfAge", response.data.url);
+    } catch (err) {
+      console.error("File upload error:", err);
       setFileSize("Failed to upload file");
-      return;
     }
-    formik.setFieldValue("proofOfAge", response?.data?.url);
   };
+
   const getAgeGroup = (birthYear: number, gender?: string) => {
     const groups =
       formik.values.gender === "Male"
@@ -493,6 +496,7 @@ export default function SwimmingRegistrationForm() {
   } else {
     ageGroupOptions = [{ value: "", label: "Select Age Group" }];
   }
+
   useEffect(() => {
     if (formik.values.relay) {
       if (!formik.values.swimmer1 || !formik.values.swimmer2) {
@@ -500,10 +504,12 @@ export default function SwimmingRegistrationForm() {
         formik.setFieldError("swimmer2", "Relay swimmer 2 is required");
       }
     }
-  }, [formik, formik.values.relay, formik.values.swimmer1, formik.values.swimmer2]);
-  useEffect(() => {
-    console.log("Errors", formik.errors);
-  }, [formik.values, formik.errors]);
+  }, [
+    formik,
+    formik.values.relay,
+    formik.values.swimmer1,
+    formik.values.swimmer2,
+  ]);
 
   return (
     <form
