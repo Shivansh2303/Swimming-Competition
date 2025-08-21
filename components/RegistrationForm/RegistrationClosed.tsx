@@ -8,7 +8,7 @@ const RegistrationClosed = () => {
           information, call Dr. Jitender Tokas at 706-519-5811.
         </p>
         <img 
-          src="/registration_closed.jpg" 
+          src="/registration_closed2.jpg" 
           alt="Swimming competition" 
           className="max-w-full h-auto border border-gray-300 rounded-lg"
         />
